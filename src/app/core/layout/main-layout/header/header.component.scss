@@ -1,0 +1,74 @@
+@import './../../../../../styles/main.scss';
+
+.example-spacer {
+  flex: 1 1 auto;
+}
+
+mat-toolbar{
+  background-color: $ficus-mid-gray;
+  color: $ficus-yellow;
+  position: sticky;
+  z-index: 2;
+  box-shadow: 2px -2px 6px 1px rgba(255, 198, 41, 0.2);
+
+  p {
+    font-size: 12px;
+    font-weight: 300;
+    margin-top: 15px;
+  }
+}
+
+.img-container{
+  width: 100%;
+  margin-left: 2%;
+  img{
+    width: 10%;
+  }
+}
+
+.menu-side{
+  z-index: 2;
+  position: absolute;
+  min-height: 90vh;
+  height: 100%;
+  width: 20rem;
+  background-color: $ficus-mid-gray;
+  @media (max-width: 480px) {
+    width: 100vw;
+  }
+
+  mat-icon{
+    color: $ficus-yellow;
+  }
+
+  ul{
+    padding-top: 32px;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: left;
+    font-size: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+      li{
+        display: flex;
+        flex-direction: row;
+        gap: 0.5rem;
+        width: 80%;
+        padding: 6px;
+        margin-bottom: 10px;
+        cursor: pointer;
+        &:hover{
+          // background-color: rgba(28,28,99, 0.2);
+          border-bottom: 1px solid $ficus-yellow;
+        }
+        a{
+          font-weight: 300;
+          color: $ficus-yellow;
+          font-weight: 550;
+          text-decoration: none;
+      }
+    }
+  }
+}
