@@ -19,6 +19,10 @@ main{
     margin: 0;
     padding: 0;
 
+    @media (max-width: 480px) {
+      flex-direction: column-reverse !important;
+    }
+
     .section-form{
       display: flex;
       justify-content: center;
@@ -80,10 +84,89 @@ main{
             margin-bottom: 1rem;
           }
         }
+        .btn-google{
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 6px;
+          height: 38px;
+          border-radius: 5px;
+          outline: transparent;
+          color: $ficus-black;
+          background-color: $ficus-white;
+          border: 1px solid $ficus-black;
+          @media (max-width: 480px) {
+            margin-bottom: 1rem;
+          }
+
+          .google{
+          display: block;
+          width: 15px;
+          margin: 0;
+          padding: 0;
+          }
+        }
       }
 
       .text-login{
-       
+
+        @media (max-width: 480px) {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+        
+        .text-area{
+          height: 100%;
+          width: 100%;
+          background-color: rgba(232, 232, 232, 0.8);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+
+          @media (max-width: 480px) {
+            width: 20rem;
+            height: 10rem;
+            padding: 0 .6em;
+          }
+
+          .typewriter {
+            background-color: transparent;
+            width: 68%;
+            @media (max-width: 480px) {
+              width: 100%;
+            }
+          }
+          
+          .typewriter h1 {
+            overflow: hidden; /* Ensures the content is not revealed until the animation */
+            border-right: .15em solid $ficus-purple; /* The typwriter cursor */
+            white-space: nowrap; /* Keeps the content on a single line */
+            margin: 0 auto; /* Gives that scrolling effect as the typing happens */
+            letter-spacing: .15em; /* Adjust as needed */
+            color: $ficus-purple;
+            animation: 
+              typing 3.5s steps(20, end),
+              blink-caret .75s step-end infinite;
+              @media (max-width: 480px) {
+                text-align: center;
+              }
+          }
+          
+          /* The typing effect */
+          @keyframes typing {
+            from { width: 0 }
+            to { width: 100% }
+          }
+          
+          /* The typewriter cursor effect */
+          @keyframes blink-caret {
+            from, to { border-color: transparent }
+            50% { border-color: $ficus-yellow; }
+          }
+          
+        
+        }
         
       }
       
