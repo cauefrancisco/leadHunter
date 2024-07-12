@@ -27,11 +27,17 @@
             </button>
         </div>
 
+        <ul class="link-password">
+            <li>
+                <a href="">Esqueci minha senha</a>
+            </li>
+        </ul>
+
         <div class="w-100"></div>
-        <br><hr>
+        <hr>
         <p>Ainda não tem cadastro?</p>
         <div class="col-xl-5 col-md-12 col-10 p-1 w-100 btn-container">
-            <button type="button" class="w-100 btn-account">Criar conta</button>
+            <button (click)="goTo('create-account')" type="button" class="w-100 btn-account">Criar conta</button>
         </div>
 
     </mat-card>
@@ -42,7 +48,7 @@
         
         <mat-card class="text-area">
             <div class="typewriter">
-                <h1>Seja Bem-vindo(a)! </h1>
+                <h1 class="mt-5">Seja Bem-vindo(a)! </h1>
               </div>
         </mat-card>
 

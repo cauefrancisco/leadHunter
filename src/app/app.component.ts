@@ -10,4 +10,9 @@ import { RouterOutlet } from '@angular/router';
 })
 export class AppComponent {
   title = 'Ficus Lead Hunter';
+  version = `1.0.0`;
+
+  ngOnInit(){
+    console.log('Version ', this.version);
+  }
 }

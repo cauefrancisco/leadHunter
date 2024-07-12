@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { MaterialModule } from '../../../modules/material.module';
 
 @Component({
   selector: 'app-footer',
@@ -6,6 +7,9 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
   styleUrls: ['./footer.component.scss'],
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    MaterialModule,
+  ]
 })
 export class FooterComponent implements OnInit {
 

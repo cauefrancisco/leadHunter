@@ -1,8 +1,9 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { MaterialModule } from '../../modules/material.module';
-import { ITile } from '../../interfaces/auth/material-grid.interface';
+import { MaterialModule } from '../../../modules/material.module';
+import { ITile } from '../../../interfaces/auth/material-grid.interface';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -27,6 +28,7 @@ export class LoginComponent {
 
   constructor(
     private _formBuilder: FormBuilder,
+    private _router: Router,
   ){
     this.form =  this._formBuilder.group({
       login: ['', Validators.required],
@@ -42,5 +44,9 @@ export class LoginComponent {
   ngOnInit(){
     console.log("valor input login", this.F_login.value);
     console.log("valor input login", this.F_password.value);
+  }
+
+  public goTo(page: string): void {
+    this._router.navigateByUrl(page);
   }
 }
