@@ -56,31 +56,31 @@ export class AuthService {
     this.storage.setItem(name, JSON.stringify(item));
   }
 
-  public getSignatureSession(serverData: ISession, password: string): string { // fifth step
+  // public getSignatureSession(serverData: ISession, password: string): string { // fifth step
 
-    let session = serverData.result;
-    const posicao = session.indexOf('+');
-    if (posicao >= 0) {
-      this.ID_SESSION = session.substring(0, posicao);
-    }
-    const crc32Session = crc32(session);
-    const saltPassword = `salt${password}`;
-    const hashSaltPassword = sha256(saltPassword);
+  //   let session = serverData.result;
+  //   const posicao = session.indexOf('+');
+  //   if (posicao >= 0) {
+  //     this.ID_SESSION = session.substring(0, posicao);
+  //   }
+  //   const crc32Session = crc32(session);
+  //   const saltPassword = `salt${password}`;
+  //   const hashSaltPassword = sha256(saltPassword);
 
-    const PRIVATE_KEY = crc32(hashSaltPassword, crc32Session);
+  //   const PRIVATE_KEY = crc32(hashSaltPassword, crc32Session);
 
-    const date = new Date;
-    const timeStamp = date.getTime();
-    const timestampToMiliseconds = Number(timeStamp) * 1000;
-    const milisecondHex = timestampToMiliseconds.toString(16);
-    const eightDigitMiliseconds = milisecondHex.substring(milisecondHex.length - 8, milisecondHex.length);
+  //   const date = new Date;
+  //   const timeStamp = date.getTime();
+  //   const timestampToMiliseconds = Number(timeStamp) * 1000;
+  //   const milisecondHex = timestampToMiliseconds.toString(16);
+  //   const eightDigitMiliseconds = milisecondHex.substring(milisecondHex.length - 8, milisecondHex.length);
 
-    this.SignatureSession = crc32('retaguarda_prospect/empresaService/PegarEmpresasFavoritas', crc32(eightDigitMiliseconds, Number(PRIVATE_KEY))).toString(16);
-    const dataReturn = parseInt(this.ID_SESSION, 10).toString(16) + eightDigitMiliseconds + this.SignatureSession;
+  //   this.SignatureSession = crc32('retaguarda_prospect/empresaService/PegarEmpresasFavoritas', crc32(eightDigitMiliseconds, Number(PRIVATE_KEY))).toString(16);
+  //   const dataReturn = parseInt(this.ID_SESSION, 10).toString(16) + eightDigitMiliseconds + this.SignatureSession;
 
 
-    return dataReturn;
-  }
+  //   return dataReturn;
+  // }
 
   // public getCompanyList(signatureSession: string): Observable<any> { // sixsith and final step
   //   const url = `http://test.ficusconsultoria.com.br:11118/retaguarda_prospect/aaaa/empresaService/PegarEmpresasFavoritas?session_signature=${signatureSession}`;
