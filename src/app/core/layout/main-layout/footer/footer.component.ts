@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { MaterialModule } from '../../../modules/material.module';
+import { MaterialModule } from '../../../../shared/modules/material.module';
 
 @Component({
   selector: 'app-footer',

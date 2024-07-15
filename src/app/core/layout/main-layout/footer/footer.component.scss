@@ -1,14 +1,22 @@
 @import './../../../../../styles/main.scss';
 
+
+.spacer{
+  // border: 1px solid $ficus-black;
+  // box-shadow: 1p 2px 1px 2px rgba(0, 0, 0, 0.);
+}
+
 footer{
   min-height: 15%;
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
   justify-content: center;
   align-items: left;
   text-align: left;
-  padding: 2vh 0;
+  padding: 1rem;
   background-color: $ficus-yellow;
+
 
     @media (max-width: 780px) {
       flex-direction: column;
@@ -17,19 +25,69 @@ footer{
       text-align: center;
     }
 
+    .address-container {
+      display: flex;
+      padding-left: 0.5rem;
+      gap: 2%;
+        :nth-child(1) {
+          font-weight: 600;
+        }
+
+      .address-text{
+        max-width: 80%;
+        word-wrap: wrap;
+        @media (max-width: 480px){
+          margin-top: 1rem;
+        }
+      }
+    }
+
   ul{
     padding: .5rem;
     li{
       margin: .5rem;
       list-style: none;
       cursor: pointer;
-      color: $ficus-purple;
+      font-weight: 560;
+      color: $ficus-black;
     }
   }
 
-  .copyright-section{
+  .links-menu{
+    display: flex;
+    justify-content: end;
+    text-align: right !important;
+
+    @media (max-width: 480px) {
+      text-align: center !important;
+      justify-content: center;
+        align-items: center;
+    }
+
+    .links-box{
+      width: 35% !important;
+    }
+  }
+
+  .social-section{
     display: flex;
     justify-content: flex-end;
+    align-items: center;
+
+    .logo{
+      width: rem;
+    }
+
+    .social{
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 2.4rem;
+
+      @media (max-width: 480px) {
+        gap: 2rem;
+      }
+    }
 
     @media (max-width: 780px) {
       justify-content: center;
@@ -41,13 +99,13 @@ footer{
     p{
       display: flex;
       align-items: flex-end;
-      justify-content: flex-end;
+      justify-content: center;
       gap: 2px;
-      text-align: right;
+      text-align: center;
       margin: 1rem;
       font-size: 1rem;
-      color: $ficus-purple;
-      font-weight: 550;
+      color: $ficus-black;
+      font-weight: 560;
 
       @media (max-width:780px) {
         
@@ -57,4 +115,6 @@ footer{
         
       }
     }
+
+
 }

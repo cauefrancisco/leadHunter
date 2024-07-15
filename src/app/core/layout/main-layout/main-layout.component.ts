@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FooterComponent } from './footer/footer.component';
-import { MaterialModule } from '../../modules/material.module';
+import { MaterialModule } from '../../../shared/modules/material.module';
 import { HeaderComponent } from './header/header.component';
 import { RouterModule, Routes } from '@angular/router';
 

@@ -1,6 +1,6 @@
 import { AfterContentChecked, ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { MaterialModule } from '../../../modules/material.module';
+import { MaterialModule } from '../../../../shared/modules/material.module';
 import { CommonModule } from '@angular/common';
 
 @Component({

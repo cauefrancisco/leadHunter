@@ -1,7 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { MaterialModule } from '../../../modules/material.module';
-import { ITile } from '../../../interfaces/auth/material-grid.interface';
+import { MaterialModule } from '../../../shared/modules/material.module';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
@@ -18,13 +17,6 @@ import { Router } from '@angular/router';
 })
 export class LoginComponent { 
   public form: FormGroup;
-
-  tiles: ITile[] = [
-    {text: 'One', cols: 3, rows: 1, color: 'lightblue'},
-    {text: 'Two', cols: 1, rows: 2, color: 'lightgreen'},
-    {text: 'Three', cols: 1, rows: 1, color: 'lightpink'},
-    {text: 'Four', cols: 2, rows: 1, color: '#DDBDF1'},
-  ];
 
   constructor(
     private _formBuilder: FormBuilder,
