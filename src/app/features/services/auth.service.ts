@@ -47,7 +47,7 @@ export class AuthService {
   // }
 
   public doLogin(payload: ILogin): Observable<any> { // fourth step
-    const password = sha256(`/retaguarda_prospect/${payload.user}${payload.systemNonce}${payload.clientNonce}${payload.user}${payload.passwordEncrypted}`);
+    const password = sha256(`retaguarda_prospect/${payload.user}${payload.systemNonce}${payload.clientNonce}${payload.user}${payload.passwordEncrypted}`);
     const url = `http://192.168.5.4:11117/retaguarda_prospect/auth?UserName=${payload.user}&Password=${password}&ClientNonce=${payload.clientNonce}`;
     return this._httpClient.get(url);
   }

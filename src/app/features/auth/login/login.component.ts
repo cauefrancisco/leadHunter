@@ -94,7 +94,6 @@ export class LoginComponent {
   public doLogin(systemNonce: string): void {
     this.clientNonce = sha256(moment().toISOString());
 
-    // this.encryptedPassword = this._authService.passwordEncryption(passwordEncryptionPayload);
     const loginPayload = {
       user: this.F_login.value,
       passwordEncrypted: this.F_password.value,
@@ -106,17 +105,6 @@ export class LoginComponent {
       console.log(res, 'login')
       if (res && res.result.length > 0) {
         this._authService.getUserNameForDisplay(res.logondisplay);
-        const SIGNATURE_SESSION = this._authService.getSignatureSession(res, this.F_password.value);
-
-        // this._authService.getCompanyList(SIGNATURE_SESSION).subscribe((res: any) => {
-        //   if (!res.result || res.result.length <= 0) {
-        //     return;
-        //   }
-        //   // this._listingService.getDataSource(res.result);
-        //   this.loggedIn = true;
-        //   this._authService.isLogged(this.loggedIn);
-        //   this.goTo('dashboard');
-        // })
       }
     });
   }
