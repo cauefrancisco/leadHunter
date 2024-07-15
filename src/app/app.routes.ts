@@ -1,14 +1,16 @@
 import { Routes } from '@angular/router';
 import { MainLayoutComponent } from './core/layout/main-layout/main-layout.component';
-import { LoginComponent } from './routes/auth/login/login.component';
-import { CreateAccountComponent } from './routes/auth/create-account/create-account.component';
+import { HomeComponent } from './features/pages/Home/Home.component';
+import { CreateAccountComponent } from './features/auth/create-account/create-account.component';
+import { LoginComponent } from './features/auth/login/login.component';
 
 export const routes: Routes = [
 
-    {path: '', redirectTo: 'login', pathMatch: 'full'},
+    {path: '', redirectTo: 'home', pathMatch: 'full'},
     {path: '',
     component: MainLayoutComponent,
     children: [
+        {path: 'home', component: HomeComponent},
         {path: 'login', component: LoginComponent},
         {path: 'create-account', component: CreateAccountComponent}
     ],
