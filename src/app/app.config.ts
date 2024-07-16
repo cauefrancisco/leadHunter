@@ -6,6 +6,7 @@ import { provideClientHydration } from '@angular/platform-browser';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { IConfig, provideEnvironmentNgxMask } from 'ngx-mask';
 import { HttpClientModule, provideHttpClient, withFetch } from '@angular/common/http';
+import { AuthService } from './features/services/auth.service';
 
 const maskConfig: Partial<IConfig> = {
   validation: false,
@@ -19,7 +20,6 @@ export const appConfig: ApplicationConfig = {
     provideClientHydration(),
     provideAnimationsAsync(),
     provideEnvironmentNgxMask(maskConfig),
-    importProvidersFrom(HttpClientModule)
-    
+    importProvidersFrom(HttpClientModule, AuthService)
   ]
 };

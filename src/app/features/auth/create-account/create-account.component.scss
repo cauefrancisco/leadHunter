@@ -8,7 +8,7 @@ main{
   justify-content: center;
   align-items: center;
   background-color: $ficus-light-gray;
-  background: url('./../../../../assets/images/pb-business.jpg');
+  // background: url('./../../../../assets/images/pb-business.jpg');
   background-repeat: no-repeat;
   background-attachment: fixed;
   background-size: cover;
@@ -16,6 +16,7 @@ main{
   
   .container-login{
     flex-direction: row-reverse !important;
+    justify-content: center;
     margin: 0;
     padding: 0;
 
@@ -31,7 +32,7 @@ main{
     }
 
       .login-card{
-        width: 20rem;
+        width: 25rem;
         min-height: 60vh;
         height: 100%;
         border-radius: 10px;
@@ -119,6 +120,24 @@ main{
         
       }
       
+  }
+  
+  .info-create-account{
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    .info-text-container{
+      width: 100%;
+      min-height: 15rem;
+    }
+    .info-card-container{
+      width: 100%;
+      height: 15rem;
+      background-color: rgba(232, 232, 232, 0.9);
+      backdrop-filter: blur(10%) !important;
+      box-shadow: 3px -3px 7px 2px rgba(0, 0, 0, 0.2);
+      border-radius: 10px;
+    }
   }
   
 }

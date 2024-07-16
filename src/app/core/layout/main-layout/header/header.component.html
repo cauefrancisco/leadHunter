@@ -15,10 +15,18 @@
   <button *ngIf="!isLogged" 
   mat-icon-button 
   class="example-icon" 
-  matTooltip="Login"
+  matTooltip="Entrar"
   aria-label="Example icon-button with menu icon"
     (click)="logout()">
     <mat-icon>login</mat-icon>
+  </button>
+  <button *ngIf="isLogged" 
+  mat-icon-button 
+  class="example-icon" 
+  matTooltip="Sair"
+  aria-label="Example icon-button with menu icon"
+    (click)="logout()">
+    <mat-icon>logout</mat-icon>
   </button>
 </mat-toolbar>
 

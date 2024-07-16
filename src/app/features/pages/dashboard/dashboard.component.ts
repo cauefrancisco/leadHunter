@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { AfterContentChecked, ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -9,6 +10,20 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
   ],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.Default,
 })
-export class DashboardComponent { }
+export class DashboardComponent implements OnInit, AfterContentChecked{ 
+
+  public user = '';
+
+  constructor(
+    private _authService: AuthService,
+  ){
+
+  }
+
+  ngOnInit(): void {
+  }
+  ngAfterContentChecked() {
+    }
+}

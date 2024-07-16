@@ -2,11 +2,13 @@ import { AfterContentChecked, ChangeDetectionStrategy, Component, OnInit } from 
 import { Router } from '@angular/router';
 import { MaterialModule } from '../../../../shared/modules/material.module';
 import { CommonModule } from '@angular/common';
+import { AuthService } from '../../../../features/services/auth.service';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss'],
+  providers: [AuthService],
   imports: [
     CommonModule,
     MaterialModule,
@@ -22,6 +24,7 @@ export class HeaderComponent implements OnInit, AfterContentChecked {
 
   constructor(
     private _router: Router,
+    private _authService: AuthService,
   ) {
   }
 
@@ -33,6 +36,10 @@ export class HeaderComponent implements OnInit, AfterContentChecked {
     // this.isLogged = this._authService.userIdentified;
   }
 
+  ngDoCheck(): void {
+    this.userName = this._authService.userNameDisplay;
+  }
+
   public toggle(): boolean {
     return this.hidden = !this.hidden;
 
@@ -42,7 +49,6 @@ export class HeaderComponent implements OnInit, AfterContentChecked {
   }
 
   public logout(): void {
-    // this._authService.userIdentified = false;
     this.goTo('login');
   }
 

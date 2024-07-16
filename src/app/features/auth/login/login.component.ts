@@ -1,9 +1,9 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { AfterContentChecked, ChangeDetectionStrategy, Component, OnChanges, OnInit } from '@angular/core';
 import { MaterialModule } from '../../../shared/modules/material.module';
 import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { AuthService } from '../../services/Auth.service';
+import { AuthService } from '../../services/auth.service';
 import { sha256 } from 'js-sha256';
 import { ILogin } from '../../../shared/interfaces/login.interface';
 import { IServerNonce } from '../../../shared/interfaces/serverNonce.interface';
@@ -13,7 +13,6 @@ import moment from 'moment';
 @Component({
   selector: 'app-login',
   standalone: true,
-  providers: [AuthService],
   imports: [
     CommonModule,
     MaterialModule,
@@ -23,7 +22,7 @@ import moment from 'moment';
   styleUrl: './login.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class LoginComponent { 
+export class LoginComponent implements OnInit, AfterContentChecked, OnChanges { 
   public form: FormGroup;
   public loggedIn!: boolean;
   public hide: boolean = true;
@@ -54,9 +53,6 @@ export class LoginComponent {
   }
 
   ngAfterContentChecked(): void {
-    this.F_login.value
-    console.log(' this.F_login.value',  this.form.get('login')?.value);
-    
 
   }
 
@@ -84,13 +80,12 @@ export class LoginComponent {
     this._authService.getServerNonce(this.F_login.value).subscribe((res: IServerNonce) => {
       this.systemNonce = res.result;
       if (this.systemNonce.length > 0) {
-        console.log('client nonce + 1', res.result);
+        console.log('client nonce', res.result);
         this.doLogin(res.result);
       }
     });
   }
 
-  
   public doLogin(systemNonce: string): void {
     this.clientNonce = sha256(moment().toISOString());
 
@@ -103,8 +98,12 @@ export class LoginComponent {
 
     this._authService.doLogin(loginPayload).subscribe((res: ISession) => {
       console.log(res, 'login')
-      if (res && res.result.length > 0) {
+      if (res) {
         this._authService.getUserNameForDisplay(res.logondisplay);
+        // const SIGNATURE_SESSION = this._authService.getSignatureSession(res, this.F_password.value);
+        this.loggedIn = true;
+        this._authService.isLogged(this.loggedIn);
+        this.goTo('dashboard');
       }
     });
   }

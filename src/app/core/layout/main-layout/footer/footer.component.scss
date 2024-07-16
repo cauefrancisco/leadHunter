@@ -1,9 +1,11 @@
 @import './../../../../../styles/main.scss';
 
 
-.spacer{
-  // border: 1px solid $ficus-black;
-  // box-shadow: 1p 2px 1px 2px rgba(0, 0, 0, 0.);
+.first-footer-row-content{
+  @media (max-width: 480px) {
+    display: flex;
+    flex-direction: column-reverse;
+  }
 }
 
 footer{
@@ -11,7 +13,7 @@ footer{
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  justify-content: center;
+  justify-content: space-around;
   align-items: left;
   text-align: left;
   padding: 1rem;
@@ -31,11 +33,13 @@ footer{
       gap: 2%;
         :nth-child(1) {
           font-weight: 600;
+          max-width: 20%;
         }
 
       .address-text{
-        max-width: 80%;
+        width: 100%;
         word-wrap: wrap;
+        // text-align: justify;
         @media (max-width: 480px){
           margin-top: 1rem;
         }
@@ -55,8 +59,8 @@ footer{
 
   .links-menu{
     display: flex;
-    justify-content: end;
-    text-align: right !important;
+    justify-content: center;
+    text-align: left !important;
 
     @media (max-width: 480px) {
       text-align: center !important;
@@ -65,7 +69,7 @@ footer{
     }
 
     .links-box{
-      width: 35% !important;
+      // width: 35% !important;
     }
   }
 
@@ -82,7 +86,7 @@ footer{
       display: flex;
       justify-content: center;
       align-items: center;
-      gap: 2.4rem;
+      gap: 2.5rem;
 
       @media (max-width: 480px) {
         gap: 2rem;
