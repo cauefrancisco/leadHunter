@@ -15,7 +15,7 @@ import { IPasswordEncryption } from '../../shared/interfaces/password-encryption
 export class AuthService {
 
   public storage!: Storage;
-  public userIdentified!: boolean;
+  public userIdentified =  new EventEmitter<Boolean>();
   public ID_SESSION!: string;
   public SYSTEM_ID_SESSION!: string;
   public signatureSession!: string;
@@ -31,6 +31,8 @@ export class AuthService {
     // this.storage = window?.localStorage;
     this.userNameDisplay = '';
   }
+
+  //Login sistema
 
   public requestSystemLogin(): void {
     const user = 'gabriel';
@@ -58,7 +60,7 @@ export class AuthService {
     });
   }
 
-    public generateSystemSignatureSession(res: IServerNonce, path: string): string {
+  public generateSystemSignatureSession(res: IServerNonce, path: string): string {
       let session = res.result;
       const posicao = session.indexOf('+');
       if (posicao >= 0) {
@@ -76,7 +78,9 @@ export class AuthService {
       this.signatureSession = this.mountSignatureSession(path, eightDigitMiliseconds, Number(PRIVATE_KEY));
       const dataReturn = parseInt(this.SYSTEM_ID_SESSION, 10).toString(16) + eightDigitMiliseconds + this.signatureSession;
       return dataReturn;
-    }
+  }
+
+  //Login usuário
 
   public getServerNonce(userName: string): Observable<any> { // first step
     const url = `http://192.168.5.4:11117/retaguarda_prospect/auth?UserName=${userName}`;
@@ -105,7 +109,7 @@ export class AuthService {
     return this._httpClient.get(url);
   }
 
-  public settorageItem(name: string, item: string): any {
+  public setStorageItem(name: string, item: string): any {
     this.storage.setItem(name, JSON.stringify(item));
   }
 
@@ -147,8 +151,10 @@ export class AuthService {
   }
 
   public isLogged(userLoggedIn: boolean): boolean {
-    this.userIdentified = userLoggedIn;
-    if (this.userIdentified) {
+    this.userIdentified.emit(userLoggedIn);
+    if (this.userIdentified.subscribe((res) => {
+      res === true
+    })) {
       return true
     }
     return false;

@@ -7,7 +7,7 @@ import { DashboardComponent } from './features/pages/dashboard/dashboard.compone
 
 export const routes: Routes = [
 
-    {path: '', redirectTo: 'home', pathMatch: 'full'},
+    {path: '', redirectTo: 'login', pathMatch: 'full'},
     {path: '',
     component: MainLayoutComponent,
     children: [

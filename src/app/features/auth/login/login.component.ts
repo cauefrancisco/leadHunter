@@ -29,7 +29,6 @@ export class LoginComponent implements OnInit, AfterContentChecked, OnChanges {
   public systemNonce!: string;
   public clientNonce!: string;
   public encryptedPassword!: string;
-  public hash = sha256.create();
   public errorMessage = '';
 
   constructor(
@@ -57,9 +56,6 @@ export class LoginComponent implements OnInit, AfterContentChecked, OnChanges {
   }
 
   ngOnChanges(): void {
-
-    this.F_login.value
-    console.log(' this.F_login.value',  this.F_login.value);
     
   }
 
@@ -76,7 +72,8 @@ export class LoginComponent implements OnInit, AfterContentChecked, OnChanges {
   }
 
   public requestLogin(): void {
-
+    //Logar no sistema.
+    //Logar usuário.
     this._authService.getServerNonce(this.F_login.value).subscribe((res: IServerNonce) => {
       this.systemNonce = res.result;
       if (this.systemNonce.length > 0) {

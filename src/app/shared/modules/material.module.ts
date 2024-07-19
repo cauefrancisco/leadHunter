@@ -14,7 +14,6 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import {MatGridListModule} from '@angular/material/grid-list';
 
 
-
 @NgModule({
   declarations: [],
   imports: [
@@ -44,7 +43,8 @@ import {MatGridListModule} from '@angular/material/grid-list';
     MatCardModule,
     MatToolbarModule,
     MatTableModule,
-    MatGridListModule
+    MatGridListModule,
+    
   ],
   providers: [],
 })

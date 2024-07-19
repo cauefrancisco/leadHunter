@@ -2,7 +2,10 @@
 
 
 .first-footer-row-content{
-  @media (max-width: 480px) {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  @media (max-width: 780px) {
     display: flex;
     flex-direction: column-reverse;
   }
@@ -13,10 +16,10 @@ footer{
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  justify-content: space-around;
+  justify-content: center;
   align-items: left;
   text-align: left;
-  padding: 1rem;
+  padding: 2rem 1rem;
   background-color: $ficus-yellow;
 
 
@@ -59,27 +62,24 @@ footer{
 
   .links-menu{
     display: flex;
-    justify-content: center;
+    justify-content: space-evenly;
     text-align: left !important;
+    margin: 0 !important;
 
     @media (max-width: 480px) {
       text-align: center !important;
       justify-content: center;
         align-items: center;
     }
-
-    .links-box{
-      // width: 35% !important;
-    }
   }
 
   .social-section{
     display: flex;
-    justify-content: flex-end;
+    justify-content: center;
     align-items: center;
 
     .logo{
-      width: rem;
+      width: 2rem;
     }
 
     .social{

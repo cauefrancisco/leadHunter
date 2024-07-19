@@ -1,10 +1,24 @@
 <mat-toolbar>
-  <button mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon"
+  <button mat-icon-button class="menu-open-toggle-btn" aria-label="Example icon-button with menu icon"
     (click)="toggle()">
     <mat-icon>{{ hidden ? 'menu_open' : 'menu' }}</mat-icon>
   </button>
   <div class="img-container">
     <img src="assets/images/Ficus_Logo.png" alt="">
+  </div>
+  <span class="example-spacer"></span>
+  <div class="menu-drop">
+    <ul>
+      <li>
+        Soluções
+      </li>
+      <li>
+        Planos
+      </li>
+      <li>
+        Sobre
+      </li>
+    </ul>
   </div>
   <span class="example-spacer"></span>
   <p *ngIf="isLogged">user: <span> {{userName}} </span></p>
@@ -33,11 +47,19 @@
 <section *ngIf="hidden" class="menu-side">
   <ul>
     <li (click)="goTo('home')">
-      <mat-icon>home</mat-icon>
+      <!-- <mat-icon>home</mat-icon> -->
       <a> Início</a>
     </li>
     <li (click)="goTo('about')">
-      <mat-icon>local_library</mat-icon>
+      <!-- <mat-icon>local_library</mat-icon> -->
+      <a> Soluções</a>
+    </li>
+    <li>
+      <!-- <mat-icon>local_library</mat-icon> -->
+      <a> Planos</a>
+    </li>
+    <li>
+      <!-- <mat-icon>local_library</mat-icon> -->
       <a> Sobre</a>
     </li>
   </ul>

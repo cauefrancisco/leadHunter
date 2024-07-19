@@ -39,9 +39,8 @@ export class CreateAccountComponent {
       login: ['', Validators.required],
       document: ['', Validators.required],
     })
-    
-  }
 
+  }
   public get F_login (): AbstractControl { return this.form.get('login') as AbstractControl; }
   public get F_password (): AbstractControl { return this.form.get('password') as AbstractControl; }
   public get F_email (): AbstractControl { return this.form.get('email') as AbstractControl; }
@@ -60,16 +59,10 @@ export class CreateAccountComponent {
     if(this.form.invalid){
       return;
     }
-    //logar no sistema
-    //gerar sessão do sistema com URL específica da requisição de criar conta
-    //criptografar senha que o usuário escolheu
-    //fazer requisição para createAccount
-
     this._authService.requestSystemLogin();
     this._authService.systemLoginResponse.subscribe((res) => {
       console.log('createAccountSystemKeyPayload', res);
       const path = 'retaguarda_prospect/usuarios/CadastrarUsuario';
-      // const url = 'retaguarda_prospect/usuarios/CadastrarUsuario';
       this.systemKey = this._authService.generateSystemSignatureSession(res, path);
       console.log("systemKey", this.systemKey);
       const salt = `salt${this.F_password.value}`;
