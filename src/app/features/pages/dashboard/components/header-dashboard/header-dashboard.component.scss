@@ -8,6 +8,13 @@ mat-toolbar{
  background-color: $ficus-light-gray;
   height: 4rem;
 
+  .title-header{
+    font-size: 18px;
+    @media (max-width:480px) {
+      font-size: 16px;
+    }
+  }
+
   ul{
     display: flex;
     flex-direction: row;

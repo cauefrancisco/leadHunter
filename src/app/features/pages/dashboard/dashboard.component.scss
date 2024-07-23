@@ -72,9 +72,7 @@ main {
                       color: $dashboard-red !important;
                   }
                   
-                  @media (max-width: 480px) {
-                    max-width: 90%;
-                  }
+                
               }
             }
 
@@ -82,6 +80,10 @@ main {
               height: 100%;
               width: 100%;
               margin-left: 1rem;
+
+              @media (max-width: 480px) {
+                margin: 0;
+              }
               .graph-header{
                 display: flex;
                 justify-content: center;
@@ -106,6 +108,11 @@ main {
             height: 100%;
             margin: 1rem 0;
             padding: 0 0.3rem;
+
+            @media (max-width: 480px) {
+              min-height: 100%;
+              
+            }
 
             .z-index{
               position: fixed;
