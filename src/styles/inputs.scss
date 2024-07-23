@@ -26,3 +26,18 @@
 .mdc-text-field--filled:not(.mdc-text-field--disabled) {
   background-color: transparent !important;
 }
+
+.p-dropdown-items{
+  padding: 0;
+  width: 100%;
+}
+
+.p-dropdown {
+  display: inline-flex;
+  cursor: pointer;
+  position: relative;
+  -webkit-user-select: none;
+  user-select: none;
+  width: 90%;
+  margin: 0 1rem;
+}

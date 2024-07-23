@@ -21,6 +21,18 @@ main {
     justify-content: center;
     align-items: center;
 
+    .page-title-space{
+      width: 100%;
+      display: flex;
+      align-items: start;
+      text-align: start;
+      border-bottom: 1px solid $ficus-light-gray;
+      padding: 1rem;
+        h5{
+          font-size: 18px;
+        }
+    }
+
       .container-sides{
           display: flex;
           width: 100%;
@@ -59,10 +71,10 @@ main {
                 height: 100%;
                 box-shadow: 2px 1px 4px -1px $aleixo-dark-blue-rgba-shadow;
                   span{
-                    font-size: 20px;
+                    font-size: 18px;
                   }
                   p{
-                    font-size: 12px;
+                    font-size: 10px;
                     margin: 0;
                   }
                   
@@ -79,26 +91,24 @@ main {
               }
             }
 
-            .graphic{
-              display: flex;
-              padding: 1rem;
-
-              .header-graphic{
+            .graphic-container{
+              height: 100%;
+              width: 100%;
+              .graph-header{
                 display: flex;
-                justify-content: left;
+                justify-content: center;
                 align-items: center;
-
+                width: 100%;
                 height: 3rem;
                 border-radius: 8px;
-                // border-top: 1px solid $ficus-yellow;
-                // background-color: $aleixo-dark-blue;
-                h6{
+                h5{
                   margin-left: .3rem;
                   color: $ficus-black;
-                  font-size: 14px;
+                  font-size: 18px;
                 }
-              }
             }
+            }
+
           }
           .side-l{
             display: flex;
@@ -108,8 +118,6 @@ main {
             height: 100%;
             margin: 1rem 0;
             padding: 0 0.3rem;
-            // border-right: 1px solid $ficus-mid-gray;
-            // box-shadow: 2px 1px 4px -1px $aleixo-dark-blue-rgba-shadow;
 
             .z-index{
               position: fixed;
@@ -140,7 +148,26 @@ main {
             }
 
             .mat-expansion{
-              border-bottom: 2px solid $ficus-mid-gray;
+              display: flex;
+              flex-direction: column;
+              justify-content: center;
+              height: 100%;
+              width: 100%;
+              margin: 0;
+              mat-panel-title{
+                font-size: 18px;
+              }
+
+              .input-structure{
+                display: flex;
+                flex-direction: column;
+                gap: .5rem;
+                margin: 0 1rem;
+                padding: 1rem 0;
+                label{
+                  font-size: 12px;
+                }
+              }
             }
 
             .filters{
@@ -154,7 +181,12 @@ main {
               .title{
                 text-align: center;
                 margin: 0;
+                font-size: 18px;
               }
+            }
+
+            .button-container{
+              margin: .5rem 0;
             }
 
           }
@@ -177,8 +209,3 @@ main {
   
 }
 
-.p-drop{
-  z-index: 3;
-  width: 100% !important;
-
-}

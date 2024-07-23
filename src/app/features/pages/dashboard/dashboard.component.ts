@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { HeaderDashboardComponent } from './components/header-dashboard/header-dashboard.component';
 import { MaterialModule } from '../../../shared/modules/material.module';
 import { CanvasJSAngularChartsModule } from '@canvasjs/angular-charts';
-import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { PrimeNgModule } from '../../../shared/modules/primeng.module';
@@ -30,11 +30,9 @@ import { PrimeNgModule } from '../../../shared/modules/primeng.module';
 export class DashboardComponent implements OnInit, AfterContentChecked{ 
 
   public user = '';
-  public isFilterExpanded: boolean;
-  public filterExpanded: string;
   public filterRetrieved: string;
+  public form: FormGroup;
   public dashboardExpanded: string;
-  public dashboardRetrieved: string;
   chart: any;
 	readonly panelOpenState = signal(false);
 	chartOptions = {
@@ -42,10 +40,7 @@ export class DashboardComponent implements OnInit, AfterContentChecked{
 		theme: "light2",
     options: {
       responsive: true
-  },
-		title:{
-			text: "Empresas abertas e fechadas"
-		},
+  		},
 		axisX:{
 			valueFormatString: "YYYY",
 			crosshair: {
@@ -125,17 +120,22 @@ export class DashboardComponent implements OnInit, AfterContentChecked{
 			]
 		}]
 	};
-  cities = new FormControl('');
-  citiesList: string[] = ['São Paulo', 'Campinas', 'Guarulhos', 'São Bernardo do Campo', 'Santo André', 'Osasco'];
+	public states = [{name:'São Paulo'}, {name: 'Rio de Janeiro'}];
+	public selectedState = '';
+  selectedCity = '';
+  cities = [{ name: 'São Paulo'},{name:  'Campinas'}, {name: 'Guarulhos'}, {name: 'São Bernardo do Campo'}, {name: 'Santo André'}, {name: 'Osasco'}];
   citiesListObj =[{name: 'São Paulo'}, {name: 'Campinas'}, {name: 'Guarulhos'}];
+
+
   constructor(
     private _authService: AuthService,
+	private _formBuilder: FormBuilder,
   ){
-   this.isFilterExpanded = false;
-   this.filterExpanded = 'col-lg-3 col-md-3 col-sm-12 col-12 z-index';
-   this.filterRetrieved = 'col-lg-2 col-md-2 col-sm-12 col-12';
-   this.dashboardRetrieved = 'col-lg-8 col-md-8 col-sm-12 col-12'
-   this.dashboardExpanded = 'col-lg-10 col-md-10 col-sm-12 col-12'
+	this.form = this._formBuilder.group({
+		cnae: ['', []]
+	})
+   this.filterRetrieved = 'col-lg-3 col-md-3 col-sm-12 col-12';
+   this.dashboardExpanded = 'col-lg-9 col-md-9 col-sm-12 col-12';
   }
 
   ngOnInit(): void {
@@ -143,8 +143,4 @@ export class DashboardComponent implements OnInit, AfterContentChecked{
   ngAfterContentChecked() {
     }
 
-    public toggle(): boolean {
-      return this.isFilterExpanded = !this.isFilterExpanded;
-  
-    }
 }

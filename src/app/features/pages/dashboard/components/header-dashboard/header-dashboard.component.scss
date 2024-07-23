@@ -1,8 +1,11 @@
+@import './../../../../../../styles/main.scss';
+
 mat-toolbar{
  display: flex;
  flex-direction: row;
  justify-content: space-between;
  align-items: center;
+ background-color: $ficus-light-gray;
   height: 4rem;
 
   ul{
@@ -18,6 +21,53 @@ mat-toolbar{
     list-style: none;
     li{
       cursor: pointer;
+    }
+  }
+}
+
+.menu-side{
+  z-index: 2;
+  position: absolute;
+  min-height: 100vh;
+  height: 100%;
+  width: 14rem;
+  background-color: $ficus-light-gray;
+  @media (max-width: 480px) {
+    width: 100vw;
+  }
+
+  mat-icon{
+    color: $ficus-black;
+  }
+
+  ul{
+    padding-top: 32px;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: left;
+    font-size: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+      li{
+        display: flex;
+        flex-direction: row;
+        gap: 0.5rem;
+        width: 80%;
+        padding: 6px;
+        margin-bottom: 10px;
+        cursor: pointer;
+        &:hover{
+          // background-color: rgba(28,28,99, 0.2);
+          border-bottom: 1px solid $ficus-black;
+        }
+        a{
+          font-weight: 300;
+          color: $ficus-black;
+          font-weight: 550;
+          text-decoration: none;
+      }
     }
   }
 }
