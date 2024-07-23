@@ -6,7 +6,6 @@ main {
   align-items: center;
   height: 100%;
   width: 100%;
-
   .app-header{
     box-shadow: 2px 1px 4px -1px $aleixo-dark-blue-rgba-shadow;
 
@@ -20,18 +19,6 @@ main {
     padding: 0;
     justify-content: center;
     align-items: center;
-
-    .page-title-space{
-      width: 100%;
-      display: flex;
-      align-items: start;
-      text-align: start;
-      border-bottom: 1px solid $ficus-light-gray;
-      padding: 1rem;
-        h5{
-          font-size: 18px;
-        }
-    }
 
       .container-sides{
           display: flex;
@@ -94,6 +81,7 @@ main {
             .graphic-container{
               height: 100%;
               width: 100%;
+              margin-left: 1rem;
               .graph-header{
                 display: flex;
                 justify-content: center;
@@ -162,11 +150,16 @@ main {
                 display: flex;
                 flex-direction: column;
                 gap: .5rem;
+                height: 100%;
                 margin: 0 1rem;
                 padding: 1rem 0;
                 label{
                   font-size: 12px;
                 }
+              }
+
+              .region-content{
+                min-height: 280px;
               }
             }
 
