@@ -20,6 +20,6 @@ export const appConfig: ApplicationConfig = {
     provideClientHydration(),
     provideAnimationsAsync(),
     provideEnvironmentNgxMask(maskConfig),
-    importProvidersFrom(HttpClientModule, AuthService)
+    importProvidersFrom(HttpClientModule,AuthService),
   ]
 };

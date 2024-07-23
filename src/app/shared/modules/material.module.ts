@@ -12,6 +12,9 @@ import { MatTableModule } from '@angular/material/table';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import {MatGridListModule} from '@angular/material/grid-list';
+import {MatExpansionModule} from '@angular/material/expansion';
+import {MatSelectModule} from '@angular/material/select';
+
 
 
 @NgModule({
@@ -29,7 +32,9 @@ import {MatGridListModule} from '@angular/material/grid-list';
     MatCardModule,
     MatToolbarModule,
     MatTableModule,
-    MatGridListModule
+    MatGridListModule,
+    MatExpansionModule,
+    MatSelectModule
   ],
   exports: [
     MatFormFieldModule,
@@ -44,7 +49,8 @@ import {MatGridListModule} from '@angular/material/grid-list';
     MatToolbarModule,
     MatTableModule,
     MatGridListModule,
-    
+    MatExpansionModule,
+    MatSelectModule
   ],
   providers: [],
 })

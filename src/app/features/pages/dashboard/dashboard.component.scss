@@ -1,20 +1,184 @@
 @import '../../../../styles/main.scss';
 
-main{
-  min-height: 100vh;
-  height: 100%;
-  width: 100%;
+main {
   display: flex;
   flex-direction: column;
   align-items: center;
-  text-align: center;
-  
-  .container-sections{
-    height: 100%;
-    .title-menu{
-      height: 100%;
-    }
+  height: 100%;
+  width: 100%;
+
+  .app-header{
+    box-shadow: 2px 1px 4px -1px $aleixo-dark-blue-rgba-shadow;
 
   }
+
+  .container-dashboard{
+    display: flex;
+    flex-direction: column;
+    // width: 100%;
+    margin: 0;
+    padding: 0;
+    justify-content: center;
+    align-items: center;
+
+      .container-sides{
+          display: flex;
+          width: 100%;
+          justify-content: center;
+
+          .side-r{
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            
+
+            .info-cards-group{
+              display: flex;
+              flex-wrap: wrap;
+              justify-content: space-around;
+              align-items: center;
+              margin: 1rem 0;
+      
+              @media (max-width: 480px) {
+                gap: 1rem;
+              }
+              @media (max-width: 780px) {
+                gap: 1rem;
+              }
+              .card{
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: left;
+                text-align: left;
+                padding: 1rem .3rem;
+                min-height: 4rem;
+                height: 100%;
+                box-shadow: 2px 1px 4px -1px $aleixo-dark-blue-rgba-shadow;
+                  span{
+                    font-size: 20px;
+                  }
+                  p{
+                    font-size: 12px;
+                    margin: 0;
+                  }
+                  
+                  .active{
+                      color: $dashboard-green !important;
+                  }
+                  .inactive{
+                      color: $dashboard-red !important;
+                  }
+                  
+                  @media (max-width: 480px) {
+                    max-width: 90%;
+                  }
+              }
+            }
+
+            .graphic{
+              display: flex;
+              padding: 1rem;
+
+              .header-graphic{
+                display: flex;
+                justify-content: left;
+                align-items: center;
+
+                height: 3rem;
+                border-radius: 8px;
+                // border-top: 1px solid $ficus-yellow;
+                // background-color: $aleixo-dark-blue;
+                h6{
+                  margin-left: .3rem;
+                  color: $ficus-black;
+                  font-size: 14px;
+                }
+              }
+            }
+          }
+          .side-l{
+            display: flex;
+            flex-direction: column;
+            min-height: 4rem;
+            min-height: 100vh;
+            height: 100%;
+            margin: 1rem 0;
+            padding: 0 0.3rem;
+            // border-right: 1px solid $ficus-mid-gray;
+            // box-shadow: 2px 1px 4px -1px $aleixo-dark-blue-rgba-shadow;
+
+            .z-index{
+              position: fixed;
+              right: 73%;
+              z-index: 400;
+              background: #FFF;
+            }
+
+            .expand-container{
+              width: 100%;
+              display: flex;
+              align-items: center;
+              justify-content: end;
+              text-align: center;
+              margin-bottom: 1rem;
+              .expand{
+                cursor: pointer;
+                display: flex;
+                text-align: center;
+                font-size: 14px;
+                color: $dashboard-red;
+                mat-icon{
+                  color: $dashboard-red;
+                  font-size: 18px;
+                  cursor: pointer;  
+                }
+              }
+            }
+
+            .mat-expansion{
+              border-bottom: 2px solid $ficus-mid-gray;
+            }
+
+            .filters{
+              display: flex;
+              width: 100%;
+              align-items: center;
+              justify-content: center;
+              margin: 1rem 0 0 0;
+              padding: 1rem 0.3rem;
+
+              .title{
+                text-align: center;
+                margin: 0;
+              }
+            }
+
+          }
+      }
+
+      .second-container-sides{
+        display: flex;
+        width: 100%;
+        justify-content: center;
+        section{
+          height: 50vh;
+          border: 1px solid blue;
+          &:nth-child(1){
+            border: 1px solid green;
+          }
+        }
+      }
+
+  }
+  
+}
+
+.p-drop{
+  z-index: 3;
+  width: 100% !important;
 
 }
