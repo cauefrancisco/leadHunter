@@ -22,7 +22,7 @@ import moment from 'moment';
   styleUrl: './login.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class LoginComponent implements OnInit, AfterContentChecked, OnChanges { 
+export class LoginComponent implements OnInit { 
   public form: FormGroup;
   public loggedIn!: boolean;
   public hide: boolean = true;
@@ -30,7 +30,7 @@ export class LoginComponent implements OnInit, AfterContentChecked, OnChanges {
   public clientNonce!: string;
   public encryptedPassword!: string;
   public errorMessage = '';
-
+  public systemKey!: string;
   constructor(
     private _router: Router,
     private _authService: AuthService,
@@ -49,14 +49,6 @@ export class LoginComponent implements OnInit, AfterContentChecked, OnChanges {
 
   ngOnInit(){
 
-  }
-
-  ngAfterContentChecked(): void {
-
-  }
-
-  ngOnChanges(): void {
-    
   }
 
   public goTo(page: string): void {
@@ -84,25 +76,37 @@ export class LoginComponent implements OnInit, AfterContentChecked, OnChanges {
   }
 
   public doLogin(systemNonce: string): void {
-    this.clientNonce = sha256(moment().toISOString());
+    
+    if(this.form.invalid){
+      return;
+    }
 
-    const loginPayload = {
-      user: this.F_login.value,
-      passwordEncrypted: this.F_password.value,
-      clientNonce: this.clientNonce,
-      systemNonce: systemNonce
-    } as ILogin
-
-    this._authService.doLogin(loginPayload).subscribe((res: ISession) => {
-      console.log(res, 'login')
-      if (res) {
-        this._authService.getUserNameForDisplay(res.logondisplay);
-        // const SIGNATURE_SESSION = this._authService.getSignatureSession(res, this.F_password.value);
-        this.loggedIn = true;
-        this._authService.isLogged(this.loggedIn);
-        this.goTo('dashboard');
-      }
+    this._authService.requestSystemLogin();
+    this._authService.systemLoginResponse.subscribe((res) => {
+      console.log('logar sistema login res', res);
+      const path = 'retaguarda_prospect/usuarios/PegarUrlDoUsuario';
+      this.systemKey = this._authService.generateSystemSignatureSession(res, path);
+      console.log('this.systemKey login', this.systemKey);
+      const salt = `salt${this.F_password.value}`;
+      const hashSalt = sha256(salt);
+      const loginPayload = {
+        user: this.F_login.value,
+        passwordEncrypted: this.F_password.value,
+        clientNonce: this.clientNonce,
+        systemNonce: systemNonce
+      } as ILogin
+        // this._authService.doLogin(loginPayload).subscribe((res: ISession) => {
+        //     console.log(res, 'login')
+        //     if (res) {
+        //       this._authService.getUserNameForDisplay(res.logondisplay);
+        //       // const SIGNATURE_SESSION = this._authService.getSignatureSession(res, this.F_password.value);
+        //       this.loggedIn = true;
+        //       this._authService.isLogged(this.loggedIn);
+        //       this.goTo('dashboard');
+        //     }
+        //   });
     });
+
   }
 
 }

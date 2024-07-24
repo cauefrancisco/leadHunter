@@ -61,10 +61,8 @@ export class CreateAccountComponent {
     }
     this._authService.requestSystemLogin();
     this._authService.systemLoginResponse.subscribe((res) => {
-      console.log('createAccountSystemKeyPayload', res);
       const path = 'retaguarda_prospect/usuarios/CadastrarUsuario';
       this.systemKey = this._authService.generateSystemSignatureSession(res, path);
-      console.log("systemKey", this.systemKey);
       const salt = `salt${this.F_password.value}`;
       const hashSalt = sha256(salt);
       const PAYLOAD = {

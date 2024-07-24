@@ -8,11 +8,7 @@ main{
   justify-content: center;
   align-items: center;
   background-color: $ficus-light-gray;
-  // background: url('./../../../../assets/images/digital-marketing-1433427_1280.png');
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-  background-size: cover;
-  background-position: center;
+ 
 
   @media(max-width: 780px){
     min-height: 100%;
@@ -27,6 +23,7 @@ main{
     justify-content: center;
     margin: 0;
     padding: 0;
+
 
     @media (max-width: 780px) {
       // flex-direction: column-reverse !important;
@@ -49,6 +46,7 @@ main{
       .login-card{
         min-height: 100%;
         height: 100%;
+        max-width: 20rem;
         padding: 1.5rem;
         text-align: center;
         background-color: rgba(232, 232, 232, 0.9);
@@ -56,6 +54,7 @@ main{
 
         @media (max-width: 780px) {      
           min-height: 100% !important;    
+          width: 20rem;
         }
     
         .btn-container{
@@ -122,13 +121,16 @@ main{
         @media (max-width: 780px) {
           display: flex;
           align-items: center;
+          width: 100%;
           text-align: center;
           justify-content: center;
+          padding: 1rem 0;
         }
         
         .text-area{
           min-height: 100%;
           width: 100%;
+          padding: 1rem 0;
           background-color: rgba(232, 232, 232, 0);
           display: flex;
           align-items: center;
@@ -136,11 +138,16 @@ main{
           justify-content: center;
           color: $ficus-black;
           box-shadow: 3px -3px 7px 2px $aleixo-dark-blue-rgba-shadow;
+           background: url('./../../../../assets/images/digital-marketing-1433427_1280.png');
+          background-repeat: no-repeat;
+          background-attachment: fixed;
+          background-size: cover;
+          background-position: center;
 
           @media (max-width: 780px) {
             width: 100%;
             height: 100%;
-            padding: 1rem 0;
+            padding: 2rem 0;
             justify-content: center;
             box-shadow:none;
             border: none !important;
@@ -148,6 +155,7 @@ main{
 
               h2{
                 font-size: 22px;
+                color: $ficus-black;
               }
 
               h4{
