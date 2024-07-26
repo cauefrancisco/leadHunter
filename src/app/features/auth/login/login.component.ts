@@ -60,41 +60,23 @@ export class LoginComponent implements OnInit {
     if (this.form.invalid) {
       return;
     }
-    this.requestLogin();
+    this.requestSystemLogin();
   }
 
-  public requestLogin(): void {
+  public requestSystemLogin(): void {
     //Logar no sistema.
     //Logar usuário.
-    this._authService.getServerNonce(this.F_login.value).subscribe((res: IServerNonce) => {
-      this.systemNonce = res.result;
-      if (this.systemNonce.length > 0) {
-        console.log('client nonce', res.result);
-        this.doLogin(res.result);
-      }
-    });
-  }
-
-  public doLogin(systemNonce: string): void {
-    
-    if(this.form.invalid){
-      return;
-    }
-
-    this._authService.requestSystemLogin();
-    this._authService.systemLoginResponse.subscribe((res) => {
-      console.log('logar sistema login res', res);
-      const path = 'retaguarda_prospect/usuarios/PegarUrlDoUsuario';
-      this.systemKey = this._authService.generateSystemSignatureSession(res, path);
-      console.log('this.systemKey login', this.systemKey);
+    const path = 'retaguarda_prospect/usuarios/PegarUrlDoUsuario';
+    // this._authService.requestSystemLogin();
+      this.doLogin(this.systemKey);
       const salt = `salt${this.F_password.value}`;
       const hashSalt = sha256(salt);
-      const loginPayload = {
-        user: this.F_login.value,
-        passwordEncrypted: this.F_password.value,
-        clientNonce: this.clientNonce,
-        systemNonce: systemNonce
-      } as ILogin
+      // const loginPayload = {
+      //   user: this.F_login.value,
+      //   passwordEncrypted: this.F_password.value,
+      //   clientNonce: this.clientNonce,
+      //   systemNonce: systemNonce
+      // } as ILogin
         // this._authService.doLogin(loginPayload).subscribe((res: ISession) => {
         //     console.log(res, 'login')
         //     if (res) {
@@ -105,8 +87,20 @@ export class LoginComponent implements OnInit {
         //       this.goTo('dashboard');
         //     }
         //   });
-    });
 
+  }
+
+  public doLogin(systemKey: string): void {
+    //pegar url do user getUserUrl()
+    //Usar URL retornada como path no método generateSystemSignatureSession(res, path);
+    //fazer o processo de login do user, o mesmo do sistema.
+   this._authService.getUserUrl(this.F_login.value, systemKey).subscribe((res) => {
+    if(res){
+      console.log('urlUser', res);
+    }
+   })
+
+  
   }
 
 }

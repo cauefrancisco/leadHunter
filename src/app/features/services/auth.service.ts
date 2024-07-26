@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { EventEmitter, Injectable } from '@angular/core';
 import { sha256 } from 'js-sha256';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { ISession } from '../../shared/interfaces/session.interface';
 import { ILogin } from '../../shared/interfaces/login.interface';
 import { crc32 } from 'crc';
@@ -22,7 +22,9 @@ export class AuthService {
   public userNameDisplay: string;
   public systemNonce!: string;
   public clientNonce!: string;
-  public systemLoginResponse = new EventEmitter<ISession>();
+  public systemKey = new BehaviorSubject('');
+  public path = new BehaviorSubject('');
+  public dinamicPath!: string;
   public passwordFixed = '146a2bf4ac84efd41f08fea59725f7c8fcac5a9a86fa0108a445ac6d9450dba7';
 
   constructor(
@@ -50,17 +52,17 @@ export class AuthService {
           systemNonce: res.result
         } as ILogin
 
-        this.doLogin(loginPayload).subscribe((res: ISession) => {
+        this.doLogin(loginPayload).subscribe((res) => {
           if (res) {
-            console.log(res, "res");
-          this.systemLoginResponse.emit(res);
+            setTimeout(() => { this.generateSystemSignatureSession(res) }, 1000);
+            
           }
         });
       }
     });
   }
 
-  public generateSystemSignatureSession(res: IServerNonce, path: string): string {
+  public generateSystemSignatureSession(res: ISession): string {
       let session = res.result;
       const posicao = session.indexOf('+');
       if (posicao >= 0) {
@@ -75,12 +77,21 @@ export class AuthService {
       const timestampToMiliseconds = Number(timeStamp) * 1000;
       const milisecondHex = timestampToMiliseconds.toString(16);
       const eightDigitMiliseconds = milisecondHex.substring(milisecondHex.length - 8, milisecondHex.length);
-      this.signatureSession = this.mountSignatureSession(path, eightDigitMiliseconds, Number(PRIVATE_KEY));
+      this.path.subscribe((res) => {
+        console.log('path', res);
+        this.signatureSession = this.mountSignatureSession(res, eightDigitMiliseconds, Number(PRIVATE_KEY));
+      })
       const dataReturn = parseInt(this.SYSTEM_ID_SESSION, 10).toString(16) + eightDigitMiliseconds + this.signatureSession;
+      this.systemKey.next(dataReturn);
       return dataReturn;
   }
 
   //Login usuário
+
+  public getUserUrl(usuarioOuEmail: string, signatureSession: string): Observable<any> {
+    const url = ` http://192.168.5.4:11117/retaguarda_prospect/usuarios/PegarUrlDoUsuario?usuarioOuEmail=${usuarioOuEmail}&session_signature=${signatureSession}`;
+    return this._httpClient.post(url, usuarioOuEmail);
+  }
 
   public getServerNonce(userName: string): Observable<any> { // first step
     const url = `http://192.168.5.4:11117/retaguarda_prospect/auth?UserName=${userName}`;
@@ -145,7 +156,7 @@ export class AuthService {
     return crc32(url, crc32(eightDigitMiliseconds, privateKey)).toString(16);
   }
 
-  public createNewAccount(dados: any, signatureSession: string): Observable<any> { // sixsith and final step
+  public createNewAccount(dados: any, signatureSession: string): Observable<any> { 
     const url = `http://192.168.5.4:11117/retaguarda_prospect/usuarios/CadastrarUsuario?session_signature=${signatureSession}`;
     return this._httpClient.post(url, {dados: dados});
   }

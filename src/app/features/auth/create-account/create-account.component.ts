@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, DoCheck, OnInit } from '@angular/core';
 import { MaterialModule } from '../../../shared/modules/material.module';
 import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -7,6 +7,7 @@ import { NgxMaskDirective, NgxMaskPipe } from 'ngx-mask';
 import { AuthService } from '../../services/auth.service';
 import { ICreateAccount } from '../../../shared/interfaces/createAccount/new-account.interface';
 import { sha256 } from 'js-sha256';
+import { IServerNonce } from '../../../shared/interfaces/serverNonce.interface';
 
 @Component({
   selector: 'app-create-account',
@@ -22,11 +23,11 @@ import { sha256 } from 'js-sha256';
   styleUrl: './create-account.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CreateAccountComponent { 
+export class CreateAccountComponent implements OnInit, AfterViewInit { 
 
   public form: FormGroup;
   public systemKey!: string;
-
+  public teste: any;
   constructor(
     private _router: Router,
     private _authService: AuthService,
@@ -48,21 +49,29 @@ export class CreateAccountComponent {
   public get F_document (): AbstractControl { return this.form.get('document') as AbstractControl; }
 
   public ngOnInit() {
+   
+  }
+
+  public ngAfterViewInit(): void {
+
   }
 
   public goTo(page: string): void {
     this._router.navigateByUrl(page);
   }
+  
+  public onSubmit(): void {
+    this.requestSystemLogin();
+  }
+  
+  public requestSystemLogin(): void {
+    const path = 'retaguarda_prospect/usuarios/CadastrarUsuario';
+    this._authService.path.next(path);
+    this._authService.requestSystemLogin();
+    setTimeout(() => {this.createAccount() }, 2000);
+  }
 
   public createAccount(): void {
-
-    if(this.form.invalid){
-      return;
-    }
-    this._authService.requestSystemLogin();
-    this._authService.systemLoginResponse.subscribe((res) => {
-      const path = 'retaguarda_prospect/usuarios/CadastrarUsuario';
-      this.systemKey = this._authService.generateSystemSignatureSession(res, path);
       const salt = `salt${this.F_password.value}`;
       const hashSalt = sha256(salt);
       const PAYLOAD = {
@@ -71,9 +80,11 @@ export class CreateAccountComponent {
         senhaHashed: hashSalt,
         usuario: this.F_login.value
       } as ICreateAccount;
-
+      this._authService.systemKey.subscribe((res) => {
+        this.systemKey = res;
+      });
       this._authService.createNewAccount(PAYLOAD, this.systemKey).subscribe((res) => {
-        console.log('deu certo')
+        console.log('deu certo', res)  
         // criar comandos
         //colocar modal de feedback
         // request funcionando corretamente.
@@ -82,6 +93,7 @@ export class CreateAccountComponent {
         // criar comandos
         //colocar modal de erro
       })
-    });
+  
   }
+  
 }
