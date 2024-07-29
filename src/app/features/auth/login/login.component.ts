@@ -66,40 +66,40 @@ export class LoginComponent implements OnInit {
   public requestSystemLogin(): void {
     //Logar no sistema.
     //Logar usuário.
-    const path = 'retaguarda_prospect/usuarios/PegarUrlDoUsuario';
-    // this._authService.requestSystemLogin();
-      this.doLogin(this.systemKey);
-      const salt = `salt${this.F_password.value}`;
-      const hashSalt = sha256(salt);
-      // const loginPayload = {
-      //   user: this.F_login.value,
-      //   passwordEncrypted: this.F_password.value,
-      //   clientNonce: this.clientNonce,
-      //   systemNonce: systemNonce
-      // } as ILogin
-        // this._authService.doLogin(loginPayload).subscribe((res: ISession) => {
-        //     console.log(res, 'login')
-        //     if (res) {
-        //       this._authService.getUserNameForDisplay(res.logondisplay);
-        //       // const SIGNATURE_SESSION = this._authService.getSignatureSession(res, this.F_password.value);
-        //       this.loggedIn = true;
-        //       this._authService.isLogged(this.loggedIn);
-        //       this.goTo('dashboard');
-        //     }
-        //   });
-
+    const path = `retaguarda_prospect/usuarios/PegarUrlDoUsuario?usuarioOuEmail=${this.F_login.value}`;
+    this._authService.path.next(path);
+    this._authService.requestSystemLogin();
+    setTimeout(() => {this.doLogin() }, 2500);
+      // const salt = `salt${this.F_password.value}`;
+      // const hashSalt = sha256(salt);
   }
 
-  public doLogin(systemKey: string): void {
+  public doLogin(): void {
     //pegar url do user getUserUrl()
     //Usar URL retornada como path no método generateSystemSignatureSession(res, path);
     //fazer o processo de login do user, o mesmo do sistema.
-   this._authService.getUserUrl(this.F_login.value, systemKey).subscribe((res) => {
-    if(res){
-      console.log('urlUser', res);
-    }
-   })
 
+    this._authService.systemKey.subscribe((res) => {
+      console.log(res, 'res signature seassion');
+      this.systemKey = res;
+
+    });
+    console.log(this.systemKey, 'this.systemKey');
+
+    this._authService.getUserUrl(this.F_login.value, this.systemKey).subscribe((res) => {
+     if(res){
+      console.log('res getUserURL', res);
+      const PATH = res?.result?.path;
+      console.log('PATH getUserURL', PATH);
+
+      //  this.goTo('dashboard');
+       console.log('Sucesso');
+       return;
+     }
+    }, () => {
+      console.log('Deu Errado');
+    });
+  
   
   }
 

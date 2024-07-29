@@ -55,7 +55,6 @@ export class AuthService {
         this.doLogin(loginPayload).subscribe((res) => {
           if (res) {
             setTimeout(() => { this.generateSystemSignatureSession(res) }, 1000);
-            
           }
         });
       }
@@ -88,9 +87,36 @@ export class AuthService {
 
   //Login usuário
 
+  public requestUserLogin(data: any): void {
+    const user = data?.user;
+    this.passwordFixed = data?.password;
+
+    this.getServerNonce(user).subscribe((res: IServerNonce) => {
+      this.systemNonce = res.result;
+      if (this.systemNonce.length > 0) {
+        this.clientNonce = sha256(moment().toISOString());
+
+        //fazer criptografia da senha antes de chamar doLogin()
+
+        const loginPayload = {
+          user: user,
+          passwordEncrypted: this.passwordFixed,
+          clientNonce: this.clientNonce,
+          systemNonce: res.result
+        } as ILogin
+
+        this.doLogin(loginPayload).subscribe((res) => {
+          if (res) {
+            setTimeout(() => { this.generateSystemSignatureSession(res) }, 1000);
+          }
+        });
+      }
+    });
+  }
+
   public getUserUrl(usuarioOuEmail: string, signatureSession: string): Observable<any> {
-    const url = ` http://192.168.5.4:11117/retaguarda_prospect/usuarios/PegarUrlDoUsuario?usuarioOuEmail=${usuarioOuEmail}&session_signature=${signatureSession}`;
-    return this._httpClient.post(url, usuarioOuEmail);
+    const url = `http://192.168.5.4:11117/retaguarda_prospect/usuarios/PegarUrlDoUsuario?usuarioOuEmail=${usuarioOuEmail}&session_signature=${signatureSession}`;
+    return this._httpClient.get(url);
   }
 
   public getServerNonce(userName: string): Observable<any> { // first step
@@ -106,10 +132,10 @@ export class AuthService {
     return sha256(dateHour);
   }
 
-  public passwordEncryption(payload: IPasswordEncryption): string { // thrid step
+  public passwordEncryption(payload: IPasswordEncryption, path: string): string { // thrid step
     const salt = `salt${payload.password}`;
     const hashSalt = sha256(salt);
-    const encryptedPassword = sha256(`retaguarda_prospect/${payload.user}${payload.serverNonce}${payload.clientNonce}${payload.user}${hashSalt}`);
+    const encryptedPassword = sha256(`${path}/${payload.user}${payload.serverNonce}${payload.clientNonce}${payload.user}${hashSalt}`);
 
     return encryptedPassword;
   }
@@ -119,15 +145,6 @@ export class AuthService {
     const url = `http://192.168.5.4:11117/retaguarda_prospect/auth?UserName=${payload.user}&Password=${password}&ClientNonce=${payload.clientNonce}`;
     return this._httpClient.get(url);
   }
-
-  public setStorageItem(name: string, item: string): any {
-    this.storage.setItem(name, JSON.stringify(item));
-  }
-
-  // public getLocalStorageItem(item: string): any {
-  //  return this.storage?.getItem(item);
-  // }
-
   public getSignatureSession(serverData: ISession, password: string, url: string): string { // fifth step
 
     let session = serverData.result;
@@ -159,16 +176,6 @@ export class AuthService {
   public createNewAccount(dados: any, signatureSession: string): Observable<any> { 
     const url = `http://192.168.5.4:11117/retaguarda_prospect/usuarios/CadastrarUsuario?session_signature=${signatureSession}`;
     return this._httpClient.post(url, {dados: dados});
-  }
-
-  public isLogged(userLoggedIn: boolean): boolean {
-    this.userIdentified.emit(userLoggedIn);
-    if (this.userIdentified.subscribe((res) => {
-      res === true
-    })) {
-      return true
-    }
-    return false;
   }
 
 }
