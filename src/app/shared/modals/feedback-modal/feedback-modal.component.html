@@ -2,6 +2,9 @@
     <div class="row">
         <div class="title col-12 w-100 mt-3 mb-3">
             <h2>{{data?.title}}</h2>
+            <mat-icon class="material-symbols-outlined mt-3">
+                {{data?.ret === 0 ? 'sentiment_satisfied' : 'error'}}
+            </mat-icon>
         </div>
         <div class="text col-12 w-100 mt-3 mb-3">
             <h6>{{data?.text}}</h6>
@@ -12,6 +15,4 @@
             <button class="btn-confirm w-100" (click)="onClose()">Fechar</button>
         </div>
     </div>
-
-
 </main>

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { AfterViewInit, ChangeDetectionStrategy, Component, DoCheck, OnDestroy, OnInit } from '@angular/core';
+import {ChangeDetectionStrategy, Component, DoCheck, OnDestroy, OnInit, signal } from '@angular/core';
 import { MaterialModule } from '../../../shared/modules/material.module';
 import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -9,9 +9,7 @@ import { ICreateAccount } from '../../../shared/interfaces/createAccount/new-acc
 import { sha256 } from 'js-sha256';
 import { MatDialog } from '@angular/material/dialog';
 import { FeedbackModalComponent } from '../../../shared/modals/feedback-modal/feedback-modal.component';
-import { text } from 'stream/consumers';
-import { IFeedbackDialogData } from '../../../shared/interfaces/feedback-dialog.interface';
-
+import { ERequestResult } from '../../../shared/enums/request-result.enum';
 @Component({
   selector: 'app-create-account',
   standalone: true,
@@ -27,10 +25,14 @@ import { IFeedbackDialogData } from '../../../shared/interfaces/feedback-dialog.
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CreateAccountComponent implements OnInit { 
-
+  public formError: any;
   public form: FormGroup;
   public systemKey!: string;
   public teste: any;
+  hide = signal(true);
+  errorMessage = signal('');
+
+
   constructor(
     private _router: Router,
     private _authService: AuthService,
@@ -38,10 +40,10 @@ export class CreateAccountComponent implements OnInit {
     private _dialog: MatDialog,
   ){
     this.form =  this._formBuilder.group({
-      company: ['', Validators.required],
-      password: ['', Validators.required],
-      email: ['', Validators.required],
-      document: ['', Validators.required],
+      company: ['', [Validators.required]],
+      password: ['', [Validators.required, Validators.minLength(6)]],
+      email: ['', [Validators.required, Validators.email, Validators.pattern(/^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/)]],
+      document: ['', [Validators.required, Validators.pattern('([0-9]{2}[\.]?[0-9]{3}[\.]?[0-9]{3}[\/]?[0-9]{4}[-]?[0-9]{2})|([0-9]{3}[\.]?[0-9]{3}[\.]?[0-9]{3}[-]?[0-9]{2})')]],
     })
 
   }
@@ -51,7 +53,12 @@ export class CreateAccountComponent implements OnInit {
   public get F_document (): AbstractControl { return this.form.get('document') as AbstractControl; }
 
   public ngOnInit() {
-   
+   console.log()
+  }
+
+  public clickEvent(event: MouseEvent) {
+    this.hide.set(!this.hide());
+    event.stopPropagation();
   }
   
   public goTo(page: string): void {
@@ -59,6 +66,10 @@ export class CreateAccountComponent implements OnInit {
   }
   
   public onSubmit(): void {
+    this.form.markAllAsTouched();
+    if(this.form.invalid){
+      return;
+    }
     this.requestSystemLogin();
   }
   public requestSystemLogin(): void {
@@ -83,7 +94,7 @@ export class CreateAccountComponent implements OnInit {
   public createAccount(payload: any): void {
     setTimeout(() => {
       this._authService.createNewAccount(payload, this.systemKey).subscribe((res) => {
-        if(res.result.ret !== 0){
+        if(res.result.ret !== ERequestResult.SUCCESS){
           this._dialog.open(FeedbackModalComponent, {
             data: {
               title: 'Erro!',
@@ -95,11 +106,13 @@ export class CreateAccountComponent implements OnInit {
         this._dialog.open(FeedbackModalComponent, {
         data: {
           title: 'Sucesso!',
+          ret: res.result.ret,
           aditionalText: 'Ao fechar você será redirecionado para o login',
           text: 'Usuário cadastrado com sucesso!'
         }
+          }).afterClosed().subscribe(() =>{
+            this.goTo('login');
           });
-        this.goTo('login');
       }, () => {
         this._dialog.open(FeedbackModalComponent, {
           data: {
@@ -112,4 +125,49 @@ export class CreateAccountComponent implements OnInit {
   
   }
   
+ 
+  public getErrorMessagePassword() {
+    if (this.F_password.hasError('required')) {
+      return 'Senha é obrigatório';
+    }
+    if (this.F_password.dirty && this.F_password.value.length < 6) {
+      return 'Senha deve conter no mínimo 6 caracteres';
+    }
+
+    return this.F_password.hasError('password') ? 'Senha inválida' : '';
+  }
+
+  public getErrorMessageEmail() {
+    if (this.F_email.hasError('required')) {
+      return 'Email é obrigatório';
+    }
+
+    if(this.F_email.errors?.pattern){
+      return 'Email inválido';
+    }
+
+    return this.F_email.hasError('email') ? 'Email inválido' : '';
+  }
+
+  public getErrorMessageDocument() {
+    if (this.F_document.hasError('required')) {
+      return 'Documento é obrigatório';
+    }
+
+    if(this.F_document.errors?.pattern){
+      return 'Documento inválido';
+    }
+
+    return this.F_document.hasError('document') ? 'Documento inválido' : '';
+  }
+
+  public getErrorMessageUserName() {
+    if (this.F_company.hasError('required')) {
+      return 'Nome é obrigatório';
+    }
+
+    return this.F_company.hasError('company') ? 'Nome inválido' : '';
+  }
+
+
 }

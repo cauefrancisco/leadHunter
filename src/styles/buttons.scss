@@ -19,6 +19,19 @@
   }
 }
 
+.btn-account{
+  height: 38px;
+  border-radius: 5px;
+  outline: transparent;
+  color: $ficus-black;
+  background-color: $ficus-mid-gray;
+  border: none;
+  // box-shadow: 3px -3px 7px 2px rgba(255, 198, 41, 0.2);
+  @media (max-width: 480px) {
+    margin-bottom: 1rem;
+  }
+}
+
 .btn-filter{
   height: 38px;
   border-radius: 5px;

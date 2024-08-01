@@ -1,61 +1,88 @@
 <main>
     <div class="container-login row w-100 mt-5 mb-5">
-      <section class="col-xl-4 col-md-12 col-sm-12 col-12 mb-3 mt-5 section-form">
+      <section class="col-xl-4 col-md-3 col-sm-12 col-12 mb-3 mt-5 section-form">
   
       <mat-card class="account-card" appearance="outlined">
            <form action="form row" [formGroup]="form">
 
                 <h6 class="mt-3 mb-4">Insira os seus dados</h6>
     
-                    <mat-form-field class="col-12" appearance="outline">
+                    <mat-form-field class="mb-2 col-12" appearance="outline">
                         <mat-label>Seu nome ou nome da empresa</mat-label>
-                        <input matInput formControlName="company">
+                        <input 
+                        matInput 
+                        formControlName="company">
+                        <mat-error *ngIf="F_company.invalid">{{getErrorMessageUserName()}}</mat-error>
                     </mat-form-field>
   
-                    <mat-form-field class="col-12 " appearance="outline">
+                    <mat-form-field class="mb-2 col-12 " appearance="outline">
                       <mat-label>CPF/CNPJ</mat-label>
-                      <input matInput formControlName="document" mask="000.000.000-00||00.000.000/0000-00">
+                      <input 
+                        matInput
+                       formControlName="document" 
+                       pattern="([0-9]{2}[\.]?[0-9]{3}[\.]?[0-9]{3}[\/]?[0-9]{4}[-]?[0-9]{2})|([0-9]{3}[\.]?[0-9]{3}[\.]?[0-9]{3}[-]?[0-9]{2})"
+                       mask="000.000.000-00||00.000.000/0000-00">
+                       <mat-error *ngIf="F_document.invalid">{{getErrorMessageDocument()}}</mat-error>
                   </mat-form-field>
   
-                    <mat-form-field class="col-12 " appearance="outline">
+                    <mat-form-field class="mb-2 col-12 " appearance="outline">
                         <mat-label>Email</mat-label>
-                        <input type="email" matInput formControlName="email">
+                        <input 
+                        matInput 
+                        type="email"
+                        name="email"
+                        placeholder="pat@example.com"
+                        formControlName="email"
+                        pattern="^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$"
+                        required
+                        >
+                        <mat-error *ngIf="F_email.invalid">{{getErrorMessageEmail()}}</mat-error>
                     </mat-form-field>
   
-                    <mat-form-field class="col-12 " appearance="outline">
+                    <mat-form-field class="mb-2 col-12 " appearance="outline">
                       <mat-label>Senha</mat-label>
-                      <input matInput formControlName="password">
+                      <input 
+                      matInput 
+                      [type]="hide() ? 'password' : 'text'" 
+                       formControlName="password"
+                       minlength="6"
+                       required>
+                      <button
+                      mat-icon-button
+                      matSuffix
+                      (click)="clickEvent($event)"
+                      [attr.aria-label]="'Hide password'"
+                      [attr.aria-pressed]="hide()"
+                    >
+                      <mat-icon>{{hide() ? 'visibility_off' : 'visibility'}}</mat-icon>
+                    </button>
+                      <mat-error *ngIf="F_password.invalid">{{getErrorMessagePassword()}}</mat-error>
                   </mat-form-field>
       
           </form>
           <div class="col-xl-5 col-md-12 col-10 p-1 w-100 btn-container">
-            <button (click)="onSubmit()" class="w-100 btn-confirm">Registrar</button>
+            <button type="submit" (click)="onSubmit()" class="w-100 btn-confirm">Registrar</button>
         </div>
-  
-  
-          <div class="w-100"></div>
-          <hr>
-          <p>Já tem cadastro?</p>
-          <div class="col-xl-5 col-md-12 col-10 p-1 w-100 btn-container">
-              <button (click)="goTo('login')" type="button" class="w-100 btn-account">Entrar</button>
-          </div>
   
       </mat-card>
   
       </section>
   
-      <section class="col-xl-7 col-md-5 col-sm-12 col-12 mb-3 mt-5 info-create-account">
-        <div class="col-xl-12 col-md-12 col-xl-12 col-12 info-text-container mb-3">
-          <h4 class="f-550">Tenha acesso a milhares de Leads e potencialize o seu negócio!</h4>
-          <h5 class="f-550"><span class="yellow-span f-550">Comece de forma gratuita!</span></h5>
-        </div>
-  
-        <mat-card class="col-xl-12 col-md-12 col-xl-12 col-12 info-card-container">
+      <section class="col-xl-7 col-md-7 col-sm-12 col-12 mb-3 mt-5 info-create-account">
+        
+        <mat-card class="col-xl-12 col-md-12 col-xl-12 col-12 mb-3 info-card-container">
+          <div class="col-xl-12 col-md-12 col-xl-12 col-12 info-text-container mt-3 mb-3">
+            <h3 class="f-550">Tenha acesso a milhares de Leads e potencialize o seu negócio!</h3>
+          </div>
             <h5 class="f-550">Conheça nossos planos! <br> Soluções únicas e sob medida para o seu negócio.</h5>
             <hr>
             <h5 class="f-550">Mais poder e controle na sua gestão.</h5>
             <div class="col-xl-5 col-md-12 col-10 p-1 w-100 btn-container">
               <button type="button" class="btn-account f-550 w-50">Saiba mais</button>
+              <div class="w-100"></div>
+              <hr>
+              <p class="f-550">Já tem cadastro?</p>
+                  <button (click)="goTo('login')" type="button" class="w-50 btn-filter">Entrar</button>
           </div>
         </mat-card>
   

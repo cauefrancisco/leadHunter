@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { AfterContentChecked, ChangeDetectionStrategy, Component, OnChanges, OnInit } from '@angular/core';
+import { AfterContentChecked, ChangeDetectionStrategy, Component, OnChanges, OnInit, signal } from '@angular/core';
 import { MaterialModule } from '../../../shared/modules/material.module';
 import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -31,13 +31,14 @@ export class LoginComponent implements OnInit {
   public encryptedPassword!: string;
   public errorMessage = '';
   public systemKey!: string;
+  hidePassword = signal(true);
   constructor(
     private _router: Router,
     private _authService: AuthService,
     private _formBuilder: FormBuilder,
   ){
     this.form =  this._formBuilder.group({
-      login: ['', [Validators.required]],
+      login: ['', [Validators.required, Validators.email, Validators.pattern(/^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/)]],
       password: ['', [Validators.required]],
     })
     
@@ -49,6 +50,12 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(){
 
+  }
+
+  
+  public clickEvent(event: MouseEvent) {
+    this.hidePassword.set(!this.hidePassword());
+    event.stopPropagation();
   }
 
   public goTo(page: string): void {
@@ -102,5 +109,31 @@ export class LoginComponent implements OnInit {
   
   
   }
+
+  public getErrorMessagePassword() {
+    if (this.F_password.hasError('required')) {
+      return 'Senha é obrigatório';
+    }
+    if (this.F_password.dirty && this.F_password.value.length < 6) {
+      return 'Senha deve conter no mínimo 6 caracteres';
+    }
+
+    return this.F_password.hasError('password') ? 'Senha inválida' : '';
+  }
+
+  
+  public getErrorMessageLogin() {
+    if (this.F_login.hasError('required')) {
+      return 'Email é obrigatório';
+    }
+
+    if(this.F_login.errors?.pattern){
+      return 'Email inválido';
+    }
+
+    return this.F_login.hasError('email') ? 'Email inválido' : '';
+  }
+
+
 
 }
