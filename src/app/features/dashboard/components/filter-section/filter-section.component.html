@@ -1,0 +1,115 @@
+<main>
+  <div class="side-l">
+
+    <div class="filters-header">
+      <h5 class="title">Filtros</h5>
+      <mat-icon class="material-symbols-outlined">
+        filter_alt
+      </mat-icon>
+    </div>
+
+    <mat-accordion class="accordion">
+      <form [formGroup]="form">
+
+
+        <mat-expansion-panel [expanded]="true" class="mat-expansion" (opened)="panelOpenState.set(true)" (closed)="panelOpenState.set(false)">
+          <mat-expansion-panel-header>
+            <mat-panel-title>Setor</mat-panel-title>
+          </mat-expansion-panel-header>
+
+          <div class="input-structure">
+            <label for="cnae" class="f-550">CNAE (Cadastro Nacional de Atividade Econômica)</label>
+            <input pInputText
+              id="cnae"
+              type="text"
+              formControlName="cnae" />
+          </div>
+
+        </mat-expansion-panel>
+
+        <mat-expansion-panel class="mat-expansion" (opened)="panelOpenState.set(true)" (closed)="panelOpenState.set(false)">
+          <mat-expansion-panel-header>
+            <mat-panel-title>Região</mat-panel-title>
+          </mat-expansion-panel-header>
+
+          <div class="region-content input-structure">
+            <p-dropdown
+              [options]="states"
+              [(ngModel)]="selectedState"
+              [ngModelOptions]="{standalone: true}"
+              optionLabel="name"
+              placeholder="Estado" />
+
+            <div class="w-100 mt-2"></div>
+
+            <p-dropdown
+              [options]="cities"
+              [(ngModel)]="selectedCity"
+              [ngModelOptions]="{standalone: true}"
+              optionLabel="name"
+              placeholder="Cidade" />
+          </div>
+
+
+          <!-- bairro -->
+
+          <!-- <p-dropdown 
+                    [options]="citiesListObj" 
+                    optionLabel="name" 
+                    placeholder="Cidade" 
+                    class="p-drop"/> -->
+        </mat-expansion-panel>
+
+        <mat-expansion-panel class="mat-expansion" (opened)="panelOpenState.set(true)" (closed)="panelOpenState.set(false)">
+          <mat-expansion-panel-header>
+
+            <mat-panel-title>Porte</mat-panel-title>
+          </mat-expansion-panel-header>
+          <p>I'm visible because I am open</p>
+        </mat-expansion-panel>
+
+        <mat-expansion-panel class="mat-expansion" (opened)="panelOpenState.set(true)" (closed)="panelOpenState.set(false)">
+          <mat-expansion-panel-header>
+            <mat-panel-title>Telefone</mat-panel-title>
+          </mat-expansion-panel-header>
+          <p>I'm visible because I am open</p>
+        </mat-expansion-panel>
+
+        <mat-expansion-panel class="mat-expansion" (opened)="panelOpenState.set(true)" (closed)="panelOpenState.set(false)">
+          <mat-expansion-panel-header>
+            <mat-panel-title>E-mails</mat-panel-title>
+          </mat-expansion-panel-header>
+          <p>I'm visible because I am open</p>
+        </mat-expansion-panel>
+
+        <mat-expansion-panel class="mat-expansion" (opened)="panelOpenState.set(true)" (closed)="panelOpenState.set(false)">
+          <mat-expansion-panel-header>
+            <mat-panel-title>Cadastrais</mat-panel-title>
+          </mat-expansion-panel-header>
+          <p>I'm visible because I am open</p>
+        </mat-expansion-panel>
+
+        <mat-expansion-panel class="mat-expansion" (opened)="panelOpenState.set(true)" (closed)="panelOpenState.set(false)">
+          <mat-expansion-panel-header>
+            <mat-panel-title>Legais e tributários</mat-panel-title>
+          </mat-expansion-panel-header>
+          <p>I'm visible because I am open</p>
+        </mat-expansion-panel>
+
+        <mat-expansion-panel class="mat-expansion" (opened)="panelOpenState.set(true)" (closed)="panelOpenState.set(false)">
+          <mat-expansion-panel-header>
+            <mat-panel-title>Busca por CNPJs</mat-panel-title>
+          </mat-expansion-panel-header>
+          <p>I'm visible because I am open</p>
+        </mat-expansion-panel>
+
+      </form>
+      <div class="button-container">
+        <button class="w-100 btn-filter">Buscar empresas <mat-icon class="mat-18">search</mat-icon></button>
+        <div class="spacer w-100 mt-2 mb-2"></div>
+        <button class="w-100 btn-clear" (click)="clearFilters()">Limpar Filtros</button>
+      </div>
+    </mat-accordion>
+
+  </div>
+</main>

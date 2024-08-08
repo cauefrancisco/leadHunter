@@ -1,4 +1,4 @@
-@import './../../../../../../styles/main.scss';
+@import './../../../../../styles/main.scss';
 
 mat-toolbar{
  display: flex;
@@ -10,6 +10,7 @@ mat-toolbar{
 
   .title-header{
     font-size: 18px;
+    font-weight: 550;
     @media (max-width:480px) {
       font-size: 16px;
     }
@@ -35,8 +36,6 @@ mat-toolbar{
 .menu-side{
   z-index: 2;
   position: absolute;
-  min-height: 100vh;
-  height: 100%;
   width: 14rem;
   background-color: $ficus-light-gray;
   @media (max-width: 480px) {
@@ -69,8 +68,10 @@ mat-toolbar{
           // background-color: rgba(28,28,99, 0.2);
           border-bottom: 1px solid $ficus-black;
         }
+        &:active{
+          border-bottom: 1px solid $ficus-black;
+        }
         a{
-          font-weight: 300;
           color: $ficus-black;
           font-weight: 550;
           text-decoration: none;

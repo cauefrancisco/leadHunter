@@ -1,0 +1,94 @@
+@import '../../../../../styles/main.scss';
+
+.side-l{
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  margin: 1rem 0 4rem 0;
+  padding: 0 0.3rem;
+
+  @media (max-width: 480px) {
+    min-height: 100%;
+    
+  }
+
+  .z-index{
+    position: fixed;
+    right: 73%;
+    z-index: 400;
+    background: #FFF;
+  }
+
+  .expand-container{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: end;
+    text-align: center;
+    margin-bottom: 1rem;
+    .expand{
+      cursor: pointer;
+      display: flex;
+      text-align: center;
+      font-size: 14px;
+      color: $dashboard-red;
+      mat-icon{
+        color: $dashboard-red;
+        font-size: 18px;
+        cursor: pointer;  
+      }
+    }
+  }
+
+  .mat-expansion{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    mat-panel-title{
+      font-size: 18px;
+    }
+
+    .input-structure{
+      display: flex;
+      flex-direction: column;
+      gap: .5rem;
+      height: 100%;
+      margin: 0 1rem;
+      padding: 1rem 0;
+      label{
+        font-size: 12px;
+      }
+    }
+
+    .region-content{
+      min-height: 280px;
+    }
+  }
+
+  .filters-header{
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    margin: 1rem 0 0 0;
+    padding: 1rem 0.3rem;
+
+    .title{
+      text-align: center;
+      margin: 0;
+      font-size: 18px;
+    }
+  }
+
+  .button-container{
+    margin: .5rem 0;
+  }
+
+}
+
+.side-l .mat-expansion mat-panel-title {
+  font-size: 16px;
+}
