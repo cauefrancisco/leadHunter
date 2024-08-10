@@ -1,3 +1,70 @@
-<p>
-  company-search works!
-</p>
+<main>
+
+  <div class="mat-elevation-z8 w-100 table-container">
+    <table mat-table [dataSource]="dataSource">
+
+
+      <ng-container matColumnDef="select">
+        <th mat-header-cell *matHeaderCellDef>
+          <mat-checkbox (change)="$event ? toggleAllRows() : null"
+            [checked]="selection.hasValue() && isAllSelected()"
+            [indeterminate]="selection.hasValue() && !isAllSelected()"
+            [aria-label]="checkboxLabel()">
+          </mat-checkbox>
+        </th>
+        <td mat-cell *matCellDef="let row">
+          <mat-checkbox (click)="$event.stopPropagation()"
+            (change)="$event ? selection.toggle(row) : null"
+            [checked]="selection.isSelected(row)"
+            [aria-label]="checkboxLabel(row)">
+          </mat-checkbox>
+        </td>
+      </ng-container>
+
+      <!-- Position Column -->
+      <ng-container matColumnDef="cnpjName">
+        <th mat-header-cell *matHeaderCellDef>CNPJ e Nome</th>
+        <td mat-cell *matCellDef="let element" class="w-30 name-document-td">
+          <span>{{element.cnpj | cnpj}}</span>
+          <br>
+          <span class="f-550">{{element.name}}</span>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="address">
+        <th mat-header-cell *matHeaderCellDef> Endereço </th>
+        <td mat-cell *matCellDef="let element"> {{element.address}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="contact">
+        <th mat-header-cell *matHeaderCellDef> Contato </th>
+        <td mat-cell *matCellDef="let element"> {{element.contact}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="companySize">
+        <th mat-header-cell *matHeaderCellDef> Porte </th>
+        <td mat-cell *matCellDef="let element"> {{element.companySize}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="cnae">
+        <th mat-header-cell *matHeaderCellDef> CNAE </th>
+        <td mat-cell *matCellDef="let element"> {{element.cnae}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="details">
+        <th mat-header-cell *matHeaderCellDef> Detalhes </th>
+        <td mat-cell *matCellDef="let element" class="details-td">
+          <mat-icon class="mat-18 details">search</mat-icon>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="openDetailsModal()"></tr>
+    </table>
+
+    <mat-paginator [pageSizeOptions]="[5, 10, 20]"
+      showFirstLastButtons>
+    </mat-paginator>
+  </div>
+
+</main>

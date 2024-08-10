@@ -8,6 +8,19 @@
   height: 100%;
   margin: 0;
 
+  .filter-section{
+    height: 100%;
+    @media (max-width: 480px) {
+      padding: 0;
+      margin: 0;
+      height: auto;
+    }
+  }
+
+  .main-component{
+    height: 100%;
+  }
+
 }
 
 .spacer{

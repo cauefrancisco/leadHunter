@@ -1,0 +1,67 @@
+@import '../../../../../styles/main.scss';
+
+main{
+  margin-top: 5.5rem;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+
+  @media (max-width: 480px) {
+    margin-top: 1rem;
+  }
+
+  .table-container{
+    @media (max-width: 780px) {
+      overflow-x: scroll;
+      overflow-y: hidden;
+    }
+    margin-bottom: 1rem;
+    padding-bottom: 2rem;
+      table{
+        width: 100%;
+        margin-bottom: 3rem;
+        overflow-x: scroll;
+        overflow-y: hidden;
+      }
+
+    .details-td{
+      text-align: center;
+    }
+    .details{
+      cursor: pointer;
+      text-align: center;
+    }
+  }
+
+}
+.mat-mdc-paginator-container {
+  @media (max-width: 480px) {
+    justify-content: flex-start !important;
+  }
+}
+
+.mat-mdc-header-cell{
+  width: 20%;
+  background-color: $ficus-light-gray;
+}
+
+.mat-mdc-row{
+  padding: 1rem 0 !important;
+  &:nth-child(even){
+    background-color: $ficus-light-gray;
+  }
+  &:hover{
+    background-color: $ficus-yellow;
+    color: $ficus-black;
+    cursor: pointer;
+  }
+}
+
+.mat-mdc-cell{
+  padding: 1rem !important;
+
+  &:nth-child(1){
+    width: 10% !important;
+  }
+}
+
