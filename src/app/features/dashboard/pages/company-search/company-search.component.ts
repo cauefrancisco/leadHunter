@@ -46,7 +46,7 @@ export class CompanySearchComponent implements OnInit, AfterViewInit {
     { position: 9, cnpj: '41659868000185', name: 'Jj Oliveira Advogados Associados Sociedade Simples', contact: '(61) 97400-8216', cnae: 'M-6911-7/01 - Serviços advocatícios', address: '', companySize: 'pequeno' },
     { position: 10, cnpj: '46497428000192', name: 'Guimaraes E Meireles Advogados Associados', contact: '(61) 97400-8216', cnae: 'M-6911-7/01 - Serviços advocatícios', address: '', companySize: 'pequeno' },
   ];
-  displayedColumns: string[] = ['select', 'cnpjName', 'contact', 'address', 'companySize', 'cnae', 'details'];
+  displayedColumns: string[] = ['select', 'cnpjName', 'contact', 'address', 'companySize', 'cnae'];
   dataSource = new MatTableDataSource<ISearchCompanyTable>(this.ELEMENT_DATA);
   selection = new SelectionModel<ISearchCompanyTable>(true, []);
 

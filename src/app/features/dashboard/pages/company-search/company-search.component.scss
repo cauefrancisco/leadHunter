@@ -31,6 +31,11 @@ main{
       cursor: pointer;
       text-align: center;
     }
+    .call{
+      mat-icon{
+        font-size: 12px;
+      }
+    }
   }
 
 }

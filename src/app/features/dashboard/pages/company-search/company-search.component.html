@@ -38,7 +38,7 @@
 
       <ng-container matColumnDef="contact">
         <th mat-header-cell *matHeaderCellDef> Contato </th>
-        <td mat-cell *matCellDef="let element"> {{element.contact}} </td>
+        <td mat-cell *matCellDef="let element" class="call">{{element.contact}} </td>
       </ng-container>
 
       <ng-container matColumnDef="companySize">
@@ -51,12 +51,12 @@
         <td mat-cell *matCellDef="let element"> {{element.cnae}} </td>
       </ng-container>
 
-      <ng-container matColumnDef="details">
+      <!-- <ng-container matColumnDef="details">
         <th mat-header-cell *matHeaderCellDef> Detalhes </th>
         <td mat-cell *matCellDef="let element" class="details-td">
           <mat-icon class="mat-18 details">search</mat-icon>
         </td>
-      </ng-container>
+      </ng-container> -->
 
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="openDetailsModal()"></tr>

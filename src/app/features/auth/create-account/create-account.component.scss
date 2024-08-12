@@ -7,7 +7,7 @@ main{
   justify-content: center;
   align-items: center;
   background-color: $ficus-light-gray;
-  
+
   .container-login{
     flex-direction: row-reverse !important;
     justify-content: space-evenly;
@@ -27,7 +27,7 @@ main{
         align-items: center;
 
       }
-      
+
     }
 
       .account-card{
@@ -43,17 +43,20 @@ main{
           @media (max-width: 780px) {
             width: 20rem;
           }
-    
+
         .btn-container{
           margin: 0;
           justify-content: center;
-          @media (max-width: 480px) {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+         @media (max-width: 480px) {
             display: flex;
             flex-direction: column-reverse;
             align-items: center;
           }
         }
-        
+
         .btn-confirm{
           height: 38px;
           border-radius: 5px;
@@ -67,7 +70,7 @@ main{
           }
         }
 
-        
+
         .btn-google{
           display: flex;
           align-items: center;
@@ -92,7 +95,7 @@ main{
         }
       }
   }
-  
+
   .info-create-account{
     display: flex;
     align-items: center;
@@ -138,6 +141,9 @@ main{
       .btn-container{
         margin: 0;
         justify-content: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
         @media (max-width: 780px) {
           display: flex;
           flex-direction: column-reverse;
@@ -170,5 +176,5 @@ main{
       }
     }
   }
-  
+
 }
