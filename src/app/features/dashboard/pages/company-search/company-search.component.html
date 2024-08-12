@@ -1,5 +1,19 @@
 <main>
+  <div class="table-header w-100">
 
+    <div class="button-container">
+      <button
+      mat-button
+      [disabled]="!isExcelBtnActive"
+      [matTooltip]="'Exportar Excel ou CSV'"
+      class="btn-excel">
+        <mat-icon>upload_file</mat-icon>
+        Exportar planilha
+      </button>
+      <button class=" btn-clear mb-3" (click)="clearTable()">Limpar Busca</button>
+    </div>
+
+  </div>
   <div class="mat-elevation-z8 w-100 table-container">
     <table mat-table [dataSource]="dataSource">
 
@@ -62,9 +76,12 @@
       <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="openDetailsModal()"></tr>
     </table>
 
-    <mat-paginator [pageSizeOptions]="[5, 10, 20]"
+    <!-- <mat-paginator [pageSizeOptions]="[5, 10, 20]"
       showFirstLastButtons>
-    </mat-paginator>
+    </mat-paginator> -->
+
+
+    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of users"></mat-paginator>
   </div>
 
 </main>

@@ -10,6 +10,21 @@ main{
     margin-top: 1rem;
   }
 
+  .table-header{
+    display: flex;
+    margin-bottom: .5rem;
+
+    .button-container{
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+      justify-content: space-between;
+      width: 100%;
+    }
+
+
+  }
+
   .table-container{
     @media (max-width: 780px) {
       overflow-x: scroll;

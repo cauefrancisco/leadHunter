@@ -1,12 +1,13 @@
 import { SelectionModel } from '@angular/cdk/collections';
 import { CommonModule } from '@angular/common';
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, DoCheck, Input, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { MaterialModule } from '../../../../shared/modules/material.module';
 import { CnpjPipe } from '../../../../shared/pipes/cnpj.pipe';
 import { DetailsModalComponent } from './components/details-modal/details-modal.component';
+import { FilterSectionComponent } from '../../components/filter-section/filter-section.component';
 
 export interface ISearchCompanyTable {
   name: string;
@@ -26,15 +27,20 @@ export interface ISearchCompanyTable {
   imports: [
     CommonModule,
     MaterialModule,
-    CnpjPipe
+    CnpjPipe,
+
   ],
 
 })
 
-export class CompanySearchComponent implements OnInit, AfterViewInit {
+export class CompanySearchComponent implements OnInit, AfterViewInit, DoCheck {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @Input() searchTableData: boolean = false;
 
-  public ELEMENT_DATA: any[] = [
+  public isExcelBtnActive = false;
+  public isSearch: boolean = false;
+  public contentTable!: any[];
+  public data: any[] = [
     { position: 1, cnpj: '37984878000119', name: 'RANCK MAGRISSO', contact: '(81) 3048-2521', cnae: 'M-6911-7/01 - Serviços advocatícios', address: 'Quadra Sig Quadra 4, 106, Brasilia - Zona Industrial, DF - 70.610-440', companySize: 'pequeno' },
     { position: 2, cnpj: '97554129000183', name: 'RAPHAEL MIRANDA ADVOGADOS', contact: '(21) 3806-3650', cnae: ' M-6911-7/01 - Serviços advocatícios', address: 'Rua Visconde De Piraja, 430, Rio De Janeiro - Ipanema, RJ - 22.410-002', companySize: 'pequeno' },
     { position: 3, cnpj: '97543925000110', name: 'BRUTO E REGIS ADVOGADOS', contact: '(81) 3037-3377', cnae: 'M-6911-7/01 - Serviços advocatícios', address: 'Rua Doutor Clovis Ribeiro Vieira, 640, Franca - Sao Jose, SP - 14.401-303', companySize: 'pequeno' },
@@ -47,7 +53,7 @@ export class CompanySearchComponent implements OnInit, AfterViewInit {
     { position: 10, cnpj: '46497428000192', name: 'Guimaraes E Meireles Advogados Associados', contact: '(61) 97400-8216', cnae: 'M-6911-7/01 - Serviços advocatícios', address: '', companySize: 'pequeno' },
   ];
   displayedColumns: string[] = ['select', 'cnpjName', 'contact', 'address', 'companySize', 'cnae'];
-  dataSource = new MatTableDataSource<ISearchCompanyTable>(this.ELEMENT_DATA);
+  dataSource = new MatTableDataSource<ISearchCompanyTable>();
   selection = new SelectionModel<ISearchCompanyTable>(true, []);
 
   constructor(
@@ -59,6 +65,16 @@ export class CompanySearchComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
+  }
+
+  ngDoCheck(): void {
+    if(this.selection.selected.length > 0) {
+      this.isExcelBtnActive = true;
+    } else if(this.selection.selected.length <= 0){
+      this.isExcelBtnActive = false;
+    }
+
+
   }
 
   public openDetailsModal(): void {
@@ -88,6 +104,12 @@ export class CompanySearchComponent implements OnInit, AfterViewInit {
       return `${this.isAllSelected() ? 'deselect' : 'select'} all`;
     }
     return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.position + 1}`;
+  }
+
+  public clearTable(): void {
+    this.dataSource.data = [];
+    this.searchTableData = false;
+    console.log(this.dataSource.data)
   }
 
 }

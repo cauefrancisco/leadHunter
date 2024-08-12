@@ -9,7 +9,7 @@
 
   @media (max-width: 480px) {
     min-height: 100%;
-    
+
   }
 
   .z-index{
@@ -35,7 +35,7 @@
       mat-icon{
         color: $dashboard-red;
         font-size: 18px;
-        cursor: pointer;  
+        cursor: pointer;
       }
     }
   }
@@ -54,36 +54,69 @@
     .input-structure{
       display: flex;
       flex-direction: column;
+      align-items: center;
+
       gap: .5rem;
       height: 100%;
-      margin: 0 1rem;
       padding: 1rem 0;
       label{
         font-size: 12px;
+        padding-left: 1rem;
+      }
+      input{
+        width: 90%;
+        margin: 0 1rem;
       }
     }
 
+    .drop-structure{
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: .5rem;
+      height: 100%;
+      padding: 1rem 0;
+      label{
+        font-size: 12px;
+        padding-left: 1rem;
+      }
+
+    }
+
+
     .region-content{
-      min-height: 280px;
+      height: 100%;
+
+      .cep{
+        text-align: center;
+      }
     }
   }
 
   .filters-header{
     display: flex;
     width: 100%;
-    align-items: center;
+    align-items: baseline;
     justify-content: center;
     margin: 1rem 0 0 0;
     padding: 1rem 0.3rem;
 
-    .title{
-      text-align: center;
-      margin: 0;
-      font-size: 18px;
+    .title-section{
+      display: flex;
+      width: 100%;
+      align-items: center;
+      justify-content: center;
+      .title{
+        text-align: center;
+        margin: 0;
+        font-size: 18px;
+      }
     }
   }
 
   .button-container{
+    position: sticky;
+    bottom: 1rem;
     margin: .5rem 0;
   }
 
@@ -91,4 +124,9 @@
 
 .side-l .mat-expansion mat-panel-title {
   font-size: 16px;
+}
+
+.p-dropdown .p-component .p-inputwrapper .p-inputwrapper-filled{
+  width: 100%;
+  margin: 0 1rem;
 }

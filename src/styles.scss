@@ -21,15 +21,15 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 .mat-mdc-form-field-type-mat-select:not(.mat-form-field-disabled) .mat-mdc-text-field-wrapper {
     cursor: pointer;
   }
-  
+
 .mdc-text-field--filled:not(.mdc-text-field--disabled) {
     background-color: transparent !important;
   }
-  
+
   .mdc-text-field--filled:not(.mdc-text-field--disabled) {
     background-color: none !important;
   }
-  
+
   .mdc-text-field--filled{
     background-color: none !important;
   }
@@ -43,3 +43,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
     border-color: $aleixo-dark-blue !important;
     background-color: $aleixo-dark-blue !important;
   }
+
+  html .mat-accent {
+    --mdc-circular-progress-active-indicator-color: $aleixo-dark-blue !important;
+}
