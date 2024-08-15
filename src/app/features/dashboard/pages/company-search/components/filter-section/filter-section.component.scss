@@ -1,10 +1,9 @@
-@import '../../../../../styles/main.scss';
+@import '../../../../../../../styles/main.scss';
 
 .side-l{
   display: flex;
   flex-direction: column;
   height: 100%;
-  margin: 1rem 0 4rem 0;
   padding: 0 0.3rem;
 
   @media (max-width: 480px) {
@@ -83,12 +82,93 @@
 
     }
 
+    .sector-content{
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: .5rem;
+      height: 100%;
+      padding: 1rem 0;
+      label{
+        font-size: 12px;
+        padding-left: 1rem;
+      }
+
+    }
 
     .region-content{
       height: 100%;
 
       .cep{
         text-align: center;
+      }
+    }
+
+    .company-size-content{
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: .5rem;
+      height: 100%;
+      padding: 1rem 0;
+      label{
+        font-size: 12px;
+        padding-left: 1rem;
+      }
+
+    }
+
+    .telephone-container{
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: .5rem;
+      height: 100%;
+      padding: 1rem 0;
+      label{
+        font-size: 12px;
+        padding-left: 1rem;
+      }
+    }
+
+    .company-records-container{
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: .5rem;
+      height: 100%;
+      padding: 1rem 0;
+      text-align: center;
+      label{
+        font-size: 12px;
+        padding-left: 1rem;
+      }
+    }
+
+    .legal-container{
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: .5rem;
+      height: 100%;
+      padding: 1rem 0;
+      text-align: center;
+      label{
+        font-size: 12px;
+        padding-left: 1rem;
+      }
+    }
+
+    .cnpj-container{
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: .5rem;
+      height: 100%;
+      padding: 1rem 0;
+      label{
+        font-size: 12px;
+        padding-left: 1rem;
       }
     }
   }
@@ -98,7 +178,6 @@
     width: 100%;
     align-items: baseline;
     justify-content: center;
-    margin: 1rem 0 0 0;
     padding: 1rem 0.3rem;
 
     .title-section{

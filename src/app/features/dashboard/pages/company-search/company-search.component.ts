@@ -7,7 +7,8 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MaterialModule } from '../../../../shared/modules/material.module';
 import { CnpjPipe } from '../../../../shared/pipes/cnpj.pipe';
 import { DetailsModalComponent } from './components/details-modal/details-modal.component';
-import { FilterSectionComponent } from '../../components/filter-section/filter-section.component';
+import { FilterSectionComponent } from './components/filter-section/filter-section.component';
+import * as XLSX from "xlsx";
 
 export interface ISearchCompanyTable {
   name: string;
@@ -28,7 +29,7 @@ export interface ISearchCompanyTable {
     CommonModule,
     MaterialModule,
     CnpjPipe,
-
+    FilterSectionComponent
   ],
 
 })
@@ -53,7 +54,7 @@ export class CompanySearchComponent implements OnInit, AfterViewInit, DoCheck {
     { position: 10, cnpj: '46497428000192', name: 'Guimaraes E Meireles Advogados Associados', contact: '(61) 97400-8216', cnae: 'M-6911-7/01 - Serviços advocatícios', address: '', companySize: 'pequeno' },
   ];
   displayedColumns: string[] = ['select', 'cnpjName', 'contact', 'address', 'companySize', 'cnae'];
-  dataSource = new MatTableDataSource<ISearchCompanyTable>();
+  dataSource = new MatTableDataSource<ISearchCompanyTable>(this.data);
   selection = new SelectionModel<ISearchCompanyTable>(true, []);
 
   constructor(
@@ -74,10 +75,10 @@ export class CompanySearchComponent implements OnInit, AfterViewInit, DoCheck {
       this.isExcelBtnActive = false;
     }
 
-
   }
 
-  public openDetailsModal(): void {
+  public openDetailsModal(element: any): void {
+    console.log("element", element);
     this._dialog.open(DetailsModalComponent)
   }
 
@@ -110,6 +111,17 @@ export class CompanySearchComponent implements OnInit, AfterViewInit, DoCheck {
     this.dataSource.data = [];
     this.searchTableData = false;
     console.log(this.dataSource.data)
+  }
+
+  public exportToExcel(): void {
+    let name = '';
+    let timeSpan = new Date().toISOString();
+    let prefix = name || 'ExportResult';
+    let fileName = `${prefix}-${timeSpan}`;
+    var wb = XLSX.utils.book_new();
+    var ws = XLSX.utils.json_to_sheet(this.selection.selected);
+    XLSX.utils.book_append_sheet(wb, ws);
+    XLSX.writeFile(wb, `${fileName}.xlsx`);
   }
 
 }

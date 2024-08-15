@@ -1,9 +1,9 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnInit, signal, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MaterialModule } from '../../../../shared/modules/material.module';
-import { PrimeNgModule } from '../../../../shared/modules/primeng.module';
-import { CompanySearchComponent } from '../../pages/company-search/company-search.component';
+import { Component, OnInit, signal, ViewChild } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MaterialModule } from '../../../../../../shared/modules/material.module';
+import { PrimeNgModule } from '../../../../../../shared/modules/primeng.module';
+import { CompanySearchComponent } from '../../company-search.component';
 
 @Component({
   selector: 'app-filter-section',
@@ -18,7 +18,8 @@ import { CompanySearchComponent } from '../../pages/company-search/company-searc
     MaterialModule,
     PrimeNgModule,
     // CompanySearchComponent
-  ]
+  ],
+
 })
 export class FilterSectionComponent implements OnInit {
   @ViewChild(CompanySearchComponent) companySearchComponent!: CompanySearchComponent;
@@ -28,15 +29,16 @@ export class FilterSectionComponent implements OnInit {
   public states = [{ name: 'São Paulo' }, { name: 'Rio de Janeiro' }];
   public selectedState = '';
   public doSearch = false;
-  selectedCity = '';
-  cities = [{ name: 'São Paulo' }, { name: 'Campinas' }, { name: 'Guarulhos' }, { name: 'São Bernardo do Campo' }, { name: 'Santo André' }, { name: 'Osasco' }];
-  neighbourhoods = [{ name: 'Vila olimpia' }, { name: 'Tatuapé' }, { name: 'Moema' }, { name: 'Analia franco' }, { name: 'Santo Amaro' },];
+  public selectedCity = '';
+  public cities = [{ name: 'São Paulo' }, { name: 'Campinas' }, { name: 'Guarulhos' }, { name: 'São Bernardo do Campo' }, { name: 'Santo André' }, { name: 'Osasco' }];
+  public neighbourhoods = [{ name: 'Vila olimpia' }, { name: 'Tatuapé' }, { name: 'Moema' }];
+  public sectores = [{ name: 'Advocacia' }, { name: 'Agricultura' }, { name: 'Construção' }];
 
   constructor(
     private _formBuilder: FormBuilder,
   ) {
     this.form = this._formBuilder.group({
-      cnae: ['', []],
+      cnaePrimario: new FormControl([]),
     })
   }
 

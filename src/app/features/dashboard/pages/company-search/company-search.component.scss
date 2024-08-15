@@ -1,7 +1,8 @@
 @import '../../../../../styles/main.scss';
 
 main{
-  margin-top: 5.5rem;
+  margin-top: 2.5rem;
+  margin-bottom: 2.5rem;
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -10,50 +11,59 @@ main{
     margin-top: 1rem;
   }
 
-  .table-header{
-    display: flex;
-    margin-bottom: .5rem;
-
-    .button-container{
-      display: flex;
-      align-items: center;
-      gap: 2rem;
-      justify-content: space-between;
-      width: 100%;
-    }
-
+  .filter-section{
 
   }
 
-  .table-container{
-    @media (max-width: 780px) {
-      overflow-x: scroll;
-      overflow-y: hidden;
-    }
-    margin-bottom: 1rem;
-    padding-bottom: 2rem;
-      table{
+  .table-section{
+
+    .table-header{
+      display: flex;
+      margin-bottom: .5rem;
+      padding-top: 1.5rem;
+      .button-container{
+        display: flex;
+        align-items: center;
+        gap: 2rem;
+        justify-content: space-between;
         width: 100%;
-        margin-bottom: 3rem;
+      }
+
+
+    }
+
+    .table-container{
+      @media (max-width: 780px) {
         overflow-x: scroll;
         overflow-y: hidden;
       }
+      margin-bottom: 1rem;
+      padding-bottom: 2rem;
+        table{
+          width: 100%;
+          margin-bottom: 3rem;
+          overflow-x: scroll;
+          overflow-y: hidden;
+        }
 
-    .details-td{
-      text-align: center;
-    }
-    .details{
-      cursor: pointer;
-      text-align: center;
-    }
-    .call{
-      mat-icon{
-        font-size: 12px;
+      .details-td{
+        text-align: center;
+      }
+      .details{
+        cursor: pointer;
+        text-align: center;
+      }
+      .call{
+        mat-icon{
+          font-size: 12px;
+        }
       }
     }
   }
 
 }
+
+
 .mat-mdc-paginator-container {
   @media (max-width: 480px) {
     justify-content: flex-start !important;
