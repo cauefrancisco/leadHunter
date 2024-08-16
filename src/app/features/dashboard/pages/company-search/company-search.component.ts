@@ -7,8 +7,8 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MaterialModule } from '../../../../shared/modules/material.module';
 import { CnpjPipe } from '../../../../shared/pipes/cnpj.pipe';
 import { DetailsModalComponent } from './components/details-modal/details-modal.component';
-import { FilterSectionComponent } from './components/filter-section/filter-section.component';
 import * as XLSX from "xlsx";
+import { FilterSectionComponent } from './components/filter-section/filter-section.component';
 
 export interface ISearchCompanyTable {
   name: string;
@@ -77,9 +77,13 @@ export class CompanySearchComponent implements OnInit, AfterViewInit, DoCheck {
 
   }
 
+  public recieveTableData(event: any): void {
+    this.dataSource.data = event;
+  }
+
   public openDetailsModal(element: any): void {
     console.log("element", element);
-    this._dialog.open(DetailsModalComponent)
+    this._dialog.open(DetailsModalComponent, { data: element})
   }
 
   /** Whether the number of selected elements matches the total number of rows. */

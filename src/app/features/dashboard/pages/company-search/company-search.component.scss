@@ -12,10 +12,27 @@ main{
   }
 
   .filter-section{
-
+    @media (max-width: 480px) {
+      display: flex;
+      padding-right: 0;
+      align-items: center;
+      justify-content: center;
+      margin-left: .3rem;
+    }
   }
 
   .table-section{
+
+    @media (max-width: 480px) {
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+      justify-content: center;
+      margin: 0;
+      width: 100%;
+      padding-right: 0;
+      margin-left: .3rem;
+    }
 
     .table-header{
       display: flex;

@@ -9,6 +9,7 @@ import { HttpClientModule, provideHttpClient, withFetch } from '@angular/common/
 import { AuthService } from './features/services/auth.service';
 import { provideNativeDateAdapter } from '@angular/material/core';
 
+
 const maskConfig: Partial<IConfig> = {
   validation: false,
 };
@@ -21,7 +22,7 @@ export const appConfig: ApplicationConfig = {
     provideClientHydration(),
     provideAnimationsAsync(),
     provideEnvironmentNgxMask(maskConfig),
-    importProvidersFrom(HttpClientModule,AuthService ),
-    provideNativeDateAdapter()
+    importProvidersFrom(HttpClientModule,AuthService),
+    provideNativeDateAdapter(),
   ]
 };
