@@ -85,14 +85,14 @@ main{
       .company-data{
         margin: 0 auto;
         padding: 0;
-        height: 100%;
 
       .mat-expansion-panel-header{
         background-color: $ficus-light-gray;
         box-shadow: none;
+        padding: 2rem !important;
       }
       mat-icon{
-        margin-right: .2rem;
+        margin: 0 .2rem;
       }
       }
     }
