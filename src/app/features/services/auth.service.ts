@@ -96,32 +96,46 @@ export class AuthService {
       const systemNonce = res.result;
       if (this.systemNonce.length > 0) {
         const clientNonce = sha256(moment().toISOString());
+        console.log("clientNonce", clientNonce);
 
-        const salt = `salt${userPassword}`;
-        const userPasswordEncrypted = sha256(salt);
+        // const salt = `salt${userPassword}`;
+        // const userPasswordEncrypted = sha256(salt);
+        // console.log( "userPasswordEncrypted",userPasswordEncrypted)
 
-        const loginPayload = {
+        const passwordEncryptedPayload = {
+          password: userPassword,
           user: user,
-          passwordEncrypted: userPasswordEncrypted,
+          serverNonce: systemNonce,
+          clientNonce: clientNonce,
+        }
+
+        const passwordEncrypted = this.passwordEncryption(passwordEncryptedPayload, path);
+        const loginPayload = {
+          user: encodeURIComponent(user),
+          passwordEncrypted: passwordEncrypted,
           clientNonce: clientNonce,
           systemNonce: systemNonce
         } as ILogin
 
         this.doUserLogin(loginPayload, path).subscribe((res) => {
+          console.log("doUserLogin res", res);
           if (res) {
             console.log("doUserLogin res", res);
-            setTimeout(() => { this.generateUserSignatureSession(res, userPasswordEncrypted) }, 1000);
+            setTimeout(() => { this.generateUserSignatureSession(res, passwordEncrypted) }, 1000);
           }
+        }, (err: any) => {
+          console.log("err", err)
         });
       }
     });
   }
 
   public doUserLogin(payload: ILogin, path: string): Observable<any> { // fourth step
-    const userName = encodeURIComponent(payload.user);
+    const userName = payload.user;
     console.log("username encodeURIComponent", userName);
     const password = sha256(`${path}${payload.systemNonce}${payload.clientNonce}${payload.user}${payload.passwordEncrypted}`);
-    const url = `http://192.168.5.4:11117/${path}/auth?UserName=${userName}&Password=${password}&ClientNonce=${payload.clientNonce}`;
+    console.log("password DoLogin", `${path}${payload.systemNonce}${payload.clientNonce}${payload.user}${payload.passwordEncrypted}`);
+    const url = `http://192.168.5.4:11117/${path}/Auth?UserName=${userName}&Password=${password}&ClientNonce=${payload.clientNonce}`;
     return this._httpClient.get(url);
   }
 
@@ -174,7 +188,7 @@ export class AuthService {
   public passwordEncryption(payload: IPasswordEncryption, path: string): string { // thrid step
     const salt = `salt${payload.password}`;
     const hashSalt = sha256(salt);
-    const encryptedPassword = sha256(`${path}/${payload.user}${payload.serverNonce}${payload.clientNonce}${payload.user}${hashSalt}`);
+    const encryptedPassword = sha256(`${path}${payload.user}${payload.serverNonce}${payload.clientNonce}${payload.user}${hashSalt}`);
 
     return encryptedPassword;
   }
