@@ -22,7 +22,7 @@ import moment from 'moment';
   styleUrl: './login.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class LoginComponent implements OnInit { 
+export class LoginComponent implements OnInit {
   public form: FormGroup;
   public loggedIn!: boolean;
   public hide: boolean = true;
@@ -41,7 +41,7 @@ export class LoginComponent implements OnInit {
       login: ['', [Validators.required, Validators.email, Validators.pattern(/^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/)]],
       password: ['', [Validators.required]],
     })
-    
+
   }
 
   public get F_login (): AbstractControl { return this.form.get('login') as AbstractControl; }
@@ -52,7 +52,7 @@ export class LoginComponent implements OnInit {
 
   }
 
-  
+
   public clickEvent(event: MouseEvent) {
     this.hidePassword.set(!this.hidePassword());
     event.stopPropagation();
@@ -71,14 +71,10 @@ export class LoginComponent implements OnInit {
   }
 
   public requestSystemLogin(): void {
-    //Logar no sistema.
-    //Logar usuário.
     const path = `retaguarda_prospect/usuarios/PegarUrlDoUsuario?usuarioOuEmail=${this.F_login.value}`;
     this._authService.path.next(path);
     this._authService.requestSystemLogin();
     setTimeout(() => {this.doLogin() }, 2500);
-      // const salt = `salt${this.F_password.value}`;
-      // const hashSalt = sha256(salt);
   }
 
   public doLogin(): void {
@@ -89,15 +85,23 @@ export class LoginComponent implements OnInit {
     this._authService.systemKey.subscribe((res) => {
       console.log(res, 'res signature seassion');
       this.systemKey = res;
-
     });
     console.log(this.systemKey, 'this.systemKey');
 
     this._authService.getUserUrl(this.F_login.value, this.systemKey).subscribe((res) => {
      if(res){
       console.log('res getUserURL', res);
-      const PATH = res?.result?.path;
+      const PATH = res?.result?.info.url;
+      const USER = res?.result?.info.usuario;
       console.log('PATH getUserURL', PATH);
+
+      const payloadUserLogin = {
+        user: USER,
+        password: this.F_password.value,
+        path: PATH,
+      }
+      console.log('payloadUserLogin',payloadUserLogin);
+      this._authService.requestUserLogin(payloadUserLogin);
 
       //  this.goTo('dashboard');
        console.log('Sucesso');
@@ -106,8 +110,8 @@ export class LoginComponent implements OnInit {
     }, () => {
       console.log('Deu Errado');
     });
-  
-  
+
+
   }
 
   public getErrorMessagePassword() {
@@ -121,7 +125,7 @@ export class LoginComponent implements OnInit {
     return this.F_password.hasError('password') ? 'Senha inválida' : '';
   }
 
-  
+
   public getErrorMessageLogin() {
     if (this.F_login.hasError('required')) {
       return 'Email é obrigatório';

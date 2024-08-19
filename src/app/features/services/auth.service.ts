@@ -89,30 +89,68 @@ export class AuthService {
 
   public requestUserLogin(data: any): void {
     const user = data?.user;
-    this.passwordFixed = data?.password;
+    const userPassword = data?.password;
+    const path = data?.path;
 
     this.getServerNonce(user).subscribe((res: IServerNonce) => {
-      this.systemNonce = res.result;
+      const systemNonce = res.result;
       if (this.systemNonce.length > 0) {
-        this.clientNonce = sha256(moment().toISOString());
+        const clientNonce = sha256(moment().toISOString());
 
         //fazer criptografia da senha antes de chamar doLogin()
 
+        const userPasswordPayload = {
+          password: userPassword,
+          user: user,
+          serverNonce: systemNonce,
+          clientNonce: clientNonce,
+        }
+        const userPasswordEncrypted = this.passwordEncryption(userPasswordPayload, path);
+        console.log('userPasswordEncrypted', userPasswordEncrypted);
+
         const loginPayload = {
           user: user,
-          passwordEncrypted: this.passwordFixed,
+          passwordEncrypted: userPasswordEncrypted,
           clientNonce: this.clientNonce,
           systemNonce: res.result
         } as ILogin
 
         this.doLogin(loginPayload).subscribe((res) => {
           if (res) {
-            setTimeout(() => { this.generateSystemSignatureSession(res) }, 1000);
+            setTimeout(() => { this.generateUserSignatureSession(res, userPasswordEncrypted) }, 1000);
           }
         });
       }
     });
   }
+
+  public generateUserSignatureSession(res: ISession, userEncryptedPassword: string): string {
+    let systemIdSession = '';
+    let session = res.result;
+    const posicao = session.indexOf('+');
+    if (posicao >= 0) {
+      systemIdSession = session.substring(0, posicao);
+    }
+
+    const crc32Session = crc32(session);
+
+    const PRIVATE_KEY = crc32(userEncryptedPassword, crc32Session);
+    const date = new Date;
+    const timeStamp = date.getTime();
+    const timestampToMiliseconds = Number(timeStamp) * 1000;
+    const milisecondHex = timestampToMiliseconds.toString(16);
+    const eightDigitMiliseconds = milisecondHex.substring(milisecondHex.length - 8, milisecondHex.length);
+    this.path.subscribe((res) => {
+      console.log('path', res);
+      this.signatureSession = this.mountSignatureSession(res, eightDigitMiliseconds, Number(PRIVATE_KEY));
+    })
+    const dataReturn = parseInt(systemIdSession, 10).toString(16) + eightDigitMiliseconds + this.signatureSession;
+    this.systemKey.next(dataReturn);
+    return dataReturn;
+}
+
+
+  // ********************
 
   public getUserUrl(usuarioOuEmail: string, signatureSession: string): Observable<any> {
     const url = `http://192.168.5.4:11117/retaguarda_prospect/usuarios/PegarUrlDoUsuario?usuarioOuEmail=${usuarioOuEmail}&session_signature=${signatureSession}`;
@@ -173,7 +211,7 @@ export class AuthService {
     return crc32(url, crc32(eightDigitMiliseconds, privateKey)).toString(16);
   }
 
-  public createNewAccount(dados: any, signatureSession: string): Observable<any> { 
+  public createNewAccount(dados: any, signatureSession: string): Observable<any> {
     const url = `http://192.168.5.4:11117/retaguarda_prospect/usuarios/CadastrarUsuario?session_signature=${signatureSession}`;
     return this._httpClient.post(url, {dados: dados});
   }
