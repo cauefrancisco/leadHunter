@@ -97,31 +97,32 @@ export class AuthService {
       if (this.systemNonce.length > 0) {
         const clientNonce = sha256(moment().toISOString());
 
-        //fazer criptografia da senha antes de chamar doLogin()
-
-        const userPasswordPayload = {
-          password: userPassword,
-          user: user,
-          serverNonce: systemNonce,
-          clientNonce: clientNonce,
-        }
-        const userPasswordEncrypted = this.passwordEncryption(userPasswordPayload, path);
-        console.log('userPasswordEncrypted', userPasswordEncrypted);
+        const salt = `salt${userPassword}`;
+        const userPasswordEncrypted = sha256(salt);
 
         const loginPayload = {
           user: user,
           passwordEncrypted: userPasswordEncrypted,
-          clientNonce: this.clientNonce,
-          systemNonce: res.result
+          clientNonce: clientNonce,
+          systemNonce: systemNonce
         } as ILogin
 
-        this.doLogin(loginPayload).subscribe((res) => {
+        this.doUserLogin(loginPayload, path).subscribe((res) => {
           if (res) {
+            console.log("doUserLogin res", res);
             setTimeout(() => { this.generateUserSignatureSession(res, userPasswordEncrypted) }, 1000);
           }
         });
       }
     });
+  }
+
+  public doUserLogin(payload: ILogin, path: string): Observable<any> { // fourth step
+    const userName = encodeURIComponent(payload.user);
+    console.log("username encodeURIComponent", userName);
+    const password = sha256(`${path}${payload.systemNonce}${payload.clientNonce}${payload.user}${payload.passwordEncrypted}`);
+    const url = `http://192.168.5.4:11117/${path}/auth?UserName=${userName}&Password=${password}&ClientNonce=${payload.clientNonce}`;
+    return this._httpClient.get(url);
   }
 
   public generateUserSignatureSession(res: ISession, userEncryptedPassword: string): string {
@@ -149,7 +150,6 @@ export class AuthService {
     return dataReturn;
 }
 
-
   // ********************
 
   public getUserUrl(usuarioOuEmail: string, signatureSession: string): Observable<any> {
@@ -158,7 +158,8 @@ export class AuthService {
   }
 
   public getServerNonce(userName: string): Observable<any> { // first step
-    const url = `http://192.168.5.4:11117/retaguarda_prospect/auth?UserName=${userName}`;
+    const userNemEncoded = encodeURIComponent(userName)
+    const url = `http://192.168.5.4:11117/retaguarda_prospect/auth?UserName=${userNemEncoded}`;
     return this._httpClient.get(url);
   }
 
@@ -183,6 +184,7 @@ export class AuthService {
     const url = `http://192.168.5.4:11117/retaguarda_prospect/auth?UserName=${payload.user}&Password=${password}&ClientNonce=${payload.clientNonce}`;
     return this._httpClient.get(url);
   }
+
   public getSignatureSession(serverData: ISession, password: string, url: string): string { // fifth step
 
     let session = serverData.result;

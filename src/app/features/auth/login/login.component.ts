@@ -101,17 +101,13 @@ export class LoginComponent implements OnInit {
         path: PATH,
       }
       console.log('payloadUserLogin',payloadUserLogin);
-      this._authService.requestUserLogin(payloadUserLogin);
-
-      //  this.goTo('dashboard');
-       console.log('Sucesso');
+      setTimeout(() => {this._authService.requestUserLogin(payloadUserLogin);
+      }, 1500);
        return;
      }
-    }, () => {
-      console.log('Deu Errado');
+    }, (err: any) => {
+      console.log(err);
     });
-
-
   }
 
   public getErrorMessagePassword() {
