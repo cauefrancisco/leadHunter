@@ -19,7 +19,6 @@ export class DetailsModalComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    console.log("data recebida modal detalhes", this.data);
   }
 
   onClose(): void {

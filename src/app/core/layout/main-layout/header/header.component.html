@@ -7,41 +7,42 @@
     <img src="assets/images/Ficus_Logo.png" alt="">
   </div>
   <span class="example-spacer"></span>
-  <div class="menu-drop">
-    <ul>
-      <li>
-        Soluções
-      </li>
-      <li>
-        Planos
-      </li>
-      <li>
-        Sobre
-      </li>
-    </ul>
-  </div>
+  @if(!isLogged ){
+    <div class="menu-drop">
+      <ul>
+        <li>
+          Soluções
+        </li>
+        <li>
+          Planos
+        </li>
+        <li>
+          Sobre
+        </li>
+      </ul>
+    </div>
+  }
   <span class="example-spacer"></span>
-  <p *ngIf="isLogged">user: <span> {{userName}} </span></p>
-  <button *ngIf="isLogged" mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon"
-    (click)="logout()">
-    <mat-icon>logout</mat-icon>
-  </button>
-  <button *ngIf="!isLogged" 
-  mat-icon-button 
-  class="example-icon" 
-  matTooltip="Entrar"
-  aria-label="Example icon-button with menu icon"
-    (click)="logout()">
-    <mat-icon>login</mat-icon>
-  </button>
-  <button *ngIf="isLogged" 
-  mat-icon-button 
-  class="example-icon" 
-  matTooltip="Sair"
-  aria-label="Example icon-button with menu icon"
-    (click)="logout()">
-    <mat-icon>logout</mat-icon>
-  </button>
+  @if(!isLogged){
+    <button
+    mat-icon-button
+    class="example-icon"
+    matTooltip="Entrar"
+    aria-label="Example icon-button with menu icon"
+      (click)="logIn()">
+      <mat-icon>login</mat-icon>
+    </button>
+  }
+  @if(isLogged){
+    <button
+    mat-icon-button
+    class="example-icon"
+    matTooltip="Sair"
+    aria-label="Example icon-button with menu icon"
+      (click)="authService.logUserOut()">
+      <mat-icon>logout</mat-icon>
+    </button>
+  }
 </mat-toolbar>
 
 <section *ngIf="hidden" class="menu-side">

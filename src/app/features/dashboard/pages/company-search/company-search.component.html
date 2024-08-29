@@ -5,6 +5,11 @@
         <app-filter-section (tableDataEvent)="recieveTableData($event)"></app-filter-section>
       </section>
       <section class="table-section col-xl-9 col-md-8 col-sm-12 col-12">
+        @if(dashboardService.isLoading()){
+          <div class="spinner-container w-100">
+          <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+          </div>
+        }
         <div class="table-header w-100">
 
           <div class="button-container">

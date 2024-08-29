@@ -1,14 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { AfterContentChecked, ChangeDetectionStrategy, Component, OnChanges, OnInit, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, signal } from '@angular/core';
 import { MaterialModule } from '../../../shared/modules/material.module';
 import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
-import { sha256 } from 'js-sha256';
-import { ILogin } from '../../../shared/interfaces/login.interface';
-import { IServerNonce } from '../../../shared/interfaces/serverNonce.interface';
-import { ISession } from '../../../shared/interfaces/session.interface';
-import moment from 'moment';
+import { MatDialog } from '@angular/material/dialog';
+import { FeedbackModalComponent } from '../../../shared/modals/feedback-modal/feedback-modal.component';
 
 @Component({
   selector: 'app-login',
@@ -25,6 +22,7 @@ import moment from 'moment';
 export class LoginComponent implements OnInit {
   public form: FormGroup;
   public loggedIn!: boolean;
+  public loading = signal(false)
   public hide: boolean = true;
   public systemNonce!: string;
   public clientNonce!: string;
@@ -36,6 +34,7 @@ export class LoginComponent implements OnInit {
     private _router: Router,
     private _authService: AuthService,
     private _formBuilder: FormBuilder,
+    private _dialog: MatDialog,
   ){
     this.form =  this._formBuilder.group({
       login: ['', [Validators.required, Validators.email, Validators.pattern(/^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/)]],
@@ -50,6 +49,12 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(){
 
+  }
+
+  ngDoCheck(): void {
+    //Called every time that the input properties of a component or a directive are checked. Use it to extend change detection by performing a custom check.
+    //Add 'implements DoCheck' to the class.
+    this.listenToLoading()
   }
 
 
@@ -71,42 +76,50 @@ export class LoginComponent implements OnInit {
   }
 
   public requestSystemLogin(): void {
+    this._authService.loading.next(true);
     const path = `retaguarda_prospect/usuarios/PegarUrlDoUsuario?usuarioOuEmail=${this.F_login.value}`;
     this._authService.path.next(path);
     this._authService.requestSystemLogin();
     setTimeout(() => {this.doLogin() }, 2500);
   }
 
-  public doLogin(): void {
-    //pegar url do user getUserUrl()
-    //Usar URL retornada como path no método generateSystemSignatureSession(res, path);
-    //fazer o processo de login do user, o mesmo do sistema.
+  listenToLoading(): void {
+    this._authService.loading.subscribe((res) => this.loading.set(res));
+    }
+
+    public doLogin(): void {
+    localStorage.clear();
 
     this._authService.systemKey.subscribe((res) => {
-      console.log(res, 'res signature seassion');
       this.systemKey = res;
     });
-    console.log(this.systemKey, 'this.systemKey');
 
     this._authService.getUserUrl(this.F_login.value, this.systemKey).subscribe((res) => {
-     if(res){
-      console.log('res getUserURL', res);
+      console.log(res);
+      if(res){
       const PATH = res?.result?.info.url;
       const USER = res?.result?.info.usuario;
-      console.log('PATH getUserURL', PATH);
+      localStorage.setItem('PATH_USER', PATH);
+      this._authService.userPath.set(PATH);
 
       const payloadUserLogin = {
         user: USER,
         password: this.F_password.value,
         path: PATH,
       }
-      console.log('payloadUserLogin',payloadUserLogin);
       setTimeout(() => {this._authService.requestUserLogin(payloadUserLogin);
       }, 1500);
-       return;
-     }
-    }, (err: any) => {
-      console.log(err);
+    }
+    }, () => {
+      this._dialog.open(FeedbackModalComponent, {
+        data: {
+          title: 'Erro!',
+          text: 'Erro ao logar Usuário!',
+          aditionalText:' Verifique os dados e tente novamente.'
+        }
+          }).afterClosed().subscribe(() => {
+            this.loading.set(false);
+          });
     });
   }
 

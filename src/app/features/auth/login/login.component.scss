@@ -7,7 +7,7 @@ main{
   justify-content: center;
   align-items: center;
   background-color: $ficus-light-gray;
-  
+
   .container-login{
     flex-direction: row-reverse !important;
     justify-content: center;
@@ -42,11 +42,11 @@ main{
         background-color: rgba(232, 232, 232, 0.9);
         box-shadow: 3px -3px 7px 2px $aleixo-dark-blue-rgba-shadow;
 
-        @media (max-width: 780px) {      
-          min-height: 100% !important;    
+        @media (max-width: 780px) {
+          min-height: 100% !important;
           width: 20rem;
         }
-    
+
         .btn-container{
           margin: 0;
           justify-content: center;
@@ -56,7 +56,7 @@ main{
             align-items: center;
           }
         }
-        
+
         .btn-confirm{
           height: 38px;
           border-radius: 5px;
@@ -116,7 +116,7 @@ main{
           justify-content: center;
           padding: 1rem 0;
         }
-        
+
         .text-area{
           min-height: 100%;
           width: 100%;
@@ -173,7 +173,7 @@ main{
               width: 100%;
             }
           }
-          
+
           // .typewriter h1 {
           //   overflow: hidden; /* Ensures the content is not revealed until the animation */
           //   border-right: .15em solid $ficus-purple; /* The typwriter cursor */
@@ -182,7 +182,7 @@ main{
           //   letter-spacing: .15em; /* Adjust as needed */
           //   color: $ficus-yellow;
           //   font-size: 2rem;
-          //   animation: 
+          //   animation:
           //     typing 3.5s steps(20, end),
           //     blink-caret .75s step-end infinite;
           //     @media (max-width: 780px) {
@@ -191,24 +191,24 @@ main{
           //       margin: 0;
           //     }
           // }
-          
+
           // /* The typing effect */
           // @keyframes typing {
           //   from { width: 0 }
           //   to { width: 100% }
           // }
-          
+
           // /* The typewriter cursor effect */
           // @keyframes blink-caret {
           //   from, to { border-color: transparent }
           //   50% { border-color: $ficus-yellow; }
           // }
-          
-        
+
+
         }
-        
+
       }
-      
+
   }
 
   .link-password{
@@ -227,5 +227,34 @@ main{
         }
       }
   }
-  
+
+}
+
+.loading-container {
+  display: flex;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  width: 100vw;
+  height: 100vh;
+  /* background-color: rgba(0, 0, 0, 0.7); */
+  z-index: 5;
+}
+
+.site-container {
+  font-size: 14px;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  height: 100vh;
+  background: #f1f1f1;
+  overflow: hidden;
+
+  .site-header {
+    height: 64px;
+  }
+
+  .site-content {
+    height: calc(100vh - 65px);
+    padding: 0 15px;
+    overflow: auto;
+  }
 }

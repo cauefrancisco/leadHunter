@@ -1,13 +1,17 @@
 import { HttpClient } from '@angular/common/http';
-import { EventEmitter, Injectable } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 import { sha256 } from 'js-sha256';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { ISession } from '../../shared/interfaces/session.interface';
 import { ILogin } from '../../shared/interfaces/login.interface';
 import { crc32 } from 'crc';
 import { IServerNonce } from '../../shared/interfaces/serverNonce.interface';
 import moment from 'moment';
 import { IPasswordEncryption } from '../../shared/interfaces/password-encryption.interface';
+import { Router } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
+import { FeedbackModalComponent } from '../../shared/modals/feedback-modal/feedback-modal.component';
+
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +19,7 @@ import { IPasswordEncryption } from '../../shared/interfaces/password-encryption
 export class AuthService {
 
   public storage!: Storage;
-  public userIdentified =  new EventEmitter<Boolean>();
+  public userIdentified =  new BehaviorSubject(false);
   public ID_SESSION!: string;
   public SYSTEM_ID_SESSION!: string;
   public signatureSession!: string;
@@ -23,14 +27,21 @@ export class AuthService {
   public systemNonce!: string;
   public clientNonce!: string;
   public systemKey = new BehaviorSubject('');
+  public loading = new Subject<boolean>();
+  public userLoginData = signal<any>([]);
+  public userKey = new BehaviorSubject('');
   public path = new BehaviorSubject('');
+  public userPath = signal('');
+  public userSessionPath = signal('');
   public dinamicPath!: string;
   public passwordFixed = '146a2bf4ac84efd41f08fea59725f7c8fcac5a9a86fa0108a445ac6d9450dba7';
+  public userPasswordEncrypted = new BehaviorSubject('');
 
   constructor(
     private _httpClient: HttpClient,
+    private _router: Router,
+    private _dialog: MatDialog,
   ) {
-    // this.storage = window?.localStorage;
     this.userNameDisplay = '';
   }
 
@@ -77,7 +88,6 @@ export class AuthService {
       const milisecondHex = timestampToMiliseconds.toString(16);
       const eightDigitMiliseconds = milisecondHex.substring(milisecondHex.length - 8, milisecondHex.length);
       this.path.subscribe((res) => {
-        console.log('path', res);
         this.signatureSession = this.mountSignatureSession(res, eightDigitMiliseconds, Number(PRIVATE_KEY));
       })
       const dataReturn = parseInt(this.SYSTEM_ID_SESSION, 10).toString(16) + eightDigitMiliseconds + this.signatureSession;
@@ -92,56 +102,66 @@ export class AuthService {
     const userPassword = data?.password;
     const path = data?.path;
 
-    this.getServerNonce(user).subscribe((res: IServerNonce) => {
+    this.getUserServerNonce(user, path).subscribe((res: IServerNonce) => {
       const systemNonce = res.result;
       if (this.systemNonce.length > 0) {
         const clientNonce = sha256(moment().toISOString());
-        console.log("clientNonce", clientNonce);
 
-        // const salt = `salt${userPassword}`;
-        // const userPasswordEncrypted = sha256(salt);
-        // console.log( "userPasswordEncrypted",userPasswordEncrypted)
+        const salt = `salt${userPassword}`;
+        const passwordEncrypted = sha256(salt);
 
-        const passwordEncryptedPayload = {
-          password: userPassword,
-          user: user,
-          serverNonce: systemNonce,
-          clientNonce: clientNonce,
-        }
-
-        const passwordEncrypted = this.passwordEncryption(passwordEncryptedPayload, path);
         const loginPayload = {
-          user: encodeURIComponent(user),
+          user: user,
           passwordEncrypted: passwordEncrypted,
           clientNonce: clientNonce,
           systemNonce: systemNonce
         } as ILogin
 
+        this.userPasswordEncrypted.next(passwordEncrypted);
+
+
         this.doUserLogin(loginPayload, path).subscribe((res) => {
-          console.log("doUserLogin res", res);
-          if (res) {
-            console.log("doUserLogin res", res);
-            setTimeout(() => { this.generateUserSignatureSession(res, passwordEncrypted) }, 1000);
+          if (res?.result) {
+            this.userLoginData.set(res?.result);
+            localStorage?.setItem('LOGIN_KEY', res?.result);
+            localStorage.setItem('LOGON_NAME', res.logonname)
+              this._router.navigateByUrl('dashboard/company-search');
+            return;
           }
+          this._dialog.open(FeedbackModalComponent, {
+            data: {
+              title: 'Erro!',
+              ret: 1,
+              text: 'Erro ao logar usuário!',
+              aditionalText: 'Confira os dados e tente novamente'
+            }
+              }).afterClosed().subscribe(() => this.loading.next(false));
+              return;
         }, (err: any) => {
-          console.log("err", err)
+          this._dialog.open(FeedbackModalComponent, {
+            data: {
+              title: 'Erro!',
+              ret: 1,
+              text: 'Erro ao logar usuário!',
+              aditionalText: 'Confira os dados e tente novamente'
+            }
+              }).afterClosed().subscribe(() => this.loading.next(false));
         });
       }
     });
   }
 
   public doUserLogin(payload: ILogin, path: string): Observable<any> { // fourth step
-    const userName = payload.user;
-    console.log("username encodeURIComponent", userName);
+    const userName = (payload.user);
     const password = sha256(`${path}${payload.systemNonce}${payload.clientNonce}${payload.user}${payload.passwordEncrypted}`);
-    console.log("password DoLogin", `${path}${payload.systemNonce}${payload.clientNonce}${payload.user}${payload.passwordEncrypted}`);
-    const url = `http://192.168.5.4:11117/${path}/Auth?UserName=${userName}&Password=${password}&ClientNonce=${payload.clientNonce}`;
+    const url = `http://192.168.5.4:11118/${path}/Auth?UserName=${userName}&Password=${password}&ClientNonce=${payload.clientNonce}`;
     return this._httpClient.get(url);
   }
 
-  public generateUserSignatureSession(res: ISession, userEncryptedPassword: string): string {
+  public generateUserSignatureSession(res: string): string {
+    console.log('userPasswordEncripted : ', this.userPasswordEncrypted.getValue());
     let systemIdSession = '';
-    let session = res.result;
+    let session = res;
     const posicao = session.indexOf('+');
     if (posicao >= 0) {
       systemIdSession = session.substring(0, posicao);
@@ -149,21 +169,35 @@ export class AuthService {
 
     const crc32Session = crc32(session);
 
-    const PRIVATE_KEY = crc32(userEncryptedPassword, crc32Session);
+    const PRIVATE_KEY = crc32(this.userPasswordEncrypted.getValue(), crc32Session);
     const date = new Date;
     const timeStamp = date.getTime();
     const timestampToMiliseconds = Number(timeStamp) * 1000;
     const milisecondHex = timestampToMiliseconds.toString(16);
     const eightDigitMiliseconds = milisecondHex.substring(milisecondHex.length - 8, milisecondHex.length);
-    this.path.subscribe((res) => {
-      console.log('path', res);
-      this.signatureSession = this.mountSignatureSession(res, eightDigitMiliseconds, Number(PRIVATE_KEY));
-    })
+    this.signatureSession = this.mountSignatureSession(this.userSessionPath(), eightDigitMiliseconds, Number(PRIVATE_KEY));
     const dataReturn = parseInt(systemIdSession, 10).toString(16) + eightDigitMiliseconds + this.signatureSession;
-    this.systemKey.next(dataReturn);
+    this.userKey.next(dataReturn);
     return dataReturn;
 }
 
+
+  public logUserOut(): void {
+    localStorage.clear();
+    this.userIdentified.next(false);
+    this.userIdentified.complete();
+    this._router.navigateByUrl('login');
+  }
+
+  public setUserState(state: boolean): void {
+    console.log("chegou o state : ", state);
+this.userIdentified.subscribe(console.log);
+    return this.userIdentified.next(state);
+  }
+
+  public getUserState(): boolean {
+    return this.userIdentified.getValue();
+  }
   // ********************
 
   public getUserUrl(usuarioOuEmail: string, signatureSession: string): Observable<any> {
@@ -174,6 +208,11 @@ export class AuthService {
   public getServerNonce(userName: string): Observable<any> { // first step
     const userNemEncoded = encodeURIComponent(userName)
     const url = `http://192.168.5.4:11117/retaguarda_prospect/auth?UserName=${userNemEncoded}`;
+    return this._httpClient.get(url);
+  }
+  public getUserServerNonce(userName: string, path: string): Observable<any> { // first step
+    const userNemEncoded = encodeURIComponent(userName)
+    const url = `http://192.168.5.4:11118/${path}/auth?UserName=${userNemEncoded}`;
     return this._httpClient.get(url);
   }
 
@@ -188,7 +227,7 @@ export class AuthService {
   public passwordEncryption(payload: IPasswordEncryption, path: string): string { // thrid step
     const salt = `salt${payload.password}`;
     const hashSalt = sha256(salt);
-    const encryptedPassword = sha256(`${path}${payload.user}${payload.serverNonce}${payload.clientNonce}${payload.user}${hashSalt}`);
+    const encryptedPassword = sha256(`${path}/${payload.user}${payload.serverNonce}${payload.clientNonce}${payload.user}${hashSalt}`);
 
     return encryptedPassword;
   }
@@ -224,6 +263,7 @@ export class AuthService {
   }
 
   public mountSignatureSession(url: string, eightDigitMiliseconds: string, privateKey: number){
+    console.log('url mountSignatureSession: ', url);
     return crc32(url, crc32(eightDigitMiliseconds, privateKey)).toString(16);
   }
 

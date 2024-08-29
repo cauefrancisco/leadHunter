@@ -9,6 +9,7 @@ import { CnpjPipe } from '../../../../shared/pipes/cnpj.pipe';
 import { DetailsModalComponent } from './components/details-modal/details-modal.component';
 import * as XLSX from "xlsx";
 import { FilterSectionComponent } from './components/filter-section/filter-section.component';
+import { DashboardService } from '../../../services/dashboard.service';
 
 export interface ISearchCompanyTable {
   name: string;
@@ -59,6 +60,7 @@ export class CompanySearchComponent implements OnInit, AfterViewInit, DoCheck {
 
   constructor(
     private _dialog: MatDialog,
+    public dashboardService: DashboardService,
   ) { }
 
   ngOnInit() {
@@ -79,10 +81,12 @@ export class CompanySearchComponent implements OnInit, AfterViewInit, DoCheck {
 
   public recieveTableData(event: any): void {
     this.dataSource.data = event;
+    if(this.dataSource.data.length > 0){
+      this.dashboardService.isLoading.set(false);
+    }
   }
 
   public openDetailsModal(element: any): void {
-    console.log("element", element);
     this._dialog.open(DetailsModalComponent, { data: element})
   }
 
@@ -114,7 +118,6 @@ export class CompanySearchComponent implements OnInit, AfterViewInit, DoCheck {
   public clearTable(): void {
     this.dataSource.data = [];
     this.searchTableData = false;
-    console.log(this.dataSource.data)
   }
 
   public exportToExcel(): void {

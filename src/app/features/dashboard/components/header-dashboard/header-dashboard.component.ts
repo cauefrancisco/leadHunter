@@ -1,8 +1,9 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, DoCheck, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DoCheck, OnInit, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { OutSideClickDirective } from '../../../../shared/directives/outside-click.directive';
 import { MaterialModule } from '../../../../shared/modules/material.module';
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-header-dashboard',
@@ -15,15 +16,15 @@ import { MaterialModule } from '../../../../shared/modules/material.module';
 export class HeaderDashboardComponent implements OnInit, DoCheck {
   public hidden: boolean = false;
   public userName = '';
-  public isLogged!: boolean;
+  public isLogged = signal(false);
   public title: any;
 
   constructor(
     private _router: Router,
+    private _authService: AuthService,
     public activatedRoute: ActivatedRoute
   ) {
     this.title = this.activatedRoute.snapshot.children.map((res) => res.data[0]);
-
   }
 
   ngOnInit() {

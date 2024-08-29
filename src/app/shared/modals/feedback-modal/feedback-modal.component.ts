@@ -15,7 +15,7 @@ import { MaterialModule } from '../../modules/material.module';
   styleUrl: './feedback-modal.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class FeedbackModalComponent { 
+export class FeedbackModalComponent {
   readonly dialogRef = inject(MatDialogRef<FeedbackModalComponent>);
   public data = inject<IFeedbackDialogData>(MAT_DIALOG_DATA);
 

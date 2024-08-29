@@ -26,9 +26,9 @@
           <div class="sector-content w-100">
             <mat-form-field>
               <mat-label>Setores</mat-label>
-              <mat-select multiple>
+              <mat-select formControlName="sector" multiple>
                 @for (sector of sectores; track sector) {
-                  <mat-option [value]="sector">{{sector.name}}</mat-option>
+                  <mat-option [value]="sector">{{sector.codigo}} - {{sector.descricao}}</mat-option>
                 }
               </mat-select>
             </mat-form-field>
@@ -36,26 +36,26 @@
             <mat-form-field>
               <mat-label>CNAE Primário</mat-label>
               <mat-select formControlName="cnaePrimario" multiple>
-                @for (sector of sectores; track sector) {
-                  <mat-option [value]="sector">{{sector.name}}</mat-option>
+                @for (cnae of cnaes; track cnae) {
+                  <mat-option [value]="cnae">{{cnae.codigo}} - {{cnae.descricao}}</mat-option>
                 }
               </mat-select>
             </mat-form-field>
 
             <mat-form-field>
               <mat-label>CNAE Secundário</mat-label>
-              <mat-select multiple>
-                @for (sector of sectores; track sector) {
-                  <mat-option [value]="sector">{{sector.name}}</mat-option>
+              <mat-select formControlName="cnaeSecundario" multiple>
+                @for (cnae of cnaes; track cnae) {
+                  <mat-option [value]="cnae">{{cnae.codigo}} - {{cnae.descricao}}</mat-option>
                 }
               </mat-select>
             </mat-form-field>
 
             <mat-form-field>
               <mat-label>NCM</mat-label>
-              <mat-select multiple>
+              <mat-select formControlName="ncm" multiple>
                 @for (sector of sectores; track sector) {
-                  <mat-option [value]="sector">{{sector.name}}</mat-option>
+                  <mat-option [value]="sector">{{sector}}</mat-option>
                 }
               </mat-select>
             </mat-form-field>
@@ -77,7 +77,7 @@
                 <mat-label>Estados</mat-label>
                 <mat-select multiple>
                   @for (state of states; track state) {
-                    <mat-option [value]="state">{{state.name}}</mat-option>
+                    <mat-option [value]="state">{{state}}</mat-option>
                   }
                 </mat-select>
               </mat-form-field>
@@ -87,7 +87,7 @@
                 <mat-label>Cidades</mat-label>
                 <mat-select multiple>
                   @for (city of cities; track city) {
-                    <mat-option [value]="city">{{city.name}}</mat-option>
+                    <mat-option [value]="city">{{city}}</mat-option>
                   }
                 </mat-select>
               </mat-form-field>
@@ -249,8 +249,8 @@
             <mat-form-field>
               <mat-label>Natureza Jurídica</mat-label>
               <mat-select multiple>
-                @for (state of states; track state) {
-                  <mat-option [value]="state">{{state.name}}</mat-option>
+                @for (legalNature of legalNatures; track legalNature) {
+                  <mat-option [value]="legalNature">{{legalNature.codigo}} - {{legalNature.descricao}}</mat-option>
                 }
               </mat-select>
             </mat-form-field>

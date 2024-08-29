@@ -17,14 +17,14 @@ import { ERequestResult } from '../../../shared/enums/request-result.enum';
     CommonModule,
     MaterialModule,
     ReactiveFormsModule,
-    NgxMaskDirective, 
+    NgxMaskDirective,
     NgxMaskPipe,
   ],
   templateUrl: './create-account.component.html',
   styleUrl: './create-account.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CreateAccountComponent implements OnInit { 
+export class CreateAccountComponent implements OnInit {
   public formError: any;
   public form: FormGroup;
   public systemKey!: string;
@@ -53,18 +53,17 @@ export class CreateAccountComponent implements OnInit {
   public get F_document (): AbstractControl { return this.form.get('document') as AbstractControl; }
 
   public ngOnInit() {
-   console.log()
   }
 
   public clickEvent(event: MouseEvent) {
     this.hide.set(!this.hide());
     event.stopPropagation();
   }
-  
+
   public goTo(page: string): void {
     this._router.navigateByUrl(page);
   }
-  
+
   public onSubmit(): void {
     this.form.markAllAsTouched();
     if(this.form.invalid){
@@ -85,7 +84,6 @@ export class CreateAccountComponent implements OnInit {
       usuario: this.F_email.value
     } as ICreateAccount;
     this._authService.systemKey.subscribe((res) => {
-      console.log('res signature', res);
       this.systemKey = res;
     });
     this.createAccount(PAYLOAD);
@@ -116,16 +114,16 @@ export class CreateAccountComponent implements OnInit {
       }, () => {
         this._dialog.open(FeedbackModalComponent, {
           data: {
-            title: 'Erro!', 
+            title: 'Erro!',
             text: 'Erro ao cadastrar usuário! Tente mais tarde'
           }
             });
       });
     }, 2000)
-  
+
   }
-  
- 
+
+
   public getErrorMessagePassword() {
     if (this.F_password.hasError('required')) {
       return 'Senha é obrigatório';

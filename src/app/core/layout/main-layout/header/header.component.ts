@@ -1,8 +1,9 @@
-import { AfterContentChecked, ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { AfterContentChecked, ChangeDetectionStrategy, Component, DoCheck, OnInit, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { MaterialModule } from '../../../../shared/modules/material.module';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../../../features/services/auth.service';
+import { BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'app-header',
@@ -12,32 +13,32 @@ import { AuthService } from '../../../../features/services/auth.service';
   imports: [
     CommonModule,
     MaterialModule,
-  ], 
+  ],
+  viewProviders: [AuthService],
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class HeaderComponent implements OnInit, AfterContentChecked {
+export class HeaderComponent implements OnInit, DoCheck {
 
   public hidden: boolean = false;
   public userName = '';
-  public isLogged!: boolean;
+  public isLogged = false;
+  public user: any;
 
   constructor(
     private _router: Router,
-    private _authService: AuthService,
+    public authService: AuthService,
   ) {
+
   }
 
   ngOnInit() {
-  }
-
-  ngAfterContentChecked(): void {
-    // this.userName = this._authService.userNameDisplay;
-    // this.isLogged = this._authService.userIdentified;
+  //  this.isLogged = localStorage.getItem('LOGON_NAME')?.toString() !== null ? localStorage.getItem('LOGON_NAME')?.toString()  : '';
+   ;
   }
 
   ngDoCheck(): void {
-    this.userName = this._authService.userNameDisplay;
+    this.userName = this.authService.userNameDisplay;
   }
 
   public toggle(): boolean {
@@ -47,8 +48,7 @@ export class HeaderComponent implements OnInit, AfterContentChecked {
   public goTo(page: string): void {
     this._router.navigateByUrl(page);
   }
-
-  public logout(): void {
+  public logIn(): void {
     this.goTo('login');
   }
 
