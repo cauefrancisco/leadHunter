@@ -90,9 +90,18 @@ export class AuthService {
       this.path.subscribe((res) => {
         this.signatureSession = this.mountSignatureSession(res, eightDigitMiliseconds, Number(PRIVATE_KEY));
       })
-      const dataReturn = parseInt(this.SYSTEM_ID_SESSION, 10).toString(16) + eightDigitMiliseconds + this.signatureSession;
+      const dataReturn = this.verifySystemIdSession(this.SYSTEM_ID_SESSION) + eightDigitMiliseconds + this.signatureSession;
       this.systemKey.next(dataReturn);
       return dataReturn;
+  }
+
+  public verifySystemIdSession(SYSTEM_ID_SESSION: string): string {
+    let systemIdSessionReturn = parseInt(SYSTEM_ID_SESSION, 10).toString(16);
+    if(systemIdSessionReturn.length < 8 ){
+      systemIdSessionReturn = 0 + systemIdSessionReturn;
+      console.log('systemIdSessionReturn', systemIdSessionReturn);
+    }
+    return systemIdSessionReturn;
   }
 
   //Login usuário

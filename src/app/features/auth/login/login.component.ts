@@ -83,7 +83,7 @@ export class LoginComponent implements OnInit {
     setTimeout(() => {this.doLogin() }, 2500);
   }
 
-  listenToLoading(): void {
+  public listenToLoading(): void {
     this._authService.loading.subscribe((res) => this.loading.set(res));
     }
 
