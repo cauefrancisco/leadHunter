@@ -28,7 +28,7 @@
               <mat-label>Setores</mat-label>
               <mat-select formControlName="sector" multiple>
                 @for (sector of sectores; track sector) {
-                  <mat-option [value]="sector">{{sector.codigo}} - {{sector.descricao}}</mat-option>
+                  <mat-option [value]="sector.codigo">{{sector.codigo}} - {{sector.descricao}}</mat-option>
                 }
               </mat-select>
             </mat-form-field>
@@ -37,7 +37,7 @@
               <mat-label>CNAE Primário</mat-label>
               <mat-select formControlName="cnaePrimario" multiple>
                 @for (cnae of cnaes; track cnae) {
-                  <mat-option [value]="cnae">{{cnae.codigo}} - {{cnae.descricao}}</mat-option>
+                  <mat-option [value]="cnae.codigo">{{cnae.codigo}} - {{cnae.descricao}}</mat-option>
                 }
               </mat-select>
             </mat-form-field>
@@ -46,7 +46,7 @@
               <mat-label>CNAE Secundário</mat-label>
               <mat-select formControlName="cnaeSecundario" multiple>
                 @for (cnae of cnaes; track cnae) {
-                  <mat-option [value]="cnae">{{cnae.codigo}} - {{cnae.descricao}}</mat-option>
+                  <mat-option [value]="cnae.codigo">{{cnae.codigo}} - {{cnae.descricao}}</mat-option>
                 }
               </mat-select>
             </mat-form-field>
@@ -54,8 +54,8 @@
             <mat-form-field>
               <mat-label>NCM</mat-label>
               <mat-select formControlName="ncm" multiple>
-                @for (sector of sectores; track sector) {
-                  <mat-option [value]="sector">{{sector}}</mat-option>
+                @for (ncm of ncm; track ncm) {
+                  <mat-option [value]="ncm.codigo">{{ncm.codigo}} - {{ncm.descricao}}</mat-option>
                 }
               </mat-select>
             </mat-form-field>

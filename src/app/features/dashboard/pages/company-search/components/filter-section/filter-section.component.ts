@@ -8,6 +8,8 @@ import { forkJoin } from 'rxjs';
 import { IFilterCnae } from '../../../../../../shared/interfaces/filter-cnae.interface';
 import { AuthService } from '../../../../../services/auth.service';
 import { IFilter } from '../../../../../../shared/interfaces/filter-payload.interface';
+import { MatDialog } from '@angular/material/dialog';
+import { FeedbackModalComponent } from '../../../../../../shared/modals/feedback-modal/feedback-modal.component';
 
 @Component({
   selector: 'app-filter-section',
@@ -38,6 +40,8 @@ export class FilterSectionComponent implements OnInit {
   public neighbourhoods = [{ name: 'Vila olimpia' }, { name: 'Tatuapé' }, { name: 'Moema' }];
   public sectores!: Array<IFilterCnae>
   public cnaes!: Array<IFilterCnae>;
+  public municipios!: Array<IFilterCnae>;
+  public ncm!: Array<IFilterCnae>;
   public legalNatures!:  Array<IFilterCnae>;
   public data: any[] = [
     { position: 1, cnpj: '37984878000119', name: 'RANCK MAGRISSO', contact: '(81) 3048-2521', cnae: 'M-6911-7/01 - Serviços advocatícios', address: 'Quadra Sig Quadra 4, 106, Brasilia - Zona Industrial, DF - 70.610-440', companySize: 'pequeno' },
@@ -58,6 +62,7 @@ export class FilterSectionComponent implements OnInit {
     private _formBuilder: FormBuilder,
     private _dashboardService: DashboardService,
     private _authService: AuthService,
+    private _dialog: MatDialog,
   ) {
     this.form = this._formBuilder.group({
       sector: new FormControl(),
@@ -76,7 +81,12 @@ export class FilterSectionComponent implements OnInit {
 
   }
 
+  public onSubmit(): void {
+   console.log(this.form.get('sector')?.value);
+  }
+
   public search(): void {
+    this._dashboardService.isLoading.set(true);
       this.userPath = this._authService.userPath().length > 0 ? this._authService.userPath() : String(localStorage.getItem('PATH_USER'));
       const SessionSearchPath = `${this.userPath}/Empresa/PegarEmpresasSegundoFiltro`;
       const userLoginData = this._authService.userLoginData().length > 0 ? this._authService.userLoginData() : String(localStorage.getItem('LOGIN_KEY'));
@@ -89,7 +99,7 @@ export class FilterSectionComponent implements OnInit {
     });
 
     let filter = {
-      cnae: ["1043100"],
+      cnae: this.form.get('sector')?.value,
     }
 
    const payload = {
@@ -98,12 +108,21 @@ export class FilterSectionComponent implements OnInit {
     pagina: 0,
     }
     this._dashboardService.filterSearch(this.userPath, payload ,this.userSignatureSession).subscribe((res) => {
-      console.log('res', res)
+      console.log('res: ', res);
+      console.log('res.result: ', res.result);
+        this.tableDataEvent.emit(res.result);
+        console.log('entrou: ', res.result);
+
+    }, () => {
+      this._dialog.open(FeedbackModalComponent, {
+        data: {
+          title: 'Erro!',
+          text: 'Erro ao buscar dados!'
+        }
+          }).afterClosed().subscribe(() => this._dashboardService.isLoading.set(false));
     });
-    this._dashboardService.isLoading.set(true);
     console.log("form Value: ", this.form.value)
     console.log("form ncm Value: ", this.form.get('cnae')?.value)
-    setTimeout(() => { this.tableDataEvent.emit(this.data)}, 2000)
   }
 
   public getFilterData(): void {
@@ -115,18 +134,17 @@ export class FilterSectionComponent implements OnInit {
      });
    this._dashboardService.getMunicipios().subscribe((res) => {
     console.log("res municipio", res)
-    this.cnaes = res?.result;
+    this.municipios = res?.result;
      });
    this._dashboardService.getListaSecaoCnae().subscribe((res: any) => {
     console.log("res sectores", res);
     this.sectores = res?.result;
      });
-   this._dashboardService.getListaCnae().subscribe((res) => {
-    this.cnaes = res?.result;
+   this._dashboardService.getListaNcm().subscribe((res) => {
+    console.log("res ncm", res);
+    this.ncm = res?.result;
      });
-   this._dashboardService.getListaCnae().subscribe((res) => {
-    this.cnaes = res?.result;
-     });
+
   }
 
 }

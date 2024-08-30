@@ -48,4 +48,9 @@ export class DashboardService {
     const url = `http://192.168.5.4:11119/dados_abertos/InformacoesAuxiliares/PegarListaSecaoCnae`;
     return this._httpClient.get(url);
   }
+
+  public getListaNcm(): Observable<any> {
+    const url = `http://192.168.5.4:11119/dados_abertos/InformacoesAuxiliares/PegarListaNCM`;
+    return this._httpClient.get(url);
+  }
 }

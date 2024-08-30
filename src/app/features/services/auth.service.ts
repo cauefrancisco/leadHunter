@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable, signal } from '@angular/core';
+import { DoCheck, Injectable, signal } from '@angular/core';
 import { sha256 } from 'js-sha256';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { ISession } from '../../shared/interfaces/session.interface';
@@ -44,7 +44,6 @@ export class AuthService {
   ) {
     this.userNameDisplay = '';
   }
-
   //Login sistema
 
   public requestSystemLogin(): void {
@@ -133,8 +132,9 @@ export class AuthService {
           if (res?.result) {
             this.userLoginData.set(res?.result);
             localStorage?.setItem('LOGIN_KEY', res?.result);
-            localStorage.setItem('LOGON_NAME', res.logonname)
-              this._router.navigateByUrl('dashboard/company-search');
+            localStorage.setItem('LOGON_NAME', res.logonname);
+            this.userIdentified.next(true);
+            this._router.navigateByUrl('dashboard/company-search');
             return;
           }
           this._dialog.open(FeedbackModalComponent, {
@@ -185,7 +185,7 @@ export class AuthService {
     const milisecondHex = timestampToMiliseconds.toString(16);
     const eightDigitMiliseconds = milisecondHex.substring(milisecondHex.length - 8, milisecondHex.length);
     this.signatureSession = this.mountSignatureSession(this.userSessionPath(), eightDigitMiliseconds, Number(PRIVATE_KEY));
-    const dataReturn = parseInt(systemIdSession, 10).toString(16) + eightDigitMiliseconds + this.signatureSession;
+    const dataReturn = this.verifySystemIdSession(systemIdSession) + eightDigitMiliseconds + this.signatureSession;
     this.userKey.next(dataReturn);
     return dataReturn;
 }
@@ -198,15 +198,6 @@ export class AuthService {
     this._router.navigateByUrl('login');
   }
 
-  public setUserState(state: boolean): void {
-    console.log("chegou o state : ", state);
-this.userIdentified.subscribe(console.log);
-    return this.userIdentified.next(state);
-  }
-
-  public getUserState(): boolean {
-    return this.userIdentified.getValue();
-  }
   // ********************
 
   public getUserUrl(usuarioOuEmail: string, signatureSession: string): Observable<any> {

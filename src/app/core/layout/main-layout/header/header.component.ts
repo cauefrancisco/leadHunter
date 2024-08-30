@@ -29,16 +29,14 @@ export class HeaderComponent implements OnInit, DoCheck {
     private _router: Router,
     public authService: AuthService,
   ) {
-
   }
 
   ngOnInit() {
-  //  this.isLogged = localStorage.getItem('LOGON_NAME')?.toString() !== null ? localStorage.getItem('LOGON_NAME')?.toString()  : '';
-   ;
   }
 
   ngDoCheck(): void {
-    this.userName = this.authService.userNameDisplay;
+  this.isLogged = localStorage.getItem('LOGON_NAME') !== null ? true : false;
+  console.log('isLogged', this.isLogged)
   }
 
   public toggle(): boolean {

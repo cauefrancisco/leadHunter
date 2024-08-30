@@ -53,28 +53,38 @@
               <td mat-cell *matCellDef="let element" class="w-30 name-document-td">
                 <span>{{element.cnpj | cnpj}}</span>
                 <br>
-                <span class="f-550">{{element.name}}</span>
+                <span class="f-550">{{element.nome}}</span>
               </td>
-            </ng-container>
-
-            <ng-container matColumnDef="address">
-              <th mat-header-cell *matHeaderCellDef> Endereço </th>
-              <td mat-cell *matCellDef="let element"> {{element.address}} </td>
             </ng-container>
 
             <ng-container matColumnDef="contact">
               <th mat-header-cell *matHeaderCellDef> Contato </th>
-              <td mat-cell *matCellDef="let element" class="call">{{element.contact}} </td>
+              <td mat-cell *matCellDef="let element" class="call">
+                <span class="span-td-icon-structure"><mat-icon class="mat-18">mail</mat-icon> {{element.correio_eletronico || ' - '}}</span>
+                <br>
+                <span class="span-td-icon-structure"><mat-icon class="mat-18">call</mat-icon>  ({{element.DDD_Telefone}}) {{element.telefone}}</span></td>
             </ng-container>
 
-            <ng-container matColumnDef="companySize">
-              <th mat-header-cell *matHeaderCellDef> Porte </th>
-              <td mat-cell *matCellDef="let element"> {{element.companySize}} </td>
+            <ng-container matColumnDef="regime">
+              <th mat-header-cell *matHeaderCellDef> Regime </th>
+              <td mat-cell *matCellDef="let element"> {{element.regime}} </td>
             </ng-container>
 
             <ng-container matColumnDef="cnae">
               <th mat-header-cell *matHeaderCellDef> CNAE </th>
-              <td mat-cell *matCellDef="let element"> {{element.cnae}} </td>
+              <td mat-cell *matCellDef="let element"> {{element.cnaePrincipal}} </td>
+            </ng-container>
+
+
+            <ng-container matColumnDef="companySize">
+              <th mat-header-cell *matHeaderCellDef> Porte </th>
+              <td mat-cell *matCellDef="let element">{{element.porte}} </td>
+            </ng-container>
+
+
+            <ng-container matColumnDef="address">
+              <th mat-header-cell *matHeaderCellDef> Endereço </th>
+              <td mat-cell *matCellDef="let element">{{element.tipoLogradouro}} {{element.logradouro}}, {{element.numero}}. {{element.bairro}}, {{element.UF}}. - {{element.CEP}} </td>
             </ng-container>
 
             <!-- <ng-container matColumnDef="details">
