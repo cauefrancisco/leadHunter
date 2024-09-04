@@ -88,14 +88,11 @@ export class LoginComponent implements OnInit {
     }
 
     public doLogin(): void {
-    localStorage.clear();
-
     this._authService.systemKey.subscribe((res) => {
       this.systemKey = res;
     });
 
     this._authService.getUserUrl(this.F_login.value, this.systemKey).subscribe((res) => {
-      console.log(res);
       if(res){
       const PATH = res?.result?.info.url;
       const USER = res?.result?.info.usuario;

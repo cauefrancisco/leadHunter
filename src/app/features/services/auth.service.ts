@@ -19,7 +19,8 @@ import { FeedbackModalComponent } from '../../shared/modals/feedback-modal/feedb
 export class AuthService {
 
   public storage!: Storage;
-  public userIdentified =  new BehaviorSubject(false);
+  public userIdentified = new BehaviorSubject(false);
+  public currentUserState$ = this.userIdentified.asObservable();
   public ID_SESSION!: string;
   public SYSTEM_ID_SESSION!: string;
   public signatureSession!: string;
@@ -29,6 +30,8 @@ export class AuthService {
   public systemKey = new BehaviorSubject('');
   public loading = new Subject<boolean>();
   public userLoginData = signal<any>([]);
+  public systemLoginData = new BehaviorSubject('');
+  public currentSystemLoginData$ = this.systemLoginData.asObservable();
   public userKey = new BehaviorSubject('');
   public path = new BehaviorSubject('');
   public userPath = signal('');
@@ -63,16 +66,18 @@ export class AuthService {
         } as ILogin
 
         this.doLogin(loginPayload).subscribe((res) => {
-          if (res) {
-            setTimeout(() => { this.generateSystemSignatureSession(res) }, 1000);
+          if (res?.result.length > 0 ) {
+            localStorage.setItem('SLK', res.result);
+            console.log('systemLoginData doLogin: ', this.systemLoginData.value);
+            setTimeout(() => { this.generateSystemSignatureSession(res.result) }, 1000);
           }
         });
       }
     });
   }
 
-  public generateSystemSignatureSession(res: ISession): string {
-      let session = res.result;
+  public generateSystemSignatureSession(res: string): string {
+    let session = res;
       const posicao = session.indexOf('+');
       if (posicao >= 0) {
         this.SYSTEM_ID_SESSION = session.substring(0, posicao);
@@ -87,6 +92,7 @@ export class AuthService {
       const milisecondHex = timestampToMiliseconds.toString(16);
       const eightDigitMiliseconds = milisecondHex.substring(milisecondHex.length - 8, milisecondHex.length);
       this.path.subscribe((res) => {
+        console.log('path gerar assinatura sistema: ', res);
         this.signatureSession = this.mountSignatureSession(res, eightDigitMiliseconds, Number(PRIVATE_KEY));
       })
       const dataReturn = this.verifySystemIdSession(this.SYSTEM_ID_SESSION) + eightDigitMiliseconds + this.signatureSession;
@@ -98,9 +104,16 @@ export class AuthService {
     let systemIdSessionReturn = parseInt(SYSTEM_ID_SESSION, 10).toString(16);
     if(systemIdSessionReturn.length < 8 ){
       systemIdSessionReturn = 0 + systemIdSessionReturn;
-      console.log('systemIdSessionReturn', systemIdSessionReturn);
     }
     return systemIdSessionReturn;
+  }
+
+  public emitSystemLoginValue(value: string): void {
+    this.systemLoginData.next(value);
+  }
+
+  public geSystemLoginDataValue(): Observable<any> {
+    return this.currentSystemLoginData$;
   }
 
   //Login usuário
@@ -111,7 +124,7 @@ export class AuthService {
     const path = data?.path;
 
     this.getUserServerNonce(user, path).subscribe((res: IServerNonce) => {
-      const systemNonce = res.result;
+      const userSystemNonce = res.result;
       if (this.systemNonce.length > 0) {
         const clientNonce = sha256(moment().toISOString());
 
@@ -122,7 +135,7 @@ export class AuthService {
           user: user,
           passwordEncrypted: passwordEncrypted,
           clientNonce: clientNonce,
-          systemNonce: systemNonce
+          systemNonce: userSystemNonce
         } as ILogin
 
         this.userPasswordEncrypted.next(passwordEncrypted);
@@ -131,9 +144,9 @@ export class AuthService {
         this.doUserLogin(loginPayload, path).subscribe((res) => {
           if (res?.result) {
             this.userLoginData.set(res?.result);
+            this.userIdentified.next(true);
             localStorage?.setItem('LOGIN_KEY', res?.result);
             localStorage.setItem('LOGON_NAME', res.logonname);
-            this.userIdentified.next(true);
             this._router.navigateByUrl('dashboard/company-search');
             return;
           }
@@ -168,7 +181,6 @@ export class AuthService {
   }
 
   public generateUserSignatureSession(res: string): string {
-    console.log('userPasswordEncripted : ', this.userPasswordEncrypted.getValue());
     let systemIdSession = '';
     let session = res;
     const posicao = session.indexOf('+');
@@ -190,18 +202,37 @@ export class AuthService {
     return dataReturn;
 }
 
+public logUserOut(): void {
+    console.log('systemLoginKey', localStorage.getItem('SLK'));
+      if(String(localStorage.getItem('SLK')).length > 0){
+        const key = this.generateSystemSignatureSession(String(localStorage.getItem('SLK')));
+        const user = String(localStorage.getItem('LOGON_NAME'));
+        this.logOut(user, key).subscribe((res) => {
+          console.log('logout 1', res);
+          if(res){
+            console.log('if res logout', res);
+            localStorage.clear();
+            this._router.navigateByUrl('login');
+          }
+        }, (err: any) => {
+          localStorage.clear();
+            this._router.navigateByUrl('login');
+        });
+      }
 
-  public logUserOut(): void {
-    localStorage.clear();
-    this.userIdentified.next(false);
-    this.userIdentified.complete();
-    this._router.navigateByUrl('login');
-  }
+
+}
 
   // ********************
 
   public getUserUrl(usuarioOuEmail: string, signatureSession: string): Observable<any> {
     const url = `http://192.168.5.4:11117/retaguarda_prospect/usuarios/PegarUrlDoUsuario?usuarioOuEmail=${usuarioOuEmail}&session_signature=${signatureSession}`;
+    return this._httpClient.get(url);
+  }
+
+
+  public logOut(usuarioOuEmail: string, signatureSession: string): Observable<any> {
+    const url = `http://192.168.5.4:11117/retaguarda_prospect/usuarios/Logout?usuarioOuEmail=${usuarioOuEmail}&session_signature=${signatureSession}`;
     return this._httpClient.get(url);
   }
 
@@ -263,7 +294,6 @@ export class AuthService {
   }
 
   public mountSignatureSession(url: string, eightDigitMiliseconds: string, privateKey: number){
-    console.log('url mountSignatureSession: ', url);
     return crc32(url, crc32(eightDigitMiliseconds, privateKey)).toString(16);
   }
 

@@ -1,9 +1,9 @@
-import { AfterContentChecked, ChangeDetectionStrategy, Component, DoCheck, OnInit, signal } from '@angular/core';
+import {ChangeDetectionStrategy, Component, DoCheck, Inject, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { MaterialModule } from '../../../../shared/modules/material.module';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DOCUMENT } from '@angular/common';
 import { AuthService } from '../../../../features/services/auth.service';
-import { BehaviorSubject } from 'rxjs';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-header',
@@ -24,19 +24,21 @@ export class HeaderComponent implements OnInit, DoCheck {
   public userName = '';
   public isLogged = false;
   public user: any;
-
+  public userStatus: boolean = false;
+  public localStorage: any;
   constructor(
     private _router: Router,
-    public authService: AuthService,
+    private _authService: AuthService,
+    @Inject(DOCUMENT) private document: Document,
   ) {
+    this.localStorage = document.defaultView?.localStorage;
   }
 
   ngOnInit() {
   }
 
   ngDoCheck(): void {
-  this.isLogged = localStorage.getItem('LOGON_NAME') !== null ? true : false;
-  console.log('isLogged', this.isLogged)
+  this.isLogged = this.localStorage?.getItem('LOGON_NAME') !== null ? true : false;
   }
 
   public toggle(): boolean {
@@ -48,6 +50,12 @@ export class HeaderComponent implements OnInit, DoCheck {
   }
   public logIn(): void {
     this.goTo('login');
+  }
+
+  public logUserOut(): void {
+    const path = `retaguarda_prospect/usuarios/Logout?usuarioOuEmail=${String(this.localStorage?.getItem('LOGON_NAME'))}`;
+    this._authService.path.next(path);
+    this._authService.logUserOut();
   }
 
 

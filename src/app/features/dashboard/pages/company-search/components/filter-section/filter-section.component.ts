@@ -81,10 +81,6 @@ export class FilterSectionComponent implements OnInit {
 
   }
 
-  public onSubmit(): void {
-   console.log(this.form.get('sector')?.value);
-  }
-
   public search(): void {
     this._dashboardService.isLoading.set(true);
       this.userPath = this._authService.userPath().length > 0 ? this._authService.userPath() : String(localStorage.getItem('PATH_USER'));
@@ -108,10 +104,7 @@ export class FilterSectionComponent implements OnInit {
     pagina: 0,
     }
     this._dashboardService.filterSearch(this.userPath, payload ,this.userSignatureSession).subscribe((res) => {
-      console.log('res: ', res);
-      console.log('res.result: ', res.result);
         this.tableDataEvent.emit(res.result);
-        console.log('entrou: ', res.result);
 
     }, () => {
       this._dialog.open(FeedbackModalComponent, {
@@ -133,15 +126,12 @@ export class FilterSectionComponent implements OnInit {
     this.legalNatures = res?.result;
      });
    this._dashboardService.getMunicipios().subscribe((res) => {
-    console.log("res municipio", res)
     this.municipios = res?.result;
      });
    this._dashboardService.getListaSecaoCnae().subscribe((res: any) => {
-    console.log("res sectores", res);
     this.sectores = res?.result;
      });
    this._dashboardService.getListaNcm().subscribe((res) => {
-    console.log("res ncm", res);
     this.ncm = res?.result;
      });
 
