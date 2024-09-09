@@ -165,14 +165,11 @@ export class FilterSectionComponent implements OnInit, AfterViewChecked {
       console.log('this.form.get(cep)?.value: ', this.form.get('cep')?.value )
       this._dashboardService.getCEP(this.form.get('cep')?.value).subscribe((res) => {
         if(res.result){
-          this.form.get('neighbourhood')?.reset();
-          this.form.get('neighbourhood')?.setValue(res.result.bairro);
+          this.form.get('estate')?.setValue([res.result.uf]);
+          this.form.get('city')?.setValue([res.result.codigoIBGE || res.result.municipio]);
+          this.form.get('neighbourhood')?.setValue([res.result.codigoBairro]);
           this.form.get('logradouro')?.reset()
           this.form.get('logradouro')?.setValue(res.result.logradouro);
-          this.form.get('uf')?.reset();
-          this.form.get('uf')?.setValue(res.result.uf);
-          this.form.get('city')?.reset();
-          this.form.get('city')?.setValue(res.result.municipio);
           return;
         }
         return;
@@ -203,12 +200,12 @@ export class FilterSectionComponent implements OnInit, AfterViewChecked {
       bairro: this.form.get('neighbourhood')?.value,
       cep: this.form.get('cep')?.value,
       logradouro: this.form.get('logradouro')?.value,
+      telefone: this.form.get('telephone')?.value,
       numero: this.form.get('stNumber')?.value,
       porte: this.form.get('companySize')?.value,
       naturezaJuridica: this.form.get('legalNature')?.value,
       regime: this.form.get('feeType')?.value,
       cnpj: this.form.get('cnpj')?.value,
-
     }
 
    const payload = {
