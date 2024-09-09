@@ -191,12 +191,12 @@ export class FilterSectionComponent implements OnInit, AfterViewChecked {
     });
 
     let filter = {
-      setores: this.form.get('sector')?.value,
-      cnae: this.form.get('cnaePrimario')?.value,
-      buscarCnaesSecundarios: this.form.get('cnaeSecundario')?.value,
-      ncms: this.form.get('ncm')?.value,
-      uf: this.form.get('estate')?.value,
-      municipio: this.form.get('city')?.value,
+      setores: this.form.get('sector')?.value ? this.form.get('sector')?.value : null,
+      cnae: this.form.get('cnaePrimario')?.value ? this.form.get('cnaePrimario')?.value : null,
+      buscarCnaesSecundarios: this.form.get('cnaeSecundario')?.value ? this.form.get('cnaeSecundario')?.value : null,
+      ncms: this.form.get('ncm')?.value ? this.form.get('ncm')?.value : null,
+      uf: this.form.get('estate')?.value ? this.form.get('estate')?.value : null,
+      municipio: this.form.get('city')?.value ? this.form.get('city')?.value : null,
       bairro: this.form.get('neighbourhood')?.value,
       cep: this.form.get('cep')?.value,
       logradouro: this.form.get('logradouro')?.value,
@@ -208,13 +208,13 @@ export class FilterSectionComponent implements OnInit, AfterViewChecked {
       cnpj: this.form.get('cnpj')?.value,
     }
 
-   const payload = {
+   const dados = {
     filtro: filter,
     ordenacao: 0,
     pagina: 0,
     }
 
-    this._dashboardService.filterSearch(this.userPath, payload ,this.userSignatureSession).subscribe((res) => {
+    this._dashboardService.filterSearch(this.userPath, dados ,this.userSignatureSession).subscribe((res) => {
         this.tableDataEvent.emit(res.result);
 
     }, () => {
@@ -225,8 +225,6 @@ export class FilterSectionComponent implements OnInit, AfterViewChecked {
         }
           }).afterClosed().subscribe(() => this._dashboardService.isLoading.set(false));
     });
-    console.log("form Value: ", this.form.value)
-    console.log("form ncm Value: ", this.form.get('cnae')?.value)
   }
 
   public getFilterData(): void {

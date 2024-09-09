@@ -105,9 +105,10 @@ export class AuthService {
 
   public verifySystemIdSession(SYSTEM_ID_SESSION: string): string {
     let systemIdSessionReturn = parseInt(SYSTEM_ID_SESSION, 10).toString(16);
-    if(systemIdSessionReturn.length < 8 ){
-      systemIdSessionReturn = 0 + systemIdSessionReturn;
+    while(systemIdSessionReturn.length < 8 ){
+      systemIdSessionReturn = `0${systemIdSessionReturn}`;
     }
+    console.log('systemIdSessionReturn: ', systemIdSessionReturn);
     return systemIdSessionReturn;
   }
 

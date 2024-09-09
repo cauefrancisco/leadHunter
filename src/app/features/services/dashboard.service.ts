@@ -14,13 +14,9 @@ export class DashboardService {
     private _httpClient: HttpClient,
   ) { }
 
-  public filterSearch(path: string, payload: IFilterPayload, signatureSession: string): Observable<any>{
+  public filterSearch(path: string, dados: IFilterPayload, signatureSession: string): Observable<any>{
     const url = `http://192.168.5.4:11117/${path}/Empresa/PegarEmpresasSegundoFiltro?session_signature=${signatureSession}`;
-    return this._httpClient.post(url,
-      { dados:   {
-        payload
-    }
-    });
+    return this._httpClient.post(url,{dados});
   }
 
 
