@@ -113,7 +113,7 @@
                 </mat-form-field>
                 <mat-form-field>
                   <mat-label>CEP</mat-label>
-                  <input matInput formControlName="cep">
+                  <input mask="XXXXX-XXX" (keyup)="getCEP()" matInput pattern="\d{5}-\d{3}" formControlName="cep">
                 </mat-form-field>
               </div>
 
@@ -153,20 +153,15 @@
 
         <!-- Telefones -->
         <mat-expansion-panel class="mat-expansion" (opened)="panelOpenState.set(true)" (closed)="panelOpenState.set(false)">
+          <mat-expansion-panel-header>
+            <mat-panel-title>Telefone</mat-panel-title>
+          </mat-expansion-panel-header>
+
+          <div class="telephone-container w-100">
           <mat-form-field>
             <mat-label>telefone</mat-label>
             <input formControlName="telephone" matInput>
           </mat-form-field>
-
-          <div class="telephone-container w-100">
-            <mat-form-field>
-              <mat-label>Telefones</mat-label>
-              <mat-select multiple>
-                @for (state of mock; track state) {
-                  <mat-option [value]="state">{{state.name}}</mat-option>
-                }
-              </mat-select>
-            </mat-form-field>
           </div>
 
         </mat-expansion-panel>
@@ -241,7 +236,10 @@
 
               <mat-form-field class="example-full-width">
                 <mat-label>CNPJ</mat-label>
-                <input matInput formControlName="cnpj" placeholder="" value="">
+                <input matInput
+                formControlName="cnpj"
+                mask="00.000.000/0000-00"
+                pattern="([0-9]{2}[\.]?[0-9]{3}[\.]?[0-9]{3}[\/]?[0-9]{4}[-]?[0-9]{2})|([0-9]{3}[\.]?[0-9]{3}[\.]?[0-9]{3}[-]?[0-9]{2})">
               </mat-form-field>
 
           </div>

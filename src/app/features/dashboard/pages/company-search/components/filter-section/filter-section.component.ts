@@ -9,6 +9,7 @@ import { AuthService } from '../../../../../services/auth.service';
 import { MatDialog } from '@angular/material/dialog';
 import { FeedbackModalComponent } from '../../../../../../shared/modals/feedback-modal/feedback-modal.component';
 import { ERegimeTributario } from '../../../../../../shared/enums/regime-tributario.enum';
+import { NgxMaskDirective, NgxMaskPipe } from 'ngx-mask';
 
 @Component({
   selector: 'app-filter-section',
@@ -22,7 +23,8 @@ import { ERegimeTributario } from '../../../../../../shared/enums/regime-tributa
     ReactiveFormsModule,
     MaterialModule,
     PrimeNgModule,
-    // CompanySearchComponent
+    NgxMaskDirective,
+    NgxMaskPipe,
   ],
 
 })
@@ -82,13 +84,15 @@ export class FilterSectionComponent implements OnInit, AfterViewChecked {
       estate: new FormControl(),
       neighbourhood: new FormControl(),
       city: new FormControl(),
-      cep: ['', []],
+      cep: ['', ],
       logradouro: ['', []],
       stNumber: ['', []],
       telephone: ['', []],
+      initialDate: [''],
+      finalDate: ['', []],
       companySize: new FormControl(),
       legalNature: ['', []],
-      feeType: [ERegimeTributario, []],
+      feeType: [ERegimeTributario.TODOS, []],
       cnpj: ['', [Validators.pattern('([0-9]{2}[\.]?[0-9]{3}[\.]?[0-9]{3}[\/]?[0-9]{4}[-]?[0-9]{2})|([0-9]{3}[\.]?[0-9]{3}[\.]?[0-9]{3}[-]?[0-9]{2})')]],
     })
   }
@@ -156,6 +160,26 @@ export class FilterSectionComponent implements OnInit, AfterViewChecked {
     }
   }
 
+  public getCEP(): void {
+
+      console.log('this.form.get(cep)?.value: ', this.form.get('cep')?.value )
+      this._dashboardService.getCEP(this.form.get('cep')?.value).subscribe((res) => {
+        if(res.result){
+          this.form.get('neighbourhood')?.reset();
+          this.form.get('neighbourhood')?.setValue(res.result.bairro);
+          this.form.get('logradouro')?.reset()
+          this.form.get('logradouro')?.setValue(res.result.logradouro);
+          this.form.get('uf')?.reset();
+          this.form.get('uf')?.setValue(res.result.uf);
+          this.form.get('city')?.reset();
+          this.form.get('city')?.setValue(res.result.municipio);
+          return;
+        }
+        return;
+      });
+
+  }
+
   public search(): void {
     this._dashboardService.isLoading.set(true);
       this.userPath = this._authService.userPath().length > 0 ? this._authService.userPath() : String(localStorage.getItem('PATH_USER'));
@@ -177,6 +201,10 @@ export class FilterSectionComponent implements OnInit, AfterViewChecked {
       uf: this.form.get('estate')?.value,
       municipio: this.form.get('city')?.value,
       bairro: this.form.get('neighbourhood')?.value,
+      cep: this.form.get('cep')?.value,
+      logradouro: this.form.get('logradouro')?.value,
+      numero: this.form.get('stNumber')?.value,
+      porte: this.form.get('companySize')?.value,
       naturezaJuridica: this.form.get('legalNature')?.value,
       regime: this.form.get('feeType')?.value,
       cnpj: this.form.get('cnpj')?.value,
