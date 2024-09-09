@@ -87,16 +87,16 @@
                 <mat-label>Cidades</mat-label>
                 <mat-select (selectionChange)="getNeighbourhoodValue()" formControlName="city" multiple>
                   @for (city of cities; track city) {
-                    <mat-option [value]="city?.nome">{{city?.nome}}</mat-option>
+                    <mat-option [value]="city?.codigoIBGE">{{city?.nome}}</mat-option>
                   }
                 </mat-select>
               </mat-form-field>
 
               <mat-form-field>
                 <mat-label>Bairros</mat-label>
-                <mat-select formControlName="neighbourhood" multiple>
+                <mat-select (selectionChange)="getStreetValue()" formControlName="neighbourhood" multiple>
                   @for (neighbourhood of neighbourhoods; track neighbourhood) {
-                    <mat-option [value]="neighbourhood.nome">{{neighbourhood.nome}}</mat-option>
+                    <mat-option [value]="neighbourhood.codigoBairro">{{neighbourhood.bairro}}</mat-option>
                   }
                 </mat-select>
               </mat-form-field>
@@ -105,15 +105,15 @@
                 <p class="ms-2 f-550">Endereço e CEP</p>
                 <mat-form-field>
                   <mat-label>Logradouro</mat-label>
-                  <input matInput>
+                  <input matInput formControlName="logradouro">
                 </mat-form-field>
                 <mat-form-field>
                   <mat-label>Numero</mat-label>
-                  <input matInput>
+                  <input matInput formControlName="stNumber">
                 </mat-form-field>
                 <mat-form-field>
                   <mat-label>CEP</mat-label>
-                  <input matInput>
+                  <input matInput formControlName="cep">
                 </mat-form-field>
               </div>
 
@@ -131,9 +131,9 @@
           <div class="company-size-content w-100">
             <mat-form-field>
               <mat-label>Porte Nominal</mat-label>
-              <mat-select multiple>
-                @for (state of states; track state) {
-                  <mat-option [value]="state">{{state.name}}</mat-option>
+              <mat-select formControlName="companySize" multiple>
+                @for (CompanySizeList of CompanySizeList; track CompanySizeList) {
+                  <mat-option [value]="CompanySizeList.codigo">{{CompanySizeList.descricao}}</mat-option>
                 }
               </mat-select>
             </mat-form-field>
@@ -141,7 +141,7 @@
             <mat-form-field>
               <mat-label>Crescimento da empresa</mat-label>
               <mat-select multiple>
-                @for (state of states; track state) {
+                @for (state of mock; track state) {
                   <mat-option [value]="state">{{state.name}}</mat-option>
                 }
               </mat-select>
@@ -153,15 +153,16 @@
 
         <!-- Telefones -->
         <mat-expansion-panel class="mat-expansion" (opened)="panelOpenState.set(true)" (closed)="panelOpenState.set(false)">
-          <mat-expansion-panel-header>
-            <mat-panel-title>Telefone</mat-panel-title>
-          </mat-expansion-panel-header>
+          <mat-form-field>
+            <mat-label>telefone</mat-label>
+            <input formControlName="telephone" matInput>
+          </mat-form-field>
 
           <div class="telephone-container w-100">
             <mat-form-field>
               <mat-label>Telefones</mat-label>
               <mat-select multiple>
-                @for (state of states; track state) {
+                @for (state of mock; track state) {
                   <mat-option [value]="state">{{state.name}}</mat-option>
                 }
               </mat-select>
@@ -198,15 +199,6 @@
 
             </div>
 
-            <mat-form-field>
-              <mat-label>Crescimento da empresa</mat-label>
-              <mat-select multiple>
-                @for (state of states; track state) {
-                  <mat-option [value]="state">{{state.name}}</mat-option>
-                }
-              </mat-select>
-            </mat-form-field>
-
           </div>
 
         </mat-expansion-panel>
@@ -221,40 +213,21 @@
 
             <mat-form-field>
               <mat-label>Regime tributário</mat-label>
-              <mat-select multiple>
-                @for (state of states; track state) {
-                  <mat-option [value]="state">{{state.name}}</mat-option>
-                }
-              </mat-select>
-            </mat-form-field>
-
-            <mat-form-field>
-              <mat-label>Enquadramento de porte</mat-label>
-              <mat-select multiple>
-                @for (state of states; track state) {
-                  <mat-option [value]="state">{{state.name}}</mat-option>
-                }
-              </mat-select>
-            </mat-form-field>
-
-            <mat-form-field>
-              <mat-label>Classificação Jurídica</mat-label>
-              <mat-select multiple>
-                @for (state of states; track state) {
-                  <mat-option [value]="state">{{state.name}}</mat-option>
+              <mat-select formControlName="feeType">
+                @for (regimeTributario of regimeTributario; track regimeTributario) {
+                  <mat-option [value]="regimeTributario.codigo">{{regimeTributario.label}}</mat-option>
                 }
               </mat-select>
             </mat-form-field>
 
             <mat-form-field>
               <mat-label>Natureza Jurídica</mat-label>
-              <mat-select multiple>
+              <mat-select formControlName="legalNature">
                 @for (legalNature of legalNatures; track legalNature) {
-                  <mat-option [value]="legalNature">{{legalNature.codigo}} - {{legalNature.descricao}}</mat-option>
+                  <mat-option [value]="legalNature.codigo">{{legalNature.descricao}}</mat-option>
                 }
               </mat-select>
             </mat-form-field>
-
           </div>
 
         </mat-expansion-panel>
@@ -268,7 +241,7 @@
 
               <mat-form-field class="example-full-width">
                 <mat-label>CNPJ</mat-label>
-                <input matInput placeholder="" value="">
+                <input matInput formControlName="cnpj" placeholder="" value="">
               </mat-form-field>
 
           </div>

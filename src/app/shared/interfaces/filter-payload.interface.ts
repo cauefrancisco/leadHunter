@@ -11,13 +11,15 @@ export interface IFilterPayload {
 
 export interface IFilter{
   cnae?: string[],
-  buscarCnaesSecundarios?: boolean,
+  setores: string[],
+  ncms: string[],
+  buscarCnaesSecundarios?: string[],
   nome?: string,
   buscarApenasNomeFantasia?: boolean,
   emailOuSite?: string,
   telefone?: string,
   cnpj?: string,
-  uf?: string,
+  uf?: string[],
   municipio?: string,
   habitantesMaiorQue?: number,
   habitantesMenorQue?: number,

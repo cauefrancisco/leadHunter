@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { AfterViewChecked, Component, EventEmitter, OnChanges, OnInit, Output, signal, ViewChild } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MaterialModule } from '../../../../../../shared/modules/material.module';
 import { PrimeNgModule } from '../../../../../../shared/modules/primeng.module';
 import { DashboardService } from '../../../../../services/dashboard.service';
@@ -8,6 +8,7 @@ import { IFilterCnae } from '../../../../../../shared/interfaces/filter-cnae.int
 import { AuthService } from '../../../../../services/auth.service';
 import { MatDialog } from '@angular/material/dialog';
 import { FeedbackModalComponent } from '../../../../../../shared/modals/feedback-modal/feedback-modal.component';
+import { ERegimeTributario } from '../../../../../../shared/enums/regime-tributario.enum';
 
 @Component({
   selector: 'app-filter-section',
@@ -30,18 +31,28 @@ export class FilterSectionComponent implements OnInit, AfterViewChecked {
 
   public form: FormGroup;
   readonly panelOpenState = signal(false);
-  public states = [{ name: 'São Paulo' }, { name: 'Rio de Janeiro' }];
+  public mock: Array<any> = [];
   public selectedState = '';
   public doSearch = false;
   public selectedCity = '';
   public cities: Array<any> = [];
   public neighbourhoods: Array<any> = [];
+  public streets: Array<any> = [];
   public sectors: Array<IFilterCnae> = [];
   public cnaes: Array<IFilterCnae> = [];
   public municipios: Array<IFilterCnae> = [];
   public ncm: Array<IFilterCnae> = [];
   public estate: Array<any> = [];
   public legalNatures:  Array<IFilterCnae> = [];
+  public CompanySizeList: Array<any> = [];
+  public regimeTributario: Array<any> = [
+    {codigo: ERegimeTributario.TODOS, label: 'Todos'},
+    {codigo: ERegimeTributario.EXCLUIDO_SIMPLES, label: 'Excluídas do Simples'},
+    {codigo: ERegimeTributario.LUCRO_PRESUMIDO, label: 'Lucro Presumido'},
+    {codigo: ERegimeTributario.LUCRO_REAL, label: 'Lucro Real'},
+    {codigo: ERegimeTributario.SIMPLES, label: 'Simples'},
+    {codigo: ERegimeTributario.NAO_SIMPLES, label: 'Não simples'}
+  ]
   public data: any[] = [
     { position: 1, cnpj: '37984878000119', name: 'RANCK MAGRISSO', contact: '(81) 3048-2521', cnae: 'M-6911-7/01 - Serviços advocatícios', address: 'Quadra Sig Quadra 4, 106, Brasilia - Zona Industrial, DF - 70.610-440', companySize: 'pequeno' },
     { position: 2, cnpj: '97554129000183', name: 'RAPHAEL MIRANDA ADVOGADOS', contact: '(21) 3806-3650', cnae: ' M-6911-7/01 - Serviços advocatícios', address: 'Rua Visconde De Piraja, 430, Rio De Janeiro - Ipanema, RJ - 22.410-002', companySize: 'pequeno' },
@@ -71,6 +82,14 @@ export class FilterSectionComponent implements OnInit, AfterViewChecked {
       estate: new FormControl(),
       neighbourhood: new FormControl(),
       city: new FormControl(),
+      cep: ['', []],
+      logradouro: ['', []],
+      stNumber: ['', []],
+      telephone: ['', []],
+      companySize: new FormControl(),
+      legalNature: ['', []],
+      feeType: [ERegimeTributario, []],
+      cnpj: ['', [Validators.pattern('([0-9]{2}[\.]?[0-9]{3}[\.]?[0-9]{3}[\/]?[0-9]{4}[-]?[0-9]{2})|([0-9]{3}[\.]?[0-9]{3}[\.]?[0-9]{3}[-]?[0-9]{2})')]],
     })
   }
 
@@ -85,14 +104,6 @@ export class FilterSectionComponent implements OnInit, AfterViewChecked {
   }
 
   public ngAfterViewChecked(): void {
-    if(this.form.get('estate')?.value){
-      if(this.form.get('estate')?.value.length < 0){
-        this.form.get('city')?.reset();
-        this.form.get('neighbourhood')?.reset();
-        this.form.get('city')?.disable();
-        this.form.get('neighbourhood')?.disable();
-      }
-    }
   }
 
   public getCitiesValue(): void {
@@ -107,15 +118,14 @@ export class FilterSectionComponent implements OnInit, AfterViewChecked {
         return;
       });
     } else {
+      this.form.get('city')?.reset();
       this.form.get('city')?.disable();
     }
   }
 
   public getNeighbourhoodValue(): void {
-    console.log("hello");
     if(this.form.get('estate')?.value && this.form.get('estate')?.value.length > 0 && this.form.get('city')?.value && this.form.get('city')?.value.length > 0){
       this._dashboardService.getBairro(this.form.get('city')?.value).subscribe((res) => {
-        console.log('ihaaaa');
         if(res){
           this.neighbourhoods = res.result;
           this.form.get('neighbourhood')?.enable();
@@ -126,6 +136,23 @@ export class FilterSectionComponent implements OnInit, AfterViewChecked {
       });
     } else {
       this.form.get('neighbourhood')?.disable();
+      this.form.get('neighbourhood')?.reset();
+    }
+  }
+  public getStreetValue(): void {
+    if(this.form.get('estate')?.value && this.form.get('estate')?.value.length > 0 && this.form.get('city')?.value && this.form.get('city')?.value.length > 0 && this.form.get('neighbourhood')?.value && this.form.get('neighbourhood')?.value.length){
+      this._dashboardService.getLogradouro(this.form.get('neighbourhood')?.value).subscribe((res) => {
+        if(res){
+          this.streets = res.result;
+          this.form.get('street')?.enable();
+          console.log('res street: ', res);
+          return;
+        }
+        return;
+      });
+    } else {
+      this.form.get('neighbourhood')?.disable();
+      this.form.get('neighbourhood')?.reset();
     }
   }
 
@@ -143,10 +170,17 @@ export class FilterSectionComponent implements OnInit, AfterViewChecked {
     });
 
     let filter = {
+      setores: this.form.get('sector')?.value,
       cnae: this.form.get('cnaePrimario')?.value,
       buscarCnaesSecundarios: this.form.get('cnaeSecundario')?.value,
-      ncm: this.form.get('ncm')?.value,
+      ncms: this.form.get('ncm')?.value,
       uf: this.form.get('estate')?.value,
+      municipio: this.form.get('city')?.value,
+      bairro: this.form.get('neighbourhood')?.value,
+      naturezaJuridica: this.form.get('legalNature')?.value,
+      regime: this.form.get('feeType')?.value,
+      cnpj: this.form.get('cnpj')?.value,
+
     }
 
    const payload = {
@@ -188,6 +222,10 @@ export class FilterSectionComponent implements OnInit, AfterViewChecked {
      });
    this._dashboardService.getEstado().subscribe((res) => {
     this.estate = res?.result;
+     });
+   this._dashboardService.getListaPortes().subscribe((res) => {
+    this.CompanySizeList = res?.result;
+    console.log('res ListaPorte :', res);
      });
   }
 

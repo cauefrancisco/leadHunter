@@ -73,4 +73,9 @@ export class DashboardService {
     const url = `http://192.168.5.4:11117/dados_auxiliares/InformacoesAuxiliares/PegarBairrosDoMunicipio?codigoMunicipio=${municipio}`;
     return this._httpClient.get(url);
   }
+  public getLogradouro(bairro: string): Observable<any> {
+    const url = `http://192.168.5.4:11117/dados_auxiliares/InformacoesAuxiliares/PegarLogradourosDoBairro?codigoBairro=${bairro}`;
+    return this._httpClient.get(url);
+  }
+
 }

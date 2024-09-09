@@ -1,0 +1,9 @@
+export enum ERegimeTributario {
+
+TODOS = 0,
+SIMPLES = 1,
+EXCLUIDO_SIMPLES = 2,
+NAO_SIMPLES = 3,
+LUCRO_REAL = 4,
+LUCRO_PRESUMIDO = 5,
+}
