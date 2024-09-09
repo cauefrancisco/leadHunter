@@ -53,4 +53,24 @@ export class DashboardService {
     const url = `http://192.168.5.4:11117/dados_auxiliares/InformacoesAuxiliares/PegarListaNCM`;
     return this._httpClient.get(url);
   }
+
+  public getCEP(cep: string): Observable<any> {
+    const url = `http://192.168.5.4:11117/dados_auxiliares/InformacoesAuxiliares/PegarDadosDoCep?cep=${cep}`;
+    return this._httpClient.get(url);
+  }
+
+  public getEstado(): Observable<any> {
+    const url = `http://192.168.5.4:11117/dados_auxiliares/InformacoesAuxiliares/PegarListaUnidadeFederativa`;
+    return this._httpClient.get(url);
+  }
+
+  public getCidade(uf: string): Observable<any> {
+    const url = `http://192.168.5.4:11117/dados_auxiliares/InformacoesAuxiliares/PegarMunicipiosDaUF?uf=${uf}`;
+    return this._httpClient.get(url);
+  }
+
+  public getBairro(municipio: string): Observable<any> {
+    const url = `http://192.168.5.4:11117/dados_auxiliares/InformacoesAuxiliares/PegarBairrosDoMunicipio?codigoMunicipio=${municipio}`;
+    return this._httpClient.get(url);
+  }
 }

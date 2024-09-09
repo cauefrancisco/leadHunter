@@ -10,7 +10,7 @@
         </div>
         <div class="text">
           <span class="f-550">CNPJ: <br> {{data?.cnpj}} - <button class="subsidiary-btn" mat-flat-button>Matriz</button></span>
-          <h4>{{data?.name}}</h4>
+          <h4>{{data?.nome}}</h4>
         </div>
 
 
@@ -20,7 +20,7 @@
           <div class="grid-info-card">
             <mat-icon class="mat-18">corporate_fare</mat-icon>
             <span class="f-550">Porte</span>
-            {{data?.companySize}}
+            {{data?.porte}}
           </div>
 
           <div class="grid-info-card">
@@ -51,15 +51,15 @@
         <mat-accordion displayMode="default" [multi]="true" [hideToggle]="false">
             <mat-expansion-panel [hideToggle]="false">
                 <mat-expansion-panel-header><mat-icon class="material-symbols-outlined">map</mat-icon> Localização</mat-expansion-panel-header>
-                 Panel body
+                body panel
             </mat-expansion-panel>
             <mat-expansion-panel [hideToggle]="false">
                 <mat-expansion-panel-header><mat-icon class="material-symbols-outlined">mail</mat-icon>E-mails e Pessoas</mat-expansion-panel-header>
                  Panel body
             </mat-expansion-panel>
             <mat-expansion-panel [hideToggle]="false">
-                <mat-expansion-panel-header><mat-icon class="material-symbols-outlined">call</mat-icon> telefones (3)</mat-expansion-panel-header>
-                 Panel body
+                <mat-expansion-panel-header><mat-icon class="material-symbols-outlined">call</mat-icon> telefone(s)</mat-expansion-panel-header>
+                {{data?.telefone}}
             </mat-expansion-panel>
             <mat-expansion-panel [hideToggle]="false">
                 <mat-expansion-panel-header><mat-icon class="material-symbols-outlined">language</mat-icon> Websites e redes sociais</mat-expansion-panel-header>

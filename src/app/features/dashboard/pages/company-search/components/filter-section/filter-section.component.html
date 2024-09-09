@@ -27,7 +27,7 @@
             <mat-form-field>
               <mat-label>Setores</mat-label>
               <mat-select formControlName="sector" multiple>
-                @for (sector of sectores; track sector) {
+                @for (sector of sectors; track sector) {
                   <mat-option [value]="sector.codigo">{{sector.codigo}} - {{sector.descricao}}</mat-option>
                 }
               </mat-select>
@@ -75,9 +75,9 @@
 
               <mat-form-field>
                 <mat-label>Estados</mat-label>
-                <mat-select multiple>
-                  @for (state of states; track state) {
-                    <mat-option [value]="state">{{state}}</mat-option>
+                <mat-select (selectionChange)="getCitiesValue()" formControlName="estate" multiple>
+                  @for (estate of estate; track estate) {
+                    <mat-option [value]="estate.uf">{{estate.uf}} - {{estate.nome}}</mat-option>
                   }
                 </mat-select>
               </mat-form-field>
@@ -85,18 +85,18 @@
 
               <mat-form-field>
                 <mat-label>Cidades</mat-label>
-                <mat-select multiple>
+                <mat-select (selectionChange)="getNeighbourhoodValue()" formControlName="city" multiple>
                   @for (city of cities; track city) {
-                    <mat-option [value]="city">{{city}}</mat-option>
+                    <mat-option [value]="city?.nome">{{city?.nome}}</mat-option>
                   }
                 </mat-select>
               </mat-form-field>
 
               <mat-form-field>
                 <mat-label>Bairros</mat-label>
-                <mat-select multiple>
+                <mat-select formControlName="neighbourhood" multiple>
                   @for (neighbourhood of neighbourhoods; track neighbourhood) {
-                    <mat-option [value]="neighbourhood">{{neighbourhood.name}}</mat-option>
+                    <mat-option [value]="neighbourhood.nome">{{neighbourhood.nome}}</mat-option>
                   }
                 </mat-select>
               </mat-form-field>

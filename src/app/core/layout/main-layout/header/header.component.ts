@@ -1,10 +1,10 @@
-import {ChangeDetectionStrategy, Component, DoCheck, Inject, OnInit } from '@angular/core';
+import {ChangeDetectionStrategy, Component, DoCheck, Inject, OnChanges, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { MaterialModule } from '../../../../shared/modules/material.module';
 import { CommonModule, DOCUMENT } from '@angular/common';
 import { AuthService } from '../../../../features/services/auth.service';
-import { Observable } from 'rxjs';
 import { UserStateService } from '../../../../features/services/user-state.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-header',
@@ -19,7 +19,7 @@ import { UserStateService } from '../../../../features/services/user-state.servi
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class HeaderComponent implements OnInit, DoCheck {
+export class HeaderComponent implements OnInit, DoCheck, OnChanges {
 
   public hidden: boolean = false;
   public userName = '';
@@ -27,6 +27,7 @@ export class HeaderComponent implements OnInit, DoCheck {
   public user: any;
   public userStatus: boolean = false;
   public localStorage: any;
+  public userState: Observable<any>;
   constructor(
     private _router: Router,
     private _authService: AuthService,
@@ -34,13 +35,19 @@ export class HeaderComponent implements OnInit, DoCheck {
     public userStateService: UserStateService,
   ) {
     this.localStorage = this._document.defaultView?.localStorage;
+    this.userState = this.userStateService.userStatus.asObservable();
+    this.userState.subscribe((res) => this.isLogged = res);
   }
 
   ngOnInit() {
   }
 
+  ngOnChanges(): void {
+    this.userState.subscribe((res) => this.isLogged = res);
+  }
+
   ngDoCheck(): void {
-  this.isLogged = this.localStorage?.getItem('LOGON_NAME') !== null ? true : false;
+  this.userState.subscribe((res) => this.isLogged = res);
   }
 
   public toggle(): boolean {
