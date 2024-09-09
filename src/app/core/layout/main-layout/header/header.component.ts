@@ -4,6 +4,7 @@ import { MaterialModule } from '../../../../shared/modules/material.module';
 import { CommonModule, DOCUMENT } from '@angular/common';
 import { AuthService } from '../../../../features/services/auth.service';
 import { Observable } from 'rxjs';
+import { UserStateService } from '../../../../features/services/user-state.service';
 
 @Component({
   selector: 'app-header',
@@ -29,9 +30,10 @@ export class HeaderComponent implements OnInit, DoCheck {
   constructor(
     private _router: Router,
     private _authService: AuthService,
-    @Inject(DOCUMENT) private document: Document,
+    @Inject(DOCUMENT) private _document: Document,
+    public userStateService: UserStateService,
   ) {
-    this.localStorage = document.defaultView?.localStorage;
+    this.localStorage = this._document.defaultView?.localStorage;
   }
 
   ngOnInit() {

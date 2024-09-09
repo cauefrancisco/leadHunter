@@ -11,6 +11,7 @@ import { IPasswordEncryption } from '../../shared/interfaces/password-encryption
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { FeedbackModalComponent } from '../../shared/modals/feedback-modal/feedback-modal.component';
+import { UserStateService } from './user-state.service';
 
 
 @Injectable({
@@ -44,6 +45,7 @@ export class AuthService {
     private _httpClient: HttpClient,
     private _router: Router,
     private _dialog: MatDialog,
+    private _userStateService: UserStateService,
   ) {
     this.userNameDisplay = '';
   }
@@ -67,6 +69,7 @@ export class AuthService {
 
         this.doLogin(loginPayload).subscribe((res) => {
           if (res?.result.length > 0 ) {
+            this._userStateService.setUserStatus(true);
             localStorage.setItem('SLK', res.result);
             console.log('systemLoginData doLogin: ', this.systemLoginData.value);
             setTimeout(() => { this.generateSystemSignatureSession(res.result) }, 1000);
@@ -176,7 +179,7 @@ export class AuthService {
   public doUserLogin(payload: ILogin, path: string): Observable<any> { // fourth step
     const userName = (payload.user);
     const password = sha256(`${path}${payload.systemNonce}${payload.clientNonce}${payload.user}${payload.passwordEncrypted}`);
-    const url = `http://192.168.5.4:11118/${path}/Auth?UserName=${userName}&Password=${password}&ClientNonce=${payload.clientNonce}`;
+    const url = `http://192.168.5.4:11117/${path}/Auth?UserName=${userName}&Password=${password}&ClientNonce=${payload.clientNonce}`;
     return this._httpClient.get(url);
   }
 
@@ -212,6 +215,7 @@ public logUserOut(): void {
           if(res){
             console.log('if res logout', res);
             localStorage.clear();
+            this._userStateService.setUserStatus(false);
             this._router.navigateByUrl('login');
           }
         }, (err: any) => {
@@ -243,7 +247,7 @@ public logUserOut(): void {
   }
   public getUserServerNonce(userName: string, path: string): Observable<any> { // first step
     const userNemEncoded = encodeURIComponent(userName)
-    const url = `http://192.168.5.4:11118/${path}/auth?UserName=${userNemEncoded}`;
+    const url = `http://192.168.5.4:11117/${path}/auth?UserName=${userNemEncoded}`;
     return this._httpClient.get(url);
   }
 

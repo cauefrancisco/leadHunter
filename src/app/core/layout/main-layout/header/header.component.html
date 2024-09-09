@@ -7,7 +7,7 @@
     <img src="assets/images/Ficus_Logo.png" alt="">
   </div>
   <span class="example-spacer"></span>
-  @if(!isLogged){
+  @if(!this.userStateService.returnUserStatus()){
     <div class="menu-drop">
       <ul>
         <li>
@@ -23,7 +23,7 @@
     </div>
   }
   <span class="example-spacer"></span>
-  @if(!isLogged){
+  @if(!this.userStateService.returnUserStatus()){
     <button
     mat-icon-button
     class="example-icon"
@@ -33,7 +33,7 @@
       <mat-icon>login</mat-icon>
     </button>
   }
-  @if(isLogged){
+  @if(this.userStateService.returnUserStatus()){
     <button
     mat-icon-button
     class="example-icon"

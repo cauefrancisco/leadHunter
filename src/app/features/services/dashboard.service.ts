@@ -15,7 +15,7 @@ export class DashboardService {
   ) { }
 
   public filterSearch(path: string, payload: IFilterPayload, signatureSession: string): Observable<any>{
-    const url = `http://192.168.5.4:11118/${path}/Empresa/PegarEmpresasSegundoFiltro?session_signature=${signatureSession}`;
+    const url = `http://192.168.5.4:11117/${path}/Empresa/PegarEmpresasSegundoFiltro?session_signature=${signatureSession}`;
     return this._httpClient.post(url,
       { dados:   {
         payload
@@ -25,32 +25,32 @@ export class DashboardService {
 
 
   public getListaCnae(): Observable<any> {
-    const url = `http://192.168.5.4:11119/dados_abertos/InformacoesAuxiliares/PegarListaCnaes`;
+    const url = `http://192.168.5.4:11117/dados_auxiliares/InformacoesAuxiliares/PegarListaCnaes`;
     return this._httpClient.get(url);
   }
   public getListaNatureza(): Observable<any> {
-    const url = `http://192.168.5.4:11119/dados_abertos/InformacoesAuxiliares/PegarListaNaturezas`;
+    const url = `http://192.168.5.4:11117/dados_auxiliares/InformacoesAuxiliares/PegarListaNaturezas`;
     return this._httpClient.get(url);
   }
   public getMunicipios(): Observable<any> {
-    const url = `http://192.168.5.4:11119/dados_abertos/InformacoesAuxiliares/PegarListaMunicipios`;
+    const url = `http://192.168.5.4:11117/dados_auxiliares/InformacoesAuxiliares/PegarListaMunicipios`;
     return this._httpClient.get(url);
   }
   public getListaPortes(): Observable<any> {
-    const url = `http://192.168.5.4:11119/dados_abertos/InformacoesAuxiliares/PegarListaPortes`;
+    const url = `http://192.168.5.4:11117/dados_auxiliares/InformacoesAuxiliares/PegarListaPortes`;
     return this._httpClient.get(url);
   }
   public getUnidadeFederativa(): Observable<any> {
-    const url = `http://192.168.5.4:11119/dados_abertos/InformacoesAuxiliares/PegarListaUnidadeFederativa`;
+    const url = `http://192.168.5.4:11117/dados_auxiliares/InformacoesAuxiliares/PegarListaUnidadeFederativa`;
     return this._httpClient.get(url);
   }
   public getListaSecaoCnae(): Observable<any> {
-    const url = `http://192.168.5.4:11119/dados_abertos/InformacoesAuxiliares/PegarListaSecaoCnae`;
+    const url = `http://192.168.5.4:11117/dados_auxiliares/InformacoesAuxiliares/PegarListaSecaoCnae`;
     return this._httpClient.get(url);
   }
 
   public getListaNcm(): Observable<any> {
-    const url = `http://192.168.5.4:11119/dados_abertos/InformacoesAuxiliares/PegarListaNCM`;
+    const url = `http://192.168.5.4:11117/dados_auxiliares/InformacoesAuxiliares/PegarListaNCM`;
     return this._httpClient.get(url);
   }
 }
