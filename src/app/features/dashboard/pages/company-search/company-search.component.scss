@@ -131,3 +131,14 @@ main{
   align-items: baseline;
   justify-content: flex-start;
 }
+
+.no-data{
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  td{
+    width: 100%;
+  }
+}

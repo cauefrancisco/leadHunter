@@ -166,7 +166,7 @@ export class FilterSectionComponent implements OnInit, AfterViewChecked {
       this._dashboardService.getCEP(this.form.get('cep')?.value).subscribe((res) => {
         if(res.result){
           this.form.get('estate')?.setValue([res.result.uf]);
-          this.form.get('city')?.setValue([res.result.codigoIBGE || res.result.municipio]);
+          this.form.get('city')?.setValue([res.result.municipio]);
           this.form.get('neighbourhood')?.setValue([res.result.codigoBairro]);
           this.form.get('logradouro')?.reset()
           this.form.get('logradouro')?.setValue(res.result.logradouro);

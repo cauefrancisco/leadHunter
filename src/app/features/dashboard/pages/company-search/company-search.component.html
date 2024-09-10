@@ -96,6 +96,10 @@
 
             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
             <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="openDetailsModal(row)"></tr>
+
+            <tr class="mat-row no-data" *matNoDataRow>
+              <td class="mat-cell">No data matching the filter</td>
+            </tr>
           </table>
 
           <!-- <mat-paginator [pageSizeOptions]="[5, 10, 20]"
