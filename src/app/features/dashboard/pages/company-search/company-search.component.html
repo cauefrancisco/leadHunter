@@ -97,9 +97,12 @@
             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
             <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="openDetailsModal(row)"></tr>
 
-            <tr class="mat-row no-data" *matNoDataRow>
-              <td class="mat-cell">No data matching the filter</td>
-            </tr>
+            <ng-container>
+              <p class="p-2 mat-row no-data" *matNoDataRow>
+                  Sem dados encontrados, faça uma nova busca...
+              </p>
+            </ng-container>
+
           </table>
 
           <!-- <mat-paginator [pageSizeOptions]="[5, 10, 20]"

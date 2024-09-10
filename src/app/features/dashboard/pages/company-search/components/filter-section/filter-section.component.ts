@@ -206,18 +206,16 @@ export class FilterSectionComponent implements OnInit, AfterViewChecked {
       ncms: this.form.get('ncm')?.value ? this.form.get('ncm')?.value : null,
       uf: this.form.get('estate')?.value ? this.form.get('estate')?.value : null,
       municipio: this.payloadMunicipios.length > 0 ? this.payloadMunicipios : null,
-      bairro: this.form.get('neighbourhood')?.value,
-      cep: this.form.get('cep')?.value,
-      logradouro: this.form.get('logradouro')?.value,
-      telefone: this.form.get('telephone')?.value,
-      numero: this.form.get('stNumber')?.value,
-      porte: this.form.get('companySize')?.value,
-      naturezaJuridica: this.form.get('legalNature')?.value,
-      regime: this.form.get('feeType')?.value,
-      cnpj: this.form.get('cnpj')?.value,
+      bairro: this.form.get('neighbourhood')?.value ? this.form.get('neighbourhood')?.value : null,
+      cep: this.form.get('cep')?.value ? this.form.get('cep')?.value : null,
+      logradouro: this.form.get('logradouro')?.value ? this.form.get('logradouro')?.value : null,
+      telefone: this.form.get('telephone')?.value ? this.form.get('telephone')?.value : null,
+      numero: this.form.get('stNumber')?.value ? this.form.get('stNumber')?.value : null,
+      porte: this.form.get('companySize')?.value ? this.form.get('companySize')?.value : null,
+      naturezaJuridica: this.form.get('legalNature')?.value ? this.form.get('legalNature')?.value : null,
+      regime: this.form.get('feeType')?.value ? this.form.get('feeType')?.value : null,
+      cnpj: this.form.get('cnpj')?.value ? this.form.get('cnpj')?.value : null,
     }
-
-    console.log('filter', filter);
 
    const dados = {
     filtro: filter,
