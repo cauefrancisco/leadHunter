@@ -7,9 +7,10 @@ import { DashboardService } from '../../../../../services/dashboard.service';
 import { IFilterCnae } from '../../../../../../shared/interfaces/filter-cnae.interface';
 import { AuthService } from '../../../../../services/auth.service';
 import { MatDialog } from '@angular/material/dialog';
-import { FeedbackModalComponent } from '../../../../../../shared/modals/feedback-modal/feedback-modal.component';
 import { ERegimeTributario } from '../../../../../../shared/enums/regime-tributario.enum';
 import { NgxMaskDirective, NgxMaskPipe } from 'ngx-mask';
+import removeAccents from 'remove-accents';
+import { FeedbackModalComponent } from '../../../../../../shared/modals/feedback-modal/feedback-modal.component';
 
 @Component({
   selector: 'app-filter-section',
@@ -70,6 +71,8 @@ export class FilterSectionComponent implements OnInit, AfterViewChecked {
 
   public userPath = '';
   public userSignatureSession = '';
+  public payloadMunicipios: Array<string> = [];
+
   constructor(
     private _formBuilder: FormBuilder,
     private _dashboardService: DashboardService,
@@ -190,13 +193,19 @@ export class FilterSectionComponent implements OnInit, AfterViewChecked {
       this.userSignatureSession = res;
     });
 
+    this.form.get('city')?.value.forEach((element: string) => {
+      console.log('elemnt', removeAccents.remove(element));
+      this.payloadMunicipios.push(removeAccents.remove(element));
+    })
+    console.log('this.payloadMunicipios', this.payloadMunicipios);
+
     let filter = {
       setores: this.form.get('sector')?.value ? this.form.get('sector')?.value : null,
       cnae: this.form.get('cnaePrimario')?.value ? this.form.get('cnaePrimario')?.value : null,
       buscarCnaesSecundarios: this.form.get('cnaeSecundario')?.value ? this.form.get('cnaeSecundario')?.value : null,
       ncms: this.form.get('ncm')?.value ? this.form.get('ncm')?.value : null,
       uf: this.form.get('estate')?.value ? this.form.get('estate')?.value : null,
-      municipio: this.form.get('city')?.value ? this.form.get('city')?.value : null,
+      municipio: this.payloadMunicipios.length > 0 ? this.payloadMunicipios : null,
       bairro: this.form.get('neighbourhood')?.value,
       cep: this.form.get('cep')?.value,
       logradouro: this.form.get('logradouro')?.value,
@@ -207,6 +216,8 @@ export class FilterSectionComponent implements OnInit, AfterViewChecked {
       regime: this.form.get('feeType')?.value,
       cnpj: this.form.get('cnpj')?.value,
     }
+
+    console.log('filter', filter);
 
    const dados = {
     filtro: filter,
@@ -224,6 +235,8 @@ export class FilterSectionComponent implements OnInit, AfterViewChecked {
           text: 'Erro ao buscar dados!'
         }
           }).afterClosed().subscribe(() => this._dashboardService.isLoading.set(false));
+    }, () => {
+      this._dashboardService.isLoading.set(false);
     });
   }
 
