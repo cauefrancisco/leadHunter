@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, DoCheck, Inject, OnChanges, OnInit } from '@angular/core';
+import {AfterViewChecked, ChangeDetectionStrategy, Component, DoCheck, Inject, OnChanges, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { MaterialModule } from '../../../../shared/modules/material.module';
 import { CommonModule, DOCUMENT } from '@angular/common';
@@ -19,7 +19,7 @@ import { Observable } from 'rxjs';
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class HeaderComponent implements OnInit, DoCheck, OnChanges {
+export class HeaderComponent implements OnInit, DoCheck, AfterViewChecked {
 
   public hidden: boolean = false;
   public userName = '';
@@ -42,12 +42,12 @@ export class HeaderComponent implements OnInit, DoCheck, OnChanges {
   ngOnInit() {
   }
 
-  ngOnChanges(): void {
+  ngAfterViewChecked(): void {
     this.userState.subscribe((res) => this.isLogged = res);
   }
 
   ngDoCheck(): void {
-  this.userState.subscribe((res) => this.isLogged = res);
+  // this.userState.subscribe((res) => this.isLogged = res);
   }
 
   public toggle(): boolean {
