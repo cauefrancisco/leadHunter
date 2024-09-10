@@ -8,6 +8,7 @@
         @if(dashboardService.isLoading()){
           <div class="spinner-container w-100">
           <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+          <p class="f-550">Buscando...</p>
           </div>
         }
         <div class="table-header w-100">
@@ -97,12 +98,12 @@
             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
             <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="openDetailsModal(row)"></tr>
 
+
             <ng-container>
-              <p class="p-2 mat-row no-data" *matNoDataRow>
+              <p class="p-2 mat-row no-data f-550" *matNoDataRow>
                   Sem dados encontrados, faça uma nova busca...
               </p>
             </ng-container>
-
           </table>
 
           <!-- <mat-paginator [pageSizeOptions]="[5, 10, 20]"

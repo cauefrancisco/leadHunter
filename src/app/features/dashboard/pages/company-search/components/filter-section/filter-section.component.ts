@@ -193,10 +193,14 @@ export class FilterSectionComponent implements OnInit, AfterViewChecked {
       this.userSignatureSession = res;
     });
 
-    this.form.get('city')?.value.forEach((element: string) => {
-      console.log('elemnt', removeAccents.remove(element));
-      this.payloadMunicipios.push(removeAccents.remove(element));
-    })
+    if(this.form.get('city')?.value){
+      this.form.get('city')?.value.forEach((element: string) => {
+        console.log('elemnt', removeAccents.remove(element));
+        this.payloadMunicipios.push(removeAccents.remove(element));
+      })
+
+    }
+
     console.log('this.payloadMunicipios', this.payloadMunicipios);
 
     let filter = {
