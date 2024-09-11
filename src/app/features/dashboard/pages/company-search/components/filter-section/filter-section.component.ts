@@ -108,9 +108,17 @@ export class FilterSectionComponent implements OnInit, AfterViewChecked {
 
   public clearFilters(): void {
     this.form.reset();
+    if(!this.form.get('estate')?.value){
+      this.form.get('city')?.disable();
+      this.form.get('neighbourhood')?.disable();
+
+    }
   }
 
   public ngAfterViewChecked(): void {
+    if(this.form.get('estate')?.value && this.form.get('estate')?.value.length > 0){
+      this.form.get('city')?.enable();
+    }
   }
 
   public getCitiesValue(): void {
@@ -168,9 +176,22 @@ export class FilterSectionComponent implements OnInit, AfterViewChecked {
       console.log('this.form.get(cep)?.value: ', this.form.get('cep')?.value )
       this._dashboardService.getCEP(this.form.get('cep')?.value).subscribe((res) => {
         if(res.result){
+          console.log('res.result cep ', res.result);
           this.form.get('estate')?.setValue([res.result.uf]);
-          this.form.get('city')?.setValue([res.result.municipio]);
-          this.form.get('neighbourhood')?.setValue([res.result.codigoBairro]);
+          if(res.result?.uf.length > 0){
+            this._dashboardService.getCidade(res.result.uf).subscribe((val)=> {
+              this.cities = val.result;
+              this.form.get('city')?.enable();
+              this.form.get('city')?.setValue([res.result.municipio]);
+            })
+          }
+          if(res.result?.municipio.length > 0){
+            this._dashboardService.getBairro(removeAccents.remove(res.result.municipio)).subscribe((val) => {
+              this.neighbourhoods = val.result;
+              this.form.get('neighbourhood')?.enable();
+              this.form.get('neighbourhood')?.setValue([res.result.codigoBairro]);
+            })
+          }
           this.form.get('logradouro')?.reset()
           this.form.get('logradouro')?.setValue(res.result.logradouro);
           return;
