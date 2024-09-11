@@ -30,7 +30,6 @@
         <div class="mat-elevation-z8 w-100 table-container">
           <table mat-table [dataSource]="dataSource" id="tableId">
 
-
             <ng-container matColumnDef="select">
               <th mat-header-cell *matHeaderCellDef>
                 <mat-checkbox (change)="$event ? toggleAllRows() : null"
@@ -98,18 +97,7 @@
             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
             <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="openDetailsModal(row)"></tr>
 
-
-            <ng-container>
-              <p class="p-2 mat-row no-data f-550" *matNoDataRow>
-                  Sem dados encontrados, faça uma nova busca...
-              </p>
-            </ng-container>
           </table>
-
-          <!-- <mat-paginator [pageSizeOptions]="[5, 10, 20]"
-            showFirstLastButtons>
-          </mat-paginator> -->
-
 
           <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of users"></mat-paginator>
         </div>

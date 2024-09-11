@@ -160,7 +160,12 @@
           <div class="telephone-container w-100">
           <mat-form-field>
             <mat-label>telefone</mat-label>
-            <input formControlName="telephone" matInput>
+            <input matInput
+            prefix="+55"
+            type="tel"
+            formControlName="telephone"
+            pattern="(?:(^\+\d{2})?)(?:([1-9]{2})|([0-9]{3})?)(\d{4,5})(\d{4})"
+            mask="(00) 0 0000 0000||(00)0000 0000">
           </mat-form-field>
           </div>
 
