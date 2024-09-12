@@ -111,8 +111,9 @@ export class FilterSectionComponent implements OnInit, AfterViewChecked {
     if(!this.form.get('estate')?.value){
       this.form.get('city')?.disable();
       this.form.get('neighbourhood')?.disable();
-
     }
+    this. getFilterData();
+
   }
 
   public ngAfterViewChecked(): void {
@@ -177,11 +178,10 @@ export class FilterSectionComponent implements OnInit, AfterViewChecked {
       this._dashboardService.getCEP(this.form.get('cep')?.value).subscribe((res) => {
         if(res.result){
           console.log('res.result cep ', res.result);
-          this.form.get('estate')?.setValue([res.result.uf]);
           if(res.result?.uf.length > 0){
+            this.form.get('estate')?.setValue([res.result.uf]);
             this._dashboardService.getCidade(res.result.uf).subscribe((val)=> {
               this.cities = val.result;
-              this.form.get('city')?.enable();
               this.form.get('city')?.setValue([res.result.municipio]);
             })
           }
