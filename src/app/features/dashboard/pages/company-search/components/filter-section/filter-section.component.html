@@ -96,7 +96,7 @@
                 <mat-label>Bairros</mat-label>
                 <mat-select (selectionChange)="getStreetValue()" formControlName="neighbourhood" multiple>
                   @for (neighbourhood of neighbourhoods; track neighbourhood) {
-                    <mat-option [value]="neighbourhood.codigoBairro">{{neighbourhood.bairro}}</mat-option>
+                    <mat-option [value]="neighbourhood.bairro">{{neighbourhood.bairro}}</mat-option>
                   }
                 </mat-select>
               </mat-form-field>
