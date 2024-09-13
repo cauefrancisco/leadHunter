@@ -56,6 +56,7 @@ export class FilterSectionComponent implements OnInit, AfterViewChecked {
     {codigo: ERegimeTributario.SIMPLES, label: 'Simples'},
     {codigo: ERegimeTributario.NAO_SIMPLES, label: 'Não simples'}
   ]
+  public getCodigoIBGE = signal('');
   public data: any[] = [
     { position: 1, cnpj: '37984878000119', name: 'RANCK MAGRISSO', contact: '(81) 3048-2521', cnae: 'M-6911-7/01 - Serviços advocatícios', address: 'Quadra Sig Quadra 4, 106, Brasilia - Zona Industrial, DF - 70.610-440', companySize: 'pequeno' },
     { position: 2, cnpj: '97554129000183', name: 'RAPHAEL MIRANDA ADVOGADOS', contact: '(21) 3806-3650', cnae: ' M-6911-7/01 - Serviços advocatícios', address: 'Rua Visconde De Piraja, 430, Rio De Janeiro - Ipanema, RJ - 22.410-002', companySize: 'pequeno' },
@@ -140,8 +141,9 @@ export class FilterSectionComponent implements OnInit, AfterViewChecked {
   }
 
   public getNeighbourhoodValue(): void {
+    console.log("event", this.getCodigoIBGE());
     if(this.form.get('estate')?.value && this.form.get('estate')?.value.length > 0 && this.form.get('city')?.value && this.form.get('city')?.value.length > 0){
-      this._dashboardService.getBairro(this.form.get('city')?.value).subscribe((res) => {
+      this._dashboardService.getBairro(this.getCodigoIBGE()).subscribe((res) => {
         if(res){
           this.neighbourhoods = res.result;
           this.form.get('neighbourhood')?.enable();

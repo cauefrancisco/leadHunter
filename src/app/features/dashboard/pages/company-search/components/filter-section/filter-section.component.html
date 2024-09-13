@@ -87,7 +87,7 @@
                 <mat-label>Cidades</mat-label>
                 <mat-select (selectionChange)="getNeighbourhoodValue()" formControlName="city" multiple>
                   @for (city of cities; track city) {
-                    <mat-option [value]="city?.nome">{{city?.nome}}</mat-option>
+                    <mat-option (onSelectionChange)="getCodigoIBGE.set(city?.codigoIBGE)"  [value]="city?.nome">{{city?.nome}}</mat-option>
                   }
                 </mat-select>
               </mat-form-field>
