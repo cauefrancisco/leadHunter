@@ -7,6 +7,7 @@ import { BehaviorSubject } from 'rxjs';
 export class UserStateService {
 
   userStatus = new BehaviorSubject(false);
+  userName = new BehaviorSubject('');
 
 
   constructor() { }
@@ -17,5 +18,12 @@ export class UserStateService {
 
   public returnUserStatus(): boolean {
     return this.userStatus.value;
+  }
+  public setUserName(value: string): void {
+    this.userName.next(value);
+  }
+
+  public returnUserName(): string {
+    return this.userName.value;
   }
 }

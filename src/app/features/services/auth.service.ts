@@ -116,7 +116,7 @@ export class AuthService {
     this.systemLoginData.next(value);
   }
 
-  public geSystemLoginDataValue(): Observable<any> {
+  public getSystemLoginDataValue(): Observable<any> {
     return this.currentSystemLoginData$;
   }
 
@@ -151,6 +151,7 @@ export class AuthService {
             this.userIdentified.next(true);
             localStorage?.setItem('LOGIN_KEY', res?.result);
             localStorage.setItem('LOGON_NAME', res.logonname);
+            this._userStateService.setUserName(res?.logonname);
             this._router.navigateByUrl('dashboard/company-search');
             return;
           }
