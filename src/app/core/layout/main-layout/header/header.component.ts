@@ -23,11 +23,11 @@ export class HeaderComponent implements OnInit, DoCheck, AfterViewChecked {
 
   public hidden: boolean = false;
   public userName = '';
-  public isLogged = false;
+  public isLogged: boolean;
   public user: any;
   public userStatus: boolean = false;
   public localStorage: any;
-  public userState: Observable<any>;
+  // public userState: Observable<any>;
   constructor(
     private _router: Router,
     private _authService: AuthService,
@@ -35,19 +35,18 @@ export class HeaderComponent implements OnInit, DoCheck, AfterViewChecked {
     public userStateService: UserStateService,
   ) {
     this.localStorage = this._document.defaultView?.localStorage;
-    this.userState = this.userStateService.userStatus.asObservable();
-    this.userState.subscribe((res) => this.isLogged = res);
+    this.isLogged = this.userStateService.returnUserStatus();
   }
 
   ngOnInit() {
   }
 
   ngAfterViewChecked(): void {
-    this.userState.subscribe((res) => this.isLogged = res);
+    this.isLogged = this.userStateService.returnUserStatus();
   }
 
   ngDoCheck(): void {
-  // this.userState.subscribe((res) => this.isLogged = res);
+    this.isLogged = this.userStateService.returnUserStatus();
   }
 
   public toggle(): boolean {
