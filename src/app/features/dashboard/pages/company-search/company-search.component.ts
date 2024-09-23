@@ -19,6 +19,7 @@ export interface ISearchCompanyTable {
   address: string;
   companySize: string;
   position: number;
+  socio: string;
 }
 
 @Component({
@@ -43,7 +44,7 @@ export class CompanySearchComponent implements OnInit, AfterViewInit, DoCheck {
   public isSearch: boolean = false;
   public contentTable!: any[];
   public data!: any[];
-  displayedColumns: string[] = ['select', 'cnpjName', 'contact', 'regime', 'cnae', 'companySize', 'regime', 'address'];
+  displayedColumns: string[] = ['select', 'cnpjName', 'contact', 'regime', 'cnae', 'companySize', 'regime', 'address', 'socio'];
   dataSource = new MatTableDataSource<ISearchCompanyTable>(this.data);
   selection = new SelectionModel<ISearchCompanyTable>(true, []);
 
