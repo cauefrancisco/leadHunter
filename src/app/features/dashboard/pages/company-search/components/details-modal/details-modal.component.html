@@ -51,7 +51,7 @@
         <mat-accordion displayMode="default" [multi]="true" [hideToggle]="false">
             <mat-expansion-panel [hideToggle]="false">
                 <mat-expansion-panel-header><mat-icon class="material-symbols-outlined">map</mat-icon> Localização</mat-expansion-panel-header>
-                body panel
+                {{data?.tipoLogradouro}} {{data?.logradouro}}, {{data?.numero}}. {{data?.bairro}}, {{data?.UF}}. - {{data?.CEP}}
             </mat-expansion-panel>
             <mat-expansion-panel [hideToggle]="false">
                 <mat-expansion-panel-header><mat-icon class="material-symbols-outlined">mail</mat-icon>E-mails e Pessoas</mat-expansion-panel-header>

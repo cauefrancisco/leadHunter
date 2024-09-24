@@ -7,6 +7,7 @@ import { MainDashboardLayoutComponent } from './features/dashboard/main-dashboar
 import { CompanySearchComponent } from './features/dashboard/pages/company-search/company-search.component';
 import { MarketCalculatorComponent } from './features/dashboard/pages/market-calculator/market-calculator.component';
 import { HomeComponent } from './features/pages/Home/Home.component';
+import { AuthGuard } from './shared/gards/auth.guard';
 
 export const routes: Routes = [
 
@@ -23,6 +24,7 @@ export const routes: Routes = [
                 path: 'dashboard',
                 pathMatch: 'prefix',
                 component: MainDashboardLayoutComponent,
+                canActivate: [AuthGuard],
                 children: [
                     { path: 'home', component: DashboardComponent, title: 'Dashboard', data: ['Dashboard'] },
                     { path: 'company-search', component: CompanySearchComponent, title: 'Empresas', data: ['Empresas'] },
