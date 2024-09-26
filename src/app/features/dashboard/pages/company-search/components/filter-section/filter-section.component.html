@@ -18,10 +18,36 @@
       <form [formGroup]="form">
 
         <!-- Setor -->
+
         <mat-expansion-panel [expanded]="true" class="mat-expansion" (opened)="panelOpenState.set(true)" (closed)="panelOpenState.set(false)">
           <mat-expansion-panel-header>
             <mat-panel-title>Setor</mat-panel-title>
           </mat-expansion-panel-header>
+
+          <mat-form-field class="example-full-width">
+            <input type="text" placeholder="Setores" aria-label="Setores" matInput [matAutocomplete]="autoSector" [formControl]="sectorControl">
+            <mat-hint>Insira um texto para encontrar setor por nome</mat-hint>
+          </mat-form-field>
+
+          <mat-autocomplete #autoSector="matAutocomplete" [displayWith]="displayFnSectors">
+            <mat-option *ngFor="let sector of filteredSectors | async" [value]="selectedSectors">
+              <div (click)="optionClickedSector($event, sector)">
+                <mat-checkbox [checked]="sector.selected" (change)="toggleSelectionSector(sector)" (click)="$event.stopPropagation()">
+                  {{ sector.codigo }} {{ sector.descricao }}
+                </mat-checkbox>
+              </div>
+            </mat-option>
+          </mat-autocomplete>
+
+          <br><br>
+
+          <label>Setores selecionados:</label>
+          <mat-list dense>
+            <mat-list-item *ngIf="selectedSectors?.length === 0">(None)</mat-list-item>
+            <mat-list-item *ngFor="let sector of selectedSectors">
+              {{ sector.codigo }} {{ sector.descricao }}
+            </mat-list-item>
+          </mat-list>
 
           <div class="sector-content w-100">
             <mat-form-field>
