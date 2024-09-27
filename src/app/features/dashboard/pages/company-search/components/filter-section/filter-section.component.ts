@@ -281,7 +281,6 @@ export class FilterSectionComponent implements OnInit, AfterViewChecked {
       const i = this.selectedUsers.findIndex(value => value.firstname === user.firstname && value.lastname === user.lastname);
       this.selectedUsers.splice(i, 1);
     }
-
     this.userControl.setValue(this.selectedUsers);
   }
 
@@ -293,8 +292,7 @@ export class FilterSectionComponent implements OnInit, AfterViewChecked {
       const i = this.selectedSectors.findIndex(value => value.codigo === sector.codigo && value.descricao === sector.descricao);
       this.selectedSectors.splice(i, 1);
     }
-
-    this.sectorControl.setValue(this.selectedUsers);
+    this.sectorControl.setValue(this.selectedSectors.map((i) => i.codigo));
   }
 
   // ************************************
@@ -417,9 +415,9 @@ export class FilterSectionComponent implements OnInit, AfterViewChecked {
     }
 
     console.log('this.payloadMunicipios', this.payloadMunicipios);
-
+    console.log('sectorControl',this.sectorControl.value);
     let filter = {
-      setores: this.form.get('sector')?.value ? this.form.get('sector')?.value : null,
+      setores: this.sectorControl.value ? this.sectorControl.value : null,
       cnae: this.form.get('cnaePrimario')?.value ? this.form.get('cnaePrimario')?.value : null,
       buscarCnaesSecundarios: this.form.get('cnaeSecundario')?.value ? this.form.get('cnaeSecundario')?.value : null,
       ncms: this.form.get('ncm')?.value ? this.form.get('ncm')?.value : null,

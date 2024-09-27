@@ -43,7 +43,7 @@
 
           <label>Setores selecionados:</label>
           <mat-list dense>
-            <mat-list-item *ngIf="selectedSectors?.length === 0">(None)</mat-list-item>
+            <mat-list-item class="ms-1" *ngIf="selectedSectors?.length === 0">(Nenhum selecionado)</mat-list-item>
             <mat-list-item *ngFor="let sector of selectedSectors">
               {{ sector.codigo }} {{ sector.descricao }}
             </mat-list-item>
