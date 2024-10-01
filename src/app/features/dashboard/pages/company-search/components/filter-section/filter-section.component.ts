@@ -64,9 +64,28 @@ export class FilterSectionComponent implements OnInit, AfterViewChecked {
   public lastFilterSector: string = '';
   public displayValueSector: string = '';
 
+  public cnaeControl = new FormControl();
   public cnaes: Array<IFilterCnae> = [];
-  public municipios: Array<IFilterCnae> = [];
+  public selectedCnae: IFilterCnae[] = new Array<IFilterCnae>();
+  public filteredCnae!: Observable<IFilterCnae[]>;
+  public lastFilterCnae: string = '';
+  public displayValueCnae: string = '';
+
+  public cnaeSecundarioControl = new FormControl();
+  public cnaesSecundarios: Array<IFilterCnae> = [];
+  public selectedCnaeSecundario: IFilterCnae[] = new Array<IFilterCnae>();
+  public filteredCnaeSecundario!: Observable<IFilterCnae[]>;
+  public lastFilterCnaeSecundario: string = '';
+  public displayValueCnaeSecundario: string = '';
+
+  public ncmControl = new FormControl();
   public ncm: Array<IFilterCnae> = [];
+  public selectedNcm: IFilterCnae[] = new Array<IFilterCnae>();
+  public filteredNcm!: Observable<IFilterCnae[]>;
+  public lastFilterNcm: string = '';
+  public displayValueNcm: string = '';
+
+  public municipios: Array<IFilterCnae> = [];
   public estate: Array<any> = [];
   public legalNatures:  Array<IFilterCnae> = [];
   public CompanySizeList: Array<any> = [];
@@ -190,15 +209,26 @@ export class FilterSectionComponent implements OnInit, AfterViewChecked {
   }
 
   ngOnInit() {
-    this.filteredUsers = this.userControl.valueChanges.pipe(
-      startWith<string | User[]>(''),
-      map(value => typeof value === 'string' ? value : this.lastFilter),
-      map(filter => this.filter(filter))
-    );
     this.filteredSectors = this.sectorControl.valueChanges.pipe(
       startWith<string | IFilterCnae[]>(''),
       map(value => typeof value === 'string' ? value : this.lastFilterSector),
-      map(filter => this.filterSector(filter))
+      map(sector => this.filterSector(sector))
+    );
+    this.filteredCnae = this.cnaeControl.valueChanges.pipe(
+      startWith<string | IFilterCnae[]>(''),
+      map(value => typeof value === 'string' ? value : this.lastFilterCnae),
+      map(cnae => this.filterCnae(cnae))
+    );
+    this.filteredCnaeSecundario = this.cnaeSecundarioControl.valueChanges.pipe(
+      startWith<string | IFilterCnae[]>(''),
+      map(value => typeof value === 'string' ? value : this.lastFilterCnaeSecundario),
+      map(cnae => this.filterCnaeSecundario(cnae))
+    );
+
+    this.filteredNcm = this.ncmControl.valueChanges.pipe(
+      startWith<string | IFilterCnae[]>(''),
+      map(value => typeof value === 'string' ? value : this.lastFilterCnaeSecundario),
+      map(ncm => this.filterNcm(ncm))
     );
 
 
@@ -207,19 +237,7 @@ export class FilterSectionComponent implements OnInit, AfterViewChecked {
     this.form.get('neighbourhood')?.disable();
   }
 
-  // TESTE *****************************
-
-  public filter(filter: string): User[] {
-    this.lastFilter = filter;
-    if (filter) {
-      return this.users.filter(option => {
-        return option.firstname.toLowerCase().indexOf(filter.toLowerCase()) >= 0
-          || option.lastname.toLowerCase().indexOf(filter.toLowerCase()) >= 0;
-      })
-    } else {
-      return this.users.slice();
-    }
-  }
+  // AUTOCOMPLETE *****************************
 
   public filterSector(filter: string): IFilterCnae[] {
     this.lastFilterSector = filter;
@@ -233,19 +251,40 @@ export class FilterSectionComponent implements OnInit, AfterViewChecked {
     }
   }
 
-  public displayFn(value: User[] | string): string {
-    if (Array.isArray(value)) {
-      value.forEach((user, index) => {
-        if (index === 0) {
-          this.displayValue = user.firstname + ' ' + user.lastname;
-        } else {
-          this.displayValue += ', ' + user.firstname + ' ' + user.lastname;
-        }
-      });
+  public filterCnae(filter: string): IFilterCnae[] {
+    this.lastFilterCnae = filter;
+    if (filter) {
+      return this.cnaes.filter(option => {
+        return option.codigo.toLowerCase().indexOf(filter.toLowerCase()) >= 0
+          || option.descricao.toLowerCase().indexOf(filter.toLowerCase()) >= 0;
+      })
     } else {
-      this.displayValue = value;
+      return this.cnaes.slice();
     }
-    return this.displayValue;
+  }
+
+  public filterCnaeSecundario(cnaeSecundario: string): IFilterCnae[] {
+    this.lastFilterCnaeSecundario = cnaeSecundario;
+    if (cnaeSecundario) {
+      return this.cnaesSecundarios.filter(option => {
+        return option.codigo.toLowerCase().indexOf(cnaeSecundario.toLowerCase()) >= 0
+          || option.descricao.toLowerCase().indexOf(cnaeSecundario.toLowerCase()) >= 0;
+      })
+    } else {
+      return this.cnaesSecundarios.slice();
+    }
+  }
+
+  public filterNcm(ncm: string): IFilterCnae[] {
+    this.lastFilterCnaeSecundario = ncm;
+    if (ncm) {
+      return this.ncm.filter(option => {
+        return option.codigo.toLowerCase().indexOf(ncm.toLowerCase()) >= 0
+          || option.descricao.toLowerCase().indexOf(ncm.toLowerCase()) >= 0;
+      })
+    } else {
+      return this.ncm.slice();
+    }
   }
 
   public displayFnSectors(value: IFilterCnae[] | string): string {
@@ -262,26 +301,62 @@ export class FilterSectionComponent implements OnInit, AfterViewChecked {
     }
     return this.displayValueSector;
   }
+  public displayFnCnaes(value: IFilterCnae[] | string): string {
+    if (Array.isArray(value)) {
+      value.forEach((user, index) => {
+        if (index === 0) {
+          this.displayValueCnae = user.codigo + ' ' + user.descricao;
+        } else {
+          this.displayValueCnae += ', ' + user.codigo + ' ' + user.descricao;
+        }
+      });
+    } else {
+      this.displayValueCnae = value;
+    }
+    return this.displayValueCnae;
+  }
 
-  public optionClicked(event: Event, user: User) {
-    event.stopPropagation();
-    this.toggleSelection(user);
+  public displayFnCnaesSecundarios(value: IFilterCnae[] | string): string {
+    if (Array.isArray(value)) {
+      value.forEach((user, index) => {
+        if (index === 0) {
+          this.displayValueCnaeSecundario = user.codigo + user.descricao;
+        } else {
+          this.displayValueCnaeSecundario += ', ' + user.codigo + ' ' + user.descricao;
+        }
+      });
+    } else {
+      this.displayValueCnaeSecundario = value;
+    }
+    return this.displayValueCnaeSecundario;
+  }
+
+  public displayFnNcm(value: IFilterCnae[] | string): string {
+    if (Array.isArray(value)) {
+      value.forEach((user, index) => {
+        if (index === 0) {
+          this.displayValueNcm = user.codigo + user.descricao;
+        } else {
+          this.displayValueNcm += ', ' + user.codigo + ' ' + user.descricao;
+        }
+      });
+    } else {
+      this.displayValueNcm = value;
+    }
+    return this.displayValueNcm;
   }
 
   public optionClickedSector(event: Event, sector: Sector) {
     event.stopPropagation();
     this.toggleSelectionSector(sector);
   }
-
-  public toggleSelection(user: User) {
-    user.selected = !user.selected;
-    if (user.selected) {
-      this.selectedUsers.push(user);
-    } else {
-      const i = this.selectedUsers.findIndex(value => value.firstname === user.firstname && value.lastname === user.lastname);
-      this.selectedUsers.splice(i, 1);
-    }
-    this.userControl.setValue(this.selectedUsers);
+  public optionClickedCnae(event: Event, cnae: Sector) {
+    event.stopPropagation();
+    this.toggleSelectionCnae(cnae);
+  }
+  public optionClickedCnaeSecundario(event: Event, cnaeSecundario: Sector) {
+    event.stopPropagation();
+    this.toggleSelectionCnaeSecundario(cnaeSecundario);
   }
 
   public toggleSelectionSector(sector: Sector) {
@@ -293,6 +368,38 @@ export class FilterSectionComponent implements OnInit, AfterViewChecked {
       this.selectedSectors.splice(i, 1);
     }
     this.sectorControl.setValue(this.selectedSectors.map((i) => i.codigo));
+  }
+  public toggleSelectionCnae(cnae: Sector) {
+    cnae.selected = !cnae.selected;
+    if (cnae.selected) {
+      this.selectedCnae.push(cnae);
+    } else {
+      const i = this.selectedCnae.findIndex(value => value.codigo === cnae.codigo && value.descricao === cnae.descricao);
+      this.selectedCnae.splice(i, 1);
+    }
+    this.cnaeControl.setValue(this.selectedCnae.map((i) => i.codigo));
+  }
+
+  public toggleSelectionCnaeSecundario(cnaeSecundario: Sector) {
+    cnaeSecundario.selected = !cnaeSecundario.selected;
+    if (cnaeSecundario.selected) {
+      this.selectedCnaeSecundario.push(cnaeSecundario);
+    } else {
+      const i = this.selectedCnaeSecundario .findIndex(value => value.codigo === cnaeSecundario.codigo && value.descricao === cnaeSecundario.descricao);
+      this.selectedCnaeSecundario.splice(i, 1);
+    }
+    this.cnaeSecundarioControl.setValue(this.selectedCnaeSecundario.map((i) => i.codigo));
+  }
+
+  public toggleSelectionNcm(ncm: Sector) {
+    ncm.selected = !ncm.selected;
+    if (ncm.selected) {
+      this.selectedNcm.push(ncm);
+    } else {
+      const i = this.selectedNcm.findIndex(value => value.codigo === ncm.codigo && value.descricao === ncm.descricao);
+      this.selectedNcm.splice(i, 1);
+    }
+    this.ncmControl.setValue(this.selectedNcm.map((i) => i.codigo));
   }
 
   // ************************************
@@ -418,9 +525,9 @@ export class FilterSectionComponent implements OnInit, AfterViewChecked {
     console.log('sectorControl',this.sectorControl.value);
     let filter = {
       setores: this.sectorControl.value ? this.sectorControl.value : null,
-      cnae: this.form.get('cnaePrimario')?.value ? this.form.get('cnaePrimario')?.value : null,
-      buscarCnaesSecundarios: this.form.get('cnaeSecundario')?.value ? this.form.get('cnaeSecundario')?.value : null,
-      ncms: this.form.get('ncm')?.value ? this.form.get('ncm')?.value : null,
+      cnae: this.cnaeControl.value ? this.cnaeControl.value : null,
+      buscarCnaesSecundarios: this.cnaeSecundarioControl.value ? this.cnaeSecundarioControl.value : null,
+      ncms: this.ncmControl.value ? this.ncmControl.value : null,
       uf: this.form.get('estate')?.value ? this.form.get('estate')?.value : null,
       municipio: this.payloadMunicipios.length > 0 ? this.payloadMunicipios : null,
       bairro: this.form.get('neighbourhood')?.value ? this.form.get('neighbourhood')?.value : null,
@@ -459,6 +566,7 @@ export class FilterSectionComponent implements OnInit, AfterViewChecked {
   public getFilterData(): void {
    this._dashboardService.getListaCnae().subscribe((res: any) => {
     this.cnaes = res?.result;
+    this.cnaesSecundarios = res?.result;
      });
    this._dashboardService.getListaNatureza().subscribe((res: any) => {
     this.legalNatures = res?.result;
