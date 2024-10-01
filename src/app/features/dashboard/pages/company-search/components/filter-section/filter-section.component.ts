@@ -358,6 +358,9 @@ export class FilterSectionComponent implements OnInit, AfterViewChecked {
     event.stopPropagation();
     this.toggleSelectionCnaeSecundario(cnaeSecundario);
   }
+  public optionClickedNcm(ncm: Sector) {
+    this.toggleSelectionNcm(ncm);
+  }
 
   public toggleSelectionSector(sector: Sector) {
     sector.selected = !sector.selected;
