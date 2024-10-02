@@ -26,6 +26,16 @@ export class Sector {
     if (selected === undefined) selected = false;
   }
 }
+export class Cnae {
+  constructor(public codigo: string, public descricao: string, public selected?: boolean) {
+    if (selected === undefined) selected = false;
+  }
+}
+export class Ncm {
+  constructor(public codigo: string, public descricao: string, public selected?: boolean) {
+    if (selected === undefined) selected = false;
+  }
+}
 
 @Component({
   selector: 'app-filter-section',
@@ -59,28 +69,28 @@ export class FilterSectionComponent implements OnInit, AfterViewChecked {
 
   public sectorControl = new FormControl();
   public sectors: Array<IFilterCnae> = [];
-  public selectedSectors: IFilterCnae[] = new Array<IFilterCnae>();
+  public selectedSectors: Sector[] = new Array<Sector>();
   public filteredSectors!: Observable<IFilterCnae[]>;
   public lastFilterSector: string = '';
   public displayValueSector: string = '';
 
   public cnaeControl = new FormControl();
   public cnaes: Array<IFilterCnae> = [];
-  public selectedCnae: IFilterCnae[] = new Array<IFilterCnae>();
+  public selectedCnae: Cnae[] = new Array<Cnae>();
   public filteredCnae!: Observable<IFilterCnae[]>;
   public lastFilterCnae: string = '';
   public displayValueCnae: string = '';
 
   public cnaeSecundarioControl = new FormControl();
   public cnaesSecundarios: Array<IFilterCnae> = [];
-  public selectedCnaeSecundario: IFilterCnae[] = new Array<IFilterCnae>();
+  public selectedCnaeSecundario: Cnae[] = new Array<Cnae>();
   public filteredCnaeSecundario!: Observable<IFilterCnae[]>;
   public lastFilterCnaeSecundario: string = '';
   public displayValueCnaeSecundario: string = '';
 
   public ncmControl = new FormControl();
   public ncm: Array<IFilterCnae> = [];
-  public selectedNcm: IFilterCnae[] = new Array<IFilterCnae>();
+  public selectedNcm: Ncm[] = new Array<Ncm>();
   public filteredNcm!: Observable<IFilterCnae[]>;
   public lastFilterNcm: string = '';
   public displayValueNcm: string = '';
@@ -301,7 +311,7 @@ export class FilterSectionComponent implements OnInit, AfterViewChecked {
     }
     return this.displayValueSector;
   }
-  public displayFnCnaes(value: IFilterCnae[] | string): string {
+  public displayFnCnaes(value: Cnae[] | string): string {
     if (Array.isArray(value)) {
       value.forEach((user, index) => {
         if (index === 0) {
@@ -350,15 +360,15 @@ export class FilterSectionComponent implements OnInit, AfterViewChecked {
     event.stopPropagation();
     this.toggleSelectionSector(sector);
   }
-  public optionClickedCnae(event: Event, cnae: Sector) {
+  public optionClickedCnae(event: Event, cnae: Cnae) {
     event.stopPropagation();
     this.toggleSelectionCnae(cnae);
   }
-  public optionClickedCnaeSecundario(event: Event, cnaeSecundario: Sector) {
+  public optionClickedCnaeSecundario(event: Event, cnaeSecundario: Cnae) {
     event.stopPropagation();
     this.toggleSelectionCnaeSecundario(cnaeSecundario);
   }
-  public optionClickedNcm(ncm: Sector) {
+  public optionClickedNcm(ncm: Ncm) {
     this.toggleSelectionNcm(ncm);
   }
 
@@ -372,7 +382,7 @@ export class FilterSectionComponent implements OnInit, AfterViewChecked {
     }
     this.sectorControl.setValue(this.selectedSectors.map((i) => i.codigo));
   }
-  public toggleSelectionCnae(cnae: Sector) {
+  public toggleSelectionCnae(cnae: Cnae) {
     cnae.selected = !cnae.selected;
     if (cnae.selected) {
       this.selectedCnae.push(cnae);
@@ -383,7 +393,7 @@ export class FilterSectionComponent implements OnInit, AfterViewChecked {
     this.cnaeControl.setValue(this.selectedCnae.map((i) => i.codigo));
   }
 
-  public toggleSelectionCnaeSecundario(cnaeSecundario: Sector) {
+  public toggleSelectionCnaeSecundario(cnaeSecundario: Cnae) {
     cnaeSecundario.selected = !cnaeSecundario.selected;
     if (cnaeSecundario.selected) {
       this.selectedCnaeSecundario.push(cnaeSecundario);
@@ -394,7 +404,7 @@ export class FilterSectionComponent implements OnInit, AfterViewChecked {
     this.cnaeSecundarioControl.setValue(this.selectedCnaeSecundario.map((i) => i.codigo));
   }
 
-  public toggleSelectionNcm(ncm: Sector) {
+  public toggleSelectionNcm(ncm: Ncm) {
     ncm.selected = !ncm.selected;
     if (ncm.selected) {
       this.selectedNcm.push(ncm);
@@ -413,7 +423,15 @@ export class FilterSectionComponent implements OnInit, AfterViewChecked {
       this.form.get('city')?.disable();
       this.form.get('neighbourhood')?.disable();
     }
-    this. getFilterData();
+    this.cnaeControl.reset()
+    this.selectedCnae = [];
+    this.cnaeSecundarioControl.reset();
+    this.selectedCnaeSecundario = [];
+    this.ncmControl.reset();
+    this.selectedNcm = [];
+    this.sectorControl.reset();
+    this.selectedSectors = [];
+    this.getFilterData();
 
   }
 
