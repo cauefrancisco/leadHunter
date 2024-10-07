@@ -11,7 +11,7 @@ import { ERegimeTributario } from '../../../../../../shared/enums/regime-tributa
 import { NgxMaskDirective, NgxMaskPipe } from 'ngx-mask';
 import removeAccents from 'remove-accents';
 import { FeedbackModalComponent } from '../../../../../../shared/modals/feedback-modal/feedback-modal.component';
-import { map, Observable, ReplaySubject, startWith, Subject, takeUntil } from 'rxjs';
+import { ReplaySubject, Subject, takeUntil } from 'rxjs';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { MatSelect } from '@angular/material/select';
 
