@@ -255,7 +255,7 @@ export class FilterSectionComponent implements OnInit, AfterViewChecked {
     } else {
       search = search.toLowerCase();
     }
-    // filter the cnaes
+    // filter the ncm
     this.filteredNcmMulti.next(
       this.ncm.filter(
         ncm => ncm.descricao.toLowerCase().indexOf(search) > -1 || ncm.codigo.toLowerCase().indexOf(search) > -1 )
