@@ -32,7 +32,10 @@
             <mat-form-field>
               <mat-select class="f-550" [formControl]="sectorMultiCtrl" placeholder="Setores" [multiple]="true" #multiSelect>
                 <mat-option>
-                  <ngx-mat-select-search placeholderLabel="Buscar por nome..." [formControl]="sectorMultiFilterCtrl"></ngx-mat-select-search>
+                  <ngx-mat-select-search
+                   placeholderLabel="Buscar por nome..."
+                   noEntriesFoundLabel="Não encontrado"
+                    [formControl]="sectorMultiFilterCtrl"></ngx-mat-select-search>
                 </mat-option>
                 <mat-option *ngFor="let sector of filteredSectorMulti | async" [value]="sector" (click)="onSectorMultiSelectionChange($event)">
                   {{sector.codigo}} - {{sector.descricao}}
@@ -47,7 +50,10 @@
            <mat-form-field>
             <mat-select class="f-550" [formControl]="cnaePrimaMultiCtrl" placeholder="CNAE Primário" [multiple]="true" #multiSelect>
               <mat-option>
-                <ngx-mat-select-search placeholderLabel="Buscar por nome..." [formControl]="cnaePrimaMultiFilterCtrl"></ngx-mat-select-search>
+                <ngx-mat-select-search
+                 placeholderLabel="Buscar por nome..."
+                 noEntriesFoundLabel="Não encontrado"
+                  [formControl]="cnaePrimaMultiFilterCtrl"></ngx-mat-select-search>
               </mat-option>
               <mat-option *ngFor="let cnae of filteredCnaePrimaMulti | async" [value]="cnae" (click)="onCnaePrimaMultiSelectionChange($event)">
                 {{cnae.codigo}} - {{cnae.descricao}}
@@ -62,7 +68,10 @@
            <mat-form-field>
             <mat-select class="f-550" [formControl]="cnaeSecundMultiCtrl" placeholder="CNAE Secundário" [multiple]="true" #multiSelect>
               <mat-option>
-                <ngx-mat-select-search placeholderLabel="Buscar por nome..." [formControl]="cnaeSecundMultiFilterCtrl"></ngx-mat-select-search>
+                <ngx-mat-select-search
+                placeholderLabel="Buscar por nome..."
+                noEntriesFoundLabel="Não encontrado"
+                [formControl]="cnaeSecundMultiFilterCtrl"></ngx-mat-select-search>
               </mat-option>
               <mat-option *ngFor="let cnae of filteredCnaeSecundMulti | async" [value]="cnae" (click)="onCnaeSecundMultiSelectionChange($event)">
                 {{cnae.codigo}} - {{cnae.descricao}}
@@ -75,7 +84,10 @@
           <mat-form-field>
             <mat-select class="f-550" [formControl]="ncmMultiCtrl" placeholder="Ncm" [multiple]="true" #multiSelect>
               <mat-option>
-                <ngx-mat-select-search placeholderLabel="Buscar por nome..." [formControl]="ncmMultiFilterCtrl"></ngx-mat-select-search>
+                <ngx-mat-select-search
+                 placeholderLabel="Buscar por nome..."
+                 noEntriesFoundLabel="Não encontrado"
+                  [formControl]="ncmMultiFilterCtrl"></ngx-mat-select-search>
               </mat-option>
               <mat-option *ngFor="let ncm of filteredNcmMulti | async" [value]="ncm" (click)="onNcmMultiSelectionChange($event)">
                 {{ncm.codigo}} - {{ncm.descricao}}
