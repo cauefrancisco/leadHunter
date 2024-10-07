@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { AfterViewChecked, Component, EventEmitter, OnInit, Output, signal, ViewChild } from '@angular/core';
+import { AfterViewChecked, Component, EventEmitter, OnDestroy, OnInit, Output, signal, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MaterialModule } from '../../../../../../shared/modules/material.module';
 import { PrimeNgModule } from '../../../../../../shared/modules/primeng.module';
@@ -62,7 +62,7 @@ export class Ncm {
   ],
 
 })
-export class FilterSectionComponent implements OnInit, AfterViewChecked {
+export class FilterSectionComponent implements OnInit, AfterViewChecked, OnDestroy {
   @Output() tableDataEvent = new EventEmitter<any>();
   @Output() selectedSectorValue = new EventEmitter<any>();
   @Output() selectedCnaePrimarioValue = new EventEmitter<any>();
@@ -188,6 +188,17 @@ export class FilterSectionComponent implements OnInit, AfterViewChecked {
       });
   }
 
+  public ngAfterViewChecked(): void {
+    if(this.form.get('estate')?.value && this.form.get('estate')?.value.length > 0){
+      this.form.get('city')?.enable();
+    }
+  }
+
+  ngOnDestroy() {
+    this._onDestroy.next();
+    this._onDestroy.complete();
+  }
+
   protected filterSectorMulti() {
     if (!this.sectors) {
       return;
@@ -291,12 +302,6 @@ export class FilterSectionComponent implements OnInit, AfterViewChecked {
     }
     this.getFilterData();
 
-  }
-
-  public ngAfterViewChecked(): void {
-    if(this.form.get('estate')?.value && this.form.get('estate')?.value.length > 0){
-      this.form.get('city')?.enable();
-    }
   }
 
   public getCitiesValue(): void {
