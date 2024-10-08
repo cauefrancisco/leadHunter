@@ -48,13 +48,6 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
     --mdc-circular-progress-active-indicator-color: $aleixo-dark-blue !important;
 }
 
-.mat-mdc-paginator-range-actions {
-  display: flex;
-  gap: 5rem;
-  align-items: center;
-  padding: 0 2rem;
-}
-
 ::-webkit-scrollbar {
   width: 4px;
   height: 5px;

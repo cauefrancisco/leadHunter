@@ -39,8 +39,12 @@ export interface ISearchCompanyTable {
 
 export class CompanySearchComponent implements OnInit, AfterViewInit, DoCheck {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild('paginatorPageSize') paginatorPageSize!: MatPaginator;
+
   @Input() searchTableData: boolean = false;
 
+  resultsLength = 0;
+  pageSizes = [5, 10, 20];
   public isExcelBtnActive = false;
   public showTable = signal(false);
   public isSearch: boolean = false;
@@ -48,6 +52,7 @@ export class CompanySearchComponent implements OnInit, AfterViewInit, DoCheck {
   public data!: any[];
   displayedColumns: string[] = ['select', 'cnpjName', 'contact', 'regime', 'cnae', 'companySize', 'regime', 'address', 'socio'];
   dataSource = new MatTableDataSource<ISearchCompanyTable>(this.data);
+  dataSourceWithPageSize = new MatTableDataSource(this.data);
   selection = new SelectionModel<ISearchCompanyTable>(true, []);
 
   public selectedSector: any;
@@ -65,6 +70,7 @@ export class CompanySearchComponent implements OnInit, AfterViewInit, DoCheck {
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
+    this.dataSourceWithPageSize.paginator = this.paginatorPageSize;
   }
 
   ngDoCheck(): void {
@@ -78,6 +84,8 @@ export class CompanySearchComponent implements OnInit, AfterViewInit, DoCheck {
 
   public recieveTableData(event: any): void {
     this.dataSource.data = event;
+    this.dataSourceWithPageSize.data = event;
+    this.resultsLength = event.length;
     this.showTable.set(true);
     this.dashboardService.isLoading.set(false);
     console.log("this.showTable(): ",this.showTable() );
@@ -114,6 +122,7 @@ export class CompanySearchComponent implements OnInit, AfterViewInit, DoCheck {
 
   public clearTable(): void {
     this.dataSource.data = [];
+    this.dataSourceWithPageSize.data = [];
     this.searchTableData = false;
     this.showTable.set(false);
   }

@@ -82,13 +82,6 @@ main{
 
 }
 
-
-.mat-mdc-paginator-container {
-  @media (max-width: 480px) {
-    justify-content: flex-start !important;
-  }
-}
-
 .mat-mdc-header-cell{
   width: 20%;
   background-color: $ficus-light-gray;
