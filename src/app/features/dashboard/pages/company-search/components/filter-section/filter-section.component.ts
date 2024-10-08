@@ -151,10 +151,10 @@ export class FilterSectionComponent implements OnInit, AfterViewInit, AfterViewC
 
   ngOnInit() {
     this.getFilterData();
+    this.loadInitialSelectValues();
     this.form.get('city')?.disable();
     this.form.get('neighbourhood')?.disable();
 
-     this.loadInitialSelectValues();
     this.sectorMultiFilterCtrl.valueChanges
       .pipe(takeUntil(this._onDestroy))
       .subscribe(() => {
@@ -181,7 +181,14 @@ export class FilterSectionComponent implements OnInit, AfterViewInit, AfterViewC
   }
 
   ngAfterViewInit() {
-    this.setSectorInitialValue();
+    this.loadInitialSelectValues();
+  }
+
+  public onFirstClick(): void {
+    this.sectorMultiFilterCtrl.setValue('')
+    this.cnaePrimaMultiFilterCtrl.setValue('')
+    this.cnaeSecundMultiFilterCtrl.setValue('')
+    this.ncmMultiFilterCtrl.setValue('')
   }
 
   public ngAfterViewChecked(): void {
@@ -221,6 +228,7 @@ export class FilterSectionComponent implements OnInit, AfterViewInit, AfterViewC
     }
     // get the search keyword
     let search = this.sectorMultiFilterCtrl.value;
+    console.log('search', search);
     if (!search) {
       this.filteredSectorMulti.next(this.sectors.slice());
       return;

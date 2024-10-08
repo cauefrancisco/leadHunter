@@ -30,7 +30,7 @@
           <!-- Setor input -->
 
             <mat-form-field #sector>
-              <mat-select class="f-550" [formControl]="sectorMultiCtrl" placeholder="Setores" [multiple]="true" #sectorSelect>
+              <mat-select class="f-550" [formControl]="sectorMultiCtrl" placeholder="Setores" [multiple]="true" #sectorSelect (click)="onFirstClick()">
                 <mat-option>
                   <ngx-mat-select-search
                    placeholderLabel="Buscar por nome..."
@@ -48,7 +48,7 @@
            <!-- CNAE Primario -->
 
            <mat-form-field accesskey="cnaeprimario">
-            <mat-select class="f-550" [formControl]="cnaePrimaMultiCtrl" placeholder="CNAE Primário" [multiple]="true" #cnaePrimaSelect>
+            <mat-select class="f-550" [formControl]="cnaePrimaMultiCtrl" placeholder="CNAE Primário" [multiple]="true" #cnaePrimaSelect (click)="onFirstClick()">
               <mat-option>
                 <ngx-mat-select-search
                  placeholderLabel="Buscar por nome..."
@@ -66,7 +66,7 @@
            <!-- CNAE Secundario input -->
 
            <mat-form-field>
-            <mat-select class="f-550" [formControl]="cnaeSecundMultiCtrl" placeholder="CNAE Secundário" [multiple]="true" #cnaeSecondSelect>
+            <mat-select class="f-550" [formControl]="cnaeSecundMultiCtrl" placeholder="CNAE Secundário" [multiple]="true" #cnaeSecondSelect (click)="onFirstClick()">
               <mat-option>
                 <ngx-mat-select-search
                 placeholderLabel="Buscar por nome..."
@@ -82,7 +82,7 @@
           <!-- *** -->
 
           <mat-form-field>
-            <mat-select class="f-550" [formControl]="ncmMultiCtrl" placeholder="Ncm" [multiple]="true" #ncmSelect>
+            <mat-select class="f-550" [formControl]="ncmMultiCtrl" placeholder="Ncm" [multiple]="true" #ncmSelect (click)="onFirstClick()">
               <mat-option>
                 <ngx-mat-select-search
                  placeholderLabel="Buscar por nome..."
