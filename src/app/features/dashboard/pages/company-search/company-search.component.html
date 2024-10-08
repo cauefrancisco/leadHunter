@@ -65,6 +65,11 @@
           </div>
 
         </div>
+
+        <mat-form-field [hidden]="!showTable()">
+          <mat-label>Filtro</mat-label>
+          <input matInput (keyup)="applyFilter($event)" placeholder="Filtrar tabela" #input>
+        </mat-form-field>
         <div [hidden]="!showTable()" class="mat-elevation-z8 w-100 table-container">
           <table mat-table [dataSource]="dataSource" id="tableId">
 
@@ -135,6 +140,9 @@
             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
             <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="openDetailsModal(row)"></tr>
 
+            <tr class="mat-row" *matNoDataRow>
+              <td class="mat-cell" colspan="4">Não encontrado"{{input.value}}"</td>
+            </tr>
           </table>
           <mat-paginator [pageSizeOptions]="[5, 10, 20]"
           #paginator
