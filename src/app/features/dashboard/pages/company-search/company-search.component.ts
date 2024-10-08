@@ -1,6 +1,6 @@
 import { SelectionModel } from '@angular/cdk/collections';
 import { CommonModule } from '@angular/common';
-import { AfterViewInit, ChangeDetectionStrategy, Component, DoCheck, Input, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, DoCheck, Input, OnInit, signal, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
@@ -42,6 +42,7 @@ export class CompanySearchComponent implements OnInit, AfterViewInit, DoCheck {
   @Input() searchTableData: boolean = false;
 
   public isExcelBtnActive = false;
+  public showTable = signal(false);
   public isSearch: boolean = false;
   public contentTable!: any[];
   public data!: any[];
@@ -77,10 +78,9 @@ export class CompanySearchComponent implements OnInit, AfterViewInit, DoCheck {
 
   public recieveTableData(event: any): void {
     this.dataSource.data = event;
-    console.log("chegou: ",this.dataSource.data );
-    if(this.dataSource.data.length > 0){
-      this.dashboardService.isLoading.set(false);
-    }
+    this.showTable.set(true);
+    this.dashboardService.isLoading.set(false);
+    console.log("this.showTable(): ",this.showTable() );
   }
 
   public openDetailsModal(element: any): void {
@@ -115,6 +115,7 @@ export class CompanySearchComponent implements OnInit, AfterViewInit, DoCheck {
   public clearTable(): void {
     this.dataSource.data = [];
     this.searchTableData = false;
+    this.showTable.set(false);
   }
 
   public filteredSelectedSectorEvent(event: any): void {
