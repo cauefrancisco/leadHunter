@@ -178,6 +178,7 @@ export class FilterSectionComponent implements OnInit, AfterViewInit, AfterViewC
       .subscribe(() => {
         this.filterNcmMulti();
       });
+      this.onFirstClick();
   }
 
   ngAfterViewInit() {
