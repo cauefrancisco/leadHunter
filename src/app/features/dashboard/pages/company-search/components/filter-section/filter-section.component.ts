@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { AfterViewChecked, Component, EventEmitter, OnDestroy, OnInit, Output, signal, ViewChild } from '@angular/core';
+import { AfterViewChecked, Component, EventEmitter, OnDestroy, OnInit, Output, signal, ViewChild, Pipe, AfterViewInit, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MaterialModule } from '../../../../../../shared/modules/material.module';
 import { PrimeNgModule } from '../../../../../../shared/modules/primeng.module';
@@ -14,15 +14,7 @@ import { FeedbackModalComponent } from '../../../../../../shared/modals/feedback
 import { ReplaySubject, Subject, takeUntil } from 'rxjs';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { MatSelect } from '@angular/material/select';
-import { map } from 'rxjs/operators';
-
-
-
-export class User {
-  constructor(public firstname: string, public lastname: string, public selected?: boolean) {
-    if (selected === undefined) selected = false;
-  }
-}
+import { take } from 'rxjs/operators';
 
 export class Sector {
   constructor(public codigo: string, public descricao: string, public selected?: boolean) {
@@ -50,6 +42,7 @@ export class Ncm {
   templateUrl: './filter-section.component.html',
   styleUrls: ['./filter-section.component.scss'],
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.Default,
   imports: [
     CommonModule,
     MaterialModule,
@@ -61,9 +54,8 @@ export class Ncm {
     NgxMaskPipe,
     NgxMatSelectSearchModule
   ],
-
 })
-export class FilterSectionComponent implements OnInit, AfterViewChecked, OnDestroy {
+export class FilterSectionComponent implements OnInit, AfterViewInit, AfterViewChecked, OnDestroy {
   @Output() tableDataEvent = new EventEmitter<any>();
   @Output() selectedSectorValue = new EventEmitter<any>();
   @Output() selectedCnaePrimarioValue = new EventEmitter<any>();
@@ -73,8 +65,6 @@ export class FilterSectionComponent implements OnInit, AfterViewChecked, OnDestr
   @ViewChild('cnaePrimaSelect', { static: true }) cnaePrimaSelect!: MatSelect;
   @ViewChild('cnaeSecondSelect', { static: true }) cnaeSecondSelect!: MatSelect;
   @ViewChild('ncmSelect', { static: true }) ncmSelect!: MatSelect;
-
-
 
   public form: FormGroup;
   readonly panelOpenState = signal(false);
@@ -89,7 +79,7 @@ export class FilterSectionComponent implements OnInit, AfterViewChecked, OnDestr
   // sector
   public sectorMultiCtrl = new FormControl();
   public sectorMultiFilterCtrl = new FormControl();
-  public filteredSectorMulti: ReplaySubject<Array<any>> = new ReplaySubject<Array<any>>(1);
+  public filteredSectorMulti: ReplaySubject<IFilterCnae[]> = new ReplaySubject<IFilterCnae[]>(1);
   public sectors: Array<any> = [];
 
     // Cnae Primario
@@ -160,37 +150,38 @@ export class FilterSectionComponent implements OnInit, AfterViewChecked, OnDestr
   }
 
   ngOnInit() {
-    this. getFilterData();
+    this.getFilterData();
     this.form.get('city')?.disable();
     this.form.get('neighbourhood')?.disable();
 
-    this.filteredSectorMulti.next(this.sectors);
+     this.loadInitialSelectValues();
     this.sectorMultiFilterCtrl.valueChanges
       .pipe(takeUntil(this._onDestroy))
       .subscribe(() => {
         this.filterSectorMulti();
       });
 
-    this.filteredCnaePrimaMulti.next(this.cnaes);
     this.cnaePrimaMultiFilterCtrl.valueChanges
       .pipe(takeUntil(this._onDestroy))
       .subscribe(() => {
         this.filterCnaePrimaMulti();
       });
 
-    this.filteredCnaeSecundMulti.next(this.cnaesSecundarios);
     this.cnaeSecundMultiFilterCtrl.valueChanges
       .pipe(takeUntil(this._onDestroy))
       .subscribe(() => {
         this.filterCnaeSecundMulti();
       });
 
-    this.filteredNcmMulti.next(this.ncm);
     this.ncmMultiFilterCtrl.valueChanges
       .pipe(takeUntil(this._onDestroy))
       .subscribe(() => {
         this.filterNcmMulti();
       });
+  }
+
+  ngAfterViewInit() {
+    this.setSectorInitialValue();
   }
 
   public ngAfterViewChecked(): void {
@@ -202,6 +193,26 @@ export class FilterSectionComponent implements OnInit, AfterViewChecked, OnDestr
   ngOnDestroy() {
     this._onDestroy.next();
     this._onDestroy.complete();
+  }
+
+  public loadInitialSelectValues(): void {
+    this.filteredSectorMulti.next(this.sectors.slice());
+    this.filteredCnaePrimaMulti.next(this.cnaes.slice());
+    this.filteredCnaeSecundMulti.next(this.cnaesSecundarios.slice());
+    this.filteredNcmMulti.next(this.ncm.slice());
+  }
+
+  protected setSectorInitialValue() {
+    this.filteredSectorMulti
+      .pipe(take(1), takeUntil(this._onDestroy))
+      .subscribe(() => {
+        // setting the compareWith property to a comparison function
+        // triggers initializing the selection according to the initial value of
+        // the form control (i.e. _initializeSelection())
+        // this needs to be done after the filteredBanks are loaded initially
+        // and after the mat-option elements are available
+        this.sectorSelect.compareWith = (a: Sector, b: Sector) => a && b && a.codigo === b.codigo;
+      });
   }
 
   protected filterSectorMulti() {

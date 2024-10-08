@@ -29,7 +29,7 @@
 
           <!-- Setor input -->
 
-            <mat-form-field>
+            <mat-form-field #sector>
               <mat-select class="f-550" [formControl]="sectorMultiCtrl" placeholder="Setores" [multiple]="true" #sectorSelect>
                 <mat-option>
                   <ngx-mat-select-search
@@ -47,7 +47,7 @@
 
            <!-- CNAE Primario -->
 
-           <mat-form-field>
+           <mat-form-field accesskey="cnaeprimario">
             <mat-select class="f-550" [formControl]="cnaePrimaMultiCtrl" placeholder="CNAE Primário" [multiple]="true" #cnaePrimaSelect>
               <mat-option>
                 <ngx-mat-select-search

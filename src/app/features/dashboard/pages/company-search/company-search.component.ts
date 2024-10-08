@@ -1,6 +1,6 @@
 import { SelectionModel } from '@angular/cdk/collections';
 import { CommonModule } from '@angular/common';
-import { AfterViewInit, Component, DoCheck, Input, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, DoCheck, Input, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
@@ -27,6 +27,7 @@ export interface ISearchCompanyTable {
   templateUrl: './company-search.component.html',
   styleUrls: ['./company-search.component.scss'],
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.Default,
   imports: [
     CommonModule,
     MaterialModule,
