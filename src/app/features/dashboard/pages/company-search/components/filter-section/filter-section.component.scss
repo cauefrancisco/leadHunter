@@ -178,13 +178,14 @@
     width: 100%;
     align-items: baseline;
     justify-content: center;
+    text-align: end;
     padding: 1rem 0.3rem;
 
     .title-section{
       display: flex;
       width: 100%;
       align-items: center;
-      justify-content: center;
+      justify-content: start;
       .title{
         text-align: center;
         margin: 0;

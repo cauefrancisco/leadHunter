@@ -317,7 +317,14 @@ export class FilterSectionComponent implements OnInit, AfterViewInit, AfterViewC
       this.form.get('neighbourhood')?.disable();
     }
     this.getFilterData();
-
+    this.sectorMultiCtrl.reset();
+    this.selectedSectorValue.emit([]);
+    this.cnaePrimaMultiCtrl.reset();
+    this.selectedCnaePrimarioValue.emit([]);
+    this.cnaeSecundMultiCtrl.reset();
+    this.selectedCnaeSecundarioValue.emit([]);
+    this.ncmMultiCtrl.reset();
+    this.selectedNcmValue.emit([]);
   }
 
   public getCitiesValue(): void {
