@@ -14,6 +14,7 @@ import { FeedbackModalComponent } from '../../../../../../shared/modals/feedback
 import { ReplaySubject, Subject, takeUntil } from 'rxjs';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { MatSelect } from '@angular/material/select';
+import { map } from 'rxjs/operators';
 
 
 
@@ -68,7 +69,11 @@ export class FilterSectionComponent implements OnInit, AfterViewChecked, OnDestr
   @Output() selectedCnaePrimarioValue = new EventEmitter<any>();
   @Output() selectedCnaeSecundarioValue = new EventEmitter<any>();
   @Output() selectedNcmValue = new EventEmitter<any>();
-  @ViewChild('multiSelect', { static: true }) multiSelect!: MatSelect;
+  @ViewChild('sectorSelect', { static: true }) sectorSelect!: MatSelect;
+  @ViewChild('cnaePrimaSelect', { static: true }) cnaePrimaSelect!: MatSelect;
+  @ViewChild('cnaeSecondSelect', { static: true }) cnaeSecondSelect!: MatSelect;
+  @ViewChild('ncmSelect', { static: true }) ncmSelect!: MatSelect;
+
 
 
   public form: FormGroup;
@@ -405,16 +410,15 @@ export class FilterSectionComponent implements OnInit, AfterViewChecked, OnDestr
 
     }
 
-    const sectorsPayload = this.sectorMultiCtrl.value.map((i: any) => i.codigo);
-    const cnaePrimaPayload = this.cnaePrimaMultiCtrl.value.map((i: any) => i.codigo);
-    const cnaeSecundPayload = this.cnaeSecundMultiCtrl.value.map((i: any) => i.codigo);
-    const ncmPayload = this.ncmMultiCtrl.value.map((i: any) => i.codigo);
-    console.log("sectorsPayload", sectorsPayload);
+    const sectorsPayload = this.sectorMultiCtrl.value !== null ? this.sectorMultiCtrl.value.map((i: IFilterCnae) => i.codigo) : null;
+    const cnaePrimaPayload = this.cnaePrimaMultiCtrl.value !== null ? this.cnaePrimaMultiCtrl.value.map((i: IFilterCnae) => i.codigo) : null;
+    const cnaeSecundPayload = this.cnaeSecundMultiCtrl.value !== null ? this.cnaeSecundMultiCtrl.value.map((i: IFilterCnae) => i.codigo) : null;
+    const ncmPayload = this.ncmMultiCtrl.value !== null ? this.ncmMultiCtrl.value.map((i: IFilterCnae) => i.codigo) : null;
     let filter = {
-      setores: sectorsPayload.length > 0 ? sectorsPayload : null,
-      cnae: cnaePrimaPayload.length > 0 ? cnaePrimaPayload : null,
-      buscarCnaesSecundarios:  cnaeSecundPayload.length > 0 ? cnaeSecundPayload : null,
-      ncms: ncmPayload.length > 0 ? ncmPayload : null,
+      setores: sectorsPayload,
+      cnae: cnaePrimaPayload,
+      buscarCnaesSecundarios: cnaeSecundPayload,
+      ncms: ncmPayload,
       uf: this.form.get('estate')?.value ? this.form.get('estate')?.value : null,
       municipio: this.payloadMunicipios.length > 0 ? this.payloadMunicipios : null,
       bairro: this.form.get('neighbourhood')?.value ? this.form.get('neighbourhood')?.value : null,
@@ -428,6 +432,8 @@ export class FilterSectionComponent implements OnInit, AfterViewChecked, OnDestr
       regime: this.form.get('feeType')?.value ? this.form.get('feeType')?.value : null,
       cnpj: this.form.get('cnpj')?.value ? this.form.get('cnpj')?.value : null,
     }
+
+    this._dashboardService.isLoading.set(false);
 
    const dados = {
     filtro: filter,

@@ -116,6 +116,8 @@ main{
 
 .spinner-container {
   display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
   position: fixed;
   top: 50%;
   left: 50%;
@@ -123,6 +125,10 @@ main{
   height: 100vh;
   /* background-color: rgba(0, 0, 0, 0.7); */
   z-index: 5;
+
+  .text-spinner{
+    margin-left: 1rem;
+  }
 }
 
 .span-td-icon-structure{
