@@ -404,7 +404,6 @@ export class FilterSectionComponent implements OnInit, AfterViewChecked, OnDestr
 
     if(this.form.get('city')?.value){
       this.form.get('city')?.value.forEach((element: string) => {
-        console.log('elemnt', removeAccents.remove(element));
         this.payloadMunicipios.push(removeAccents.remove(element));
       })
 
@@ -432,8 +431,6 @@ export class FilterSectionComponent implements OnInit, AfterViewChecked, OnDestr
       regime: this.form.get('feeType')?.value ? this.form.get('feeType')?.value : null,
       cnpj: this.form.get('cnpj')?.value ? this.form.get('cnpj')?.value : null,
     }
-
-    this._dashboardService.isLoading.set(false);
 
    const dados = {
     filtro: filter,
