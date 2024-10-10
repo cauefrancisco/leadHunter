@@ -79,3 +79,46 @@ mat-label{
   color: $ficus-black !important;
   font-weight: 550;
 }
+
+.mat-mdc-paginator-container {
+  display: flex;
+  flex-direction: column;
+  align-items: baseline;
+  padding: 0 8px;
+  flex-wrap: wrap;
+  width: 100%;
+  min-height: var(--mat-paginator-container-size);
+}
+
+.mat-mdc-select {
+  display: inline-block;
+  width: 100%;
+  outline: none;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  color: var(--mat-select-enabled-trigger-text-color);
+  font-family: var(--mat-select-trigger-text-font);
+  line-height: var(--mat-select-trigger-text-line-height);
+  font-size: var(--mat-select-trigger-text-size);
+  font-weight: var(--mat-select-trigger-text-weight);
+  letter-spacing: var(--mat-select-trigger-text-tracking);
+}
+
+.mdc-notched-outline {
+  display: flex;
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 100%;
+  height: 100%;
+  text-align: left;
+  pointer-events: none;
+}
+
+.mat-mdc-text-field-wrapper {
+  min-width: 100% !important;
+  width: 100%;
+}

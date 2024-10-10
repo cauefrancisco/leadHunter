@@ -149,17 +149,19 @@ main{
   text-align: center;
   color: $aleixo-dark-blue;
 
-  h4{
+  h5{
     margin: 0 !important;
     border-bottom: 2px solid #FFC629;
     padding-bottom: 1rem;
+    letter-spacing: 1px;
   }
 
   mat-icon{
     color: $ficus-yellow;
-    font-size: 46px;
-    height: 46px;
-    width: 46px;
+    font-size: 56px;
+    height: 56px;
+    width: 56px;
+    margin-top: 1rem;
   }
 }
 
@@ -186,4 +188,10 @@ main{
 
 .mat-mdc-standard-chip:not(.mdc-evolution-chip--disabled){
   background-color: $ficus-yellow;
+}
+
+.no-data-text{
+  text-align: center;
+    padding-top: 1rem;
+    font-weight: 550;
 }
