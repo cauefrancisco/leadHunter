@@ -19,6 +19,7 @@ export class DetailsModalComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+    console.log('data details: ', this.data);
   }
 
   onClose(): void {

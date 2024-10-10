@@ -89,6 +89,7 @@ export class CompanySearchComponent implements OnInit, AfterViewInit, DoCheck {
   public recieveTableData(event: any): void {
     this.dataSource.data = event;
     console.log('event: ', event);
+    console.log('event.socios: ', event?.socios);
     this.dataSourceWithPageSize.data = event;
     this.resultsLength = event.length;
     this.showTable.set(true);
@@ -97,6 +98,12 @@ export class CompanySearchComponent implements OnInit, AfterViewInit, DoCheck {
   }
 
   public openDetailsModal(element: any): void {
+    console.log('element: ',element);
+    console.log('element socio: ',element?.socios);
+    console.log('element socio: ',element?.socios[0]);
+    console.log('typeof element socio: ',element?.socios[0]?.nome);
+    console.log('typeof element socio: ',element?.socios?.nome);
+    console.log('typeof element socio: ',element?.socios?.element?.nome);
     this._dialog.open(DetailsModalComponent, { data: element})
   }
 

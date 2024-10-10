@@ -38,8 +38,6 @@ main{
     .new-search-container{
       .new-search-text-area{
         margin-top: 6rem;
-        padding-top: 1rem;
-        border-top: 2px solid $ficus-yellow;
       }
 
     }
@@ -153,6 +151,8 @@ main{
 
   h4{
     margin: 0 !important;
+    border-bottom: 2px solid #FFC629;
+    padding-bottom: 1rem;
   }
 
   mat-icon{

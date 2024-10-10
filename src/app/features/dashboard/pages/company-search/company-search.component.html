@@ -28,7 +28,7 @@
         <div class="new-search-container w-100 m-0"
           [ngClass]="!showTable() ? 'no-data-side-display' : ''">
           <div [hidden]="showTable()" class="w-100 new-search-text-area no-data">
-            <h4>Faça uma Nova busca</h4>
+            <h4>Preencha os Filtros e Faça Uma Nova Busca</h4>
             <mat-icon class="material-symbols-outlined">
               search
               </mat-icon>
@@ -149,7 +149,8 @@
             <ng-container matColumnDef="socio">
               <th mat-header-cell *matHeaderCellDef>Sócio(s)</th>
               <td mat-cell *matCellDef="let element" class="details-td">
-                {{element?.socio}}
+                {{element?.socios?.element?.nome}}
+                {{element?.socios[0]?.nome}}
               </td>
             </ng-container>
 
