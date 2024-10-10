@@ -12,6 +12,7 @@ main{
   }
 
   .filter-section{
+    padding-left: 2%;
     @media (max-width: 480px) {
       display: flex;
       padding-right: 0;
@@ -32,6 +33,15 @@ main{
       width: 100%;
       padding-right: 0;
       margin-left: .3rem;
+    }
+
+    .new-search-container{
+      .new-search-text-area{
+        margin-top: 6rem;
+        padding-top: 1rem;
+        border-top: 2px solid $ficus-yellow;
+      }
+
     }
 
     .table-header{

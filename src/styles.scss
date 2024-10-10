@@ -61,5 +61,12 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   border-radius: 10px;
 }
 
+.mat-mdc-form-field.mat-focused .mat-mdc-form-field-focus-overlay{
+  opacity: 0 !important;
+}
 
+mat-label{
+  color: $ficus-black;
+  font-weight: 550;
+}
 

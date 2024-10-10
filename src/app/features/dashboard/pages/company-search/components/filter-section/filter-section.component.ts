@@ -15,6 +15,7 @@ import { ReplaySubject, Subject, takeUntil } from 'rxjs';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { MatSelect } from '@angular/material/select';
 import { take } from 'rxjs/operators';
+import { AlphabetOnlyDirective } from '../../../../../directives/alphabet-only.directive';
 
 export class Sector {
   constructor(public codigo: string, public descricao: string, public selected?: boolean) {
@@ -52,7 +53,8 @@ export class Ncm {
     PrimeNgModule,
     NgxMaskDirective,
     NgxMaskPipe,
-    NgxMatSelectSearchModule
+    NgxMatSelectSearchModule,
+    AlphabetOnlyDirective
   ],
 })
 export class FilterSectionComponent implements OnInit, AfterViewInit, AfterViewChecked, OnDestroy {
@@ -61,6 +63,9 @@ export class FilterSectionComponent implements OnInit, AfterViewInit, AfterViewC
   @Output() selectedCnaePrimarioValue = new EventEmitter<any>();
   @Output() selectedCnaeSecundarioValue = new EventEmitter<any>();
   @Output() selectedNcmValue = new EventEmitter<any>();
+  @Output() cnpjFilteredValue = new EventEmitter<any>();
+  @Output() nomeFilteredValue = new EventEmitter<any>();
+  @Output() socioFilteredValue = new EventEmitter<string>();
   @ViewChild('sectorSelect', { static: true }) sectorSelect!: MatSelect;
   @ViewChild('cnaePrimaSelect', { static: true }) cnaePrimaSelect!: MatSelect;
   @ViewChild('cnaeSecondSelect', { static: true }) cnaeSecondSelect!: MatSelect;
@@ -141,7 +146,12 @@ export class FilterSectionComponent implements OnInit, AfterViewInit, AfterViewC
       telephone: ['', []],
       initialDate: [''],
       finalDate: ['', []],
-      partner: ['', []],
+      partner: ['', [
+        Validators.maxLength(50),
+        Validators.pattern('^[a-zA-Z \-\']+')]],
+      name: ['', [
+        Validators.maxLength(50),
+        Validators.pattern('^[a-zA-Z \-\']+')]],
       companySize: new FormControl(),
       legalNature: ['', []],
       feeType: [ERegimeTributario.TODOS, []],
@@ -178,11 +188,11 @@ export class FilterSectionComponent implements OnInit, AfterViewInit, AfterViewC
       .subscribe(() => {
         this.filterNcmMulti();
       });
-      this.onFirstClick();
   }
 
   ngAfterViewInit() {
     this.loadInitialSelectValues();
+    this.onFirstClick();
   }
 
   public onFirstClick(): void {
@@ -313,12 +323,23 @@ export class FilterSectionComponent implements OnInit, AfterViewInit, AfterViewC
     this.selectedNcmValue.emit(this.ncmMultiCtrl.value);
   }
 
-  // AUTOCOMPLETE *****************************
+  public onKeyUpSocioValue(event: any): void {
+    this.socioFilteredValue.emit(this.form.get('partner')?.value);
+  }
+  public onKeyUpNomeValue(event: any): void {
+    this.nomeFilteredValue.emit(this.form.get('name')?.value);
+  }
+  public onKeyUpCnpjValue(event: any): void {
+    if(this.form.get('cnpj')?.errors?.pattern){
+      return;
+    }
+    this.cnpjFilteredValue.emit(this.form.get('cnpj')?.value);
+  }
 
+  public dropSpecialCharacters(str: string): string {
+    return str.replace(/[^a-zA-Z0-9]/g, '');
 
-
-  // ************************************
-
+  }
   public clearFilters(): void {
     this.form.reset();
     if(!this.form.get('estate')?.value){
@@ -451,12 +472,13 @@ export class FilterSectionComponent implements OnInit, AfterViewInit, AfterViewC
       cep: this.form.get('cep')?.value ? this.form.get('cep')?.value : null,
       logradouro: this.form.get('logradouro')?.value ? this.form.get('logradouro')?.value : null,
       socio: this.form.get('partner')?.value ? this.form.get('partner')?.value : null,
+      nome: this.form.get('name')?.value ? this.form.get('name')?.value : null,
       telefone: this.form.get('telephone')?.value ? this.form.get('telephone')?.value : null,
       numero: this.form.get('stNumber')?.value ? this.form.get('stNumber')?.value : null,
       porte: this.form.get('companySize')?.value ? this.form.get('companySize')?.value : null,
       naturezaJuridica: this.form.get('legalNature')?.value ? this.form.get('legalNature')?.value : null,
       regime: this.form.get('feeType')?.value ? this.form.get('feeType')?.value : null,
-      cnpj: this.form.get('cnpj')?.value ? this.form.get('cnpj')?.value : null,
+      cnpj: this.form.get('cnpj')?.value ? this.dropSpecialCharacters(this.form.get('cnpj')?.value) : null,
     }
 
    const dados = {
@@ -504,6 +526,30 @@ export class FilterSectionComponent implements OnInit, AfterViewInit, AfterViewC
     this.CompanySizeList = res?.result;
     console.log('res ListaPorte :', res);
      });
+  }
+
+  public validateSocioInput(): string {
+    if (this.form.get('partner')?.hasError('required')) {
+      return 'Inserir apenas letras';
+    }
+
+    return this.form.get('partner')?.hasError('pattern') ? 'Inserir apenas letras' : '';
+  }
+
+  public validateNameInput(): string {
+    if (this.form.get('name')?.hasError('required')) {
+      return 'Inserir apenas letras';
+    }
+
+    return this.form.get('name')?.hasError('pattern') ? 'Inserir apenas letras' : '';
+  }
+
+  public getErrorMessageDocument() {
+    if(this.form.get('cnpj')?.errors?.pattern){
+      return 'Documento inválido';
+    }
+
+    return '';
   }
 
 }

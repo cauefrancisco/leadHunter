@@ -50,7 +50,7 @@ export class CompanySearchComponent implements OnInit, AfterViewInit, DoCheck {
   public isSearch: boolean = false;
   public contentTable!: any[];
   public data!: any[];
-  displayedColumns: string[] = ['select', 'cnpjName', 'contact', 'regime', 'cnae', 'companySize', 'regime', 'address', 'socio'];
+  displayedColumns: string[] = ['select', 'cnpjName', 'contact', 'regime', 'cnae', 'companySize', 'address', 'socio'];
   dataSource = new MatTableDataSource<ISearchCompanyTable>(this.data);
   dataSourceWithPageSize = new MatTableDataSource(this.data);
   selection = new SelectionModel<ISearchCompanyTable>(true, []);
@@ -59,7 +59,10 @@ export class CompanySearchComponent implements OnInit, AfterViewInit, DoCheck {
   public selectedCnaePrima: any;
   public selectedCnaeSecund: any;
   public selectedNcm: any;
-
+  public filterInputSocio: string = '';
+  public filterInputCnpj: string = '';
+  public filterInputNome: string = '';
+  public selectedFilterLabelShow: boolean = false;
   constructor(
     private _dialog: MatDialog,
     public dashboardService: DashboardService,
@@ -84,6 +87,7 @@ export class CompanySearchComponent implements OnInit, AfterViewInit, DoCheck {
 
   public recieveTableData(event: any): void {
     this.dataSource.data = event;
+    console.log('event: ', event);
     this.dataSourceWithPageSize.data = event;
     this.resultsLength = event.length;
     this.showTable.set(true);
@@ -137,20 +141,46 @@ export class CompanySearchComponent implements OnInit, AfterViewInit, DoCheck {
   }
 
   public filteredSelectedSectorEvent(event: any): void {
-    console.log('event SelectedSectors: ', event);
-    this.selectedSector = event.map((i: any) => i?.descricao)
+    this.selectedSector = event.map((i: any) => i?.descricao);
+    if(this.selectedSector.length > 0){
+      this.selectedFilterLabelShow = true;
+    }
   }
   public filteredSelectedCnaePrimaEvent(event: any): void {
-    console.log('event SelectedSectors: ', event);
-    this.selectedCnaePrima = event.map((i: any) => i?.descricao)
+    this.selectedCnaePrima = event.map((i: any) => i?.descricao);
+    if(this.selectedCnaePrima.length > 0){
+      this.selectedFilterLabelShow = true;
+    }
   }
   public filteredSelectedCnaeSecundEvent(event: any): void {
-    console.log('event SelectedSectors: ', event);
-    this.selectedCnaeSecund = event.map((i: any) => i?.descricao)
+    this.selectedCnaeSecund = event.map((i: any) => i?.descricao);
+    if(this.selectedCnaeSecund.length > 0){
+      this.selectedFilterLabelShow = true;
+    }
   }
   public filteredSelectedNcmEvent(event: any): void {
-    console.log('event SelectedSectors: ', event);
-    this.selectedNcm = event.map((i: any) => i?.descricao)
+    this.selectedNcm = event.map((i: any) => i?.descricao);
+    if(this.selectedNcm.length > 0){
+      this.selectedFilterLabelShow = true;
+    }
+  }
+  public filteredSocioEvent(event: any): void {
+      this.filterInputSocio = event;
+      if(this.filterInputSocio.length > 0){
+        this.selectedFilterLabelShow = true;
+      }
+  }
+  public filteredNomeEvent(event: any): void {
+      this.filterInputNome = event;
+      if(this.filterInputNome.length > 0){
+        this.selectedFilterLabelShow = true;
+      }
+  }
+  public filteredCnpjEvent(event: any): void {
+      this.filterInputCnpj = event;
+      if(this.filterInputCnpj.length > 0){
+        this.selectedFilterLabelShow = true;
+      }
   }
 
   public exportToExcel(): void {
