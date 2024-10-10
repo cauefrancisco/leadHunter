@@ -177,3 +177,13 @@ main{
 :host ::ng-deep .mat-mdc-standard-chip .mat-mdc-chip-action-label {
   overflow: hidden;
 }
+
+.mdc-evolution-chip__text-label mat-mdc-chip-action-label {
+  color: $ficus-yellow !important;
+}
+
+
+
+.mat-mdc-standard-chip:not(.mdc-evolution-chip--disabled){
+  background-color: $ficus-yellow;
+}

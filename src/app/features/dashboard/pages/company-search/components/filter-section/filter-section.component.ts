@@ -150,8 +150,7 @@ export class FilterSectionComponent implements OnInit, AfterViewInit, AfterViewC
         Validators.maxLength(50),
         Validators.pattern('^[a-zA-Z \-\']+')]],
       name: ['', [
-        Validators.maxLength(50),
-        Validators.pattern('^[a-zA-Z \-\']+')]],
+        Validators.maxLength(50)]],
       companySize: new FormControl(),
       legalNature: ['', []],
       feeType: [ERegimeTributario.TODOS, []],
@@ -324,6 +323,9 @@ export class FilterSectionComponent implements OnInit, AfterViewInit, AfterViewC
   }
 
   public onKeyUpSocioValue(event: any): void {
+    if(this.form.get('partner')?.errors?.pattern){
+      return;
+    }
     this.socioFilteredValue.emit(this.form.get('partner')?.value);
   }
   public onKeyUpNomeValue(event: any): void {
@@ -534,14 +536,6 @@ export class FilterSectionComponent implements OnInit, AfterViewInit, AfterViewC
     }
 
     return this.form.get('partner')?.hasError('pattern') ? 'Inserir apenas letras' : '';
-  }
-
-  public validateNameInput(): string {
-    if (this.form.get('name')?.hasError('required')) {
-      return 'Inserir apenas letras';
-    }
-
-    return this.form.get('name')?.hasError('pattern') ? 'Inserir apenas letras' : '';
   }
 
   public getErrorMessageDocument() {

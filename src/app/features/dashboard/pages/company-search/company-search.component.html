@@ -39,27 +39,27 @@
               <h6>Filtros selecionados:</h6>
               <br>
             }
-            <mat-chip-set aria-label="Fish selection">
+            <mat-chip-set aria-label="filter selection" class="assigned-chip">
             @for (sector of selectedSector; track sector) {
-              <mat-chip matTooltip="Setor">{{sector}}</mat-chip>
+              <mat-chip matTooltip="Setor" class="assigned-chip">{{sector}}</mat-chip>
             }
             @for (cnaePrima of selectedCnaePrima; track cnaePrima) {
-              <mat-chip matTooltip="Cnae Primário">{{cnaePrima}}</mat-chip>
+              <mat-chip class="assigned-chip" matTooltip="Cnae Primário">{{cnaePrima}}</mat-chip>
             }
             @for (cnaeSecund of selectedCnaeSecund; track cnaeSecund) {
-              <mat-chip matTooltip="Cnae Secundário">{{cnaeSecund}}</mat-chip>
+              <mat-chip class="assigned-chip" matTooltip="Cnae Secundário">{{cnaeSecund}}</mat-chip>
             }
             @for (ncm of selectedNcm; track ncm) {
-              <mat-chip matTooltip="Ncm">{{ncm}}</mat-chip>
+              <mat-chip class="assigned-chip" matTooltip="Ncm">{{ncm}}</mat-chip>
             }
             @if(filterInputSocio.length > 0) {
-              <mat-chip matTooltip="Sócio">{{filterInputSocio}}</mat-chip>
+              <mat-chip class="assigned-chip" matTooltip="Sócio">{{filterInputSocio}}</mat-chip>
             }
             @if(filterInputNome.length > 0) {
-              <mat-chip matTooltip="Nome">{{filterInputNome}}</mat-chip>
+              <mat-chip class="assigned-chip" matTooltip="Nome">{{filterInputNome}}</mat-chip>
             }
             @if(filterInputCnpj.length > 0) {
-              <mat-chip matTooltip="Cnpj">{{filterInputCnpj}}</mat-chip>
+              <mat-chip class="assigned-chip" matTooltip="Cnpj">{{filterInputCnpj}}</mat-chip>
             }
             </mat-chip-set>
           </div>

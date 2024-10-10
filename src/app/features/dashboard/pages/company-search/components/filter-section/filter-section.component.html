@@ -20,7 +20,7 @@
          <!-- CNPJ -->
          <mat-expansion-panel [expanded]="true" class="mat-expansion" (opened)="panelOpenState.set(true)" (closed)="panelOpenState.set(false)">
           <mat-expansion-panel-header>
-            <mat-panel-title>Busca por CNPJ</mat-panel-title>
+            <mat-panel-title>Filtrar por CNPJ</mat-panel-title>
           </mat-expansion-panel-header>
           <div class="cnpj-container w-100">
 
@@ -41,7 +41,7 @@
          <!-- Socio -->
          <mat-expansion-panel [expanded]="true" class="mat-expansion" (opened)="panelOpenState.set(true)" (closed)="panelOpenState.set(false)">
           <mat-expansion-panel-header>
-            <mat-panel-title>Busca por Sócio</mat-panel-title>
+            <mat-panel-title>Filtrar por Sócio</mat-panel-title>
           </mat-expansion-panel-header>
           <div class="cnpj-container w-100">
 
@@ -63,7 +63,7 @@
          <!-- Nome -->
          <mat-expansion-panel [expanded]="true" class="mat-expansion" (opened)="panelOpenState.set(true)" (closed)="panelOpenState.set(false)">
           <mat-expansion-panel-header>
-            <mat-panel-title>Busca por Nome</mat-panel-title>
+            <mat-panel-title>Filtrar por Nome</mat-panel-title>
           </mat-expansion-panel-header>
           <div class="cnpj-container w-100">
 
@@ -73,10 +73,7 @@
               type="text"
               formControlName="name"
               (keyup)="onKeyUpNomeValue($event)"
-              pattern="^[a-zA-Z \-\']+"
-              AlphabetOnlyDirective
               >
-              <mat-error *ngIf="form.get('name')?.invalid">{{validateNameInput()}}</mat-error>
             </mat-form-field>
 
           </div>
@@ -85,7 +82,7 @@
         <!-- Setor -->
         <mat-expansion-panel class="mat-expansion" (opened)="panelOpenState.set(true)" (closed)="panelOpenState.set(false)">
           <mat-expansion-panel-header>
-            <mat-panel-title>Setor</mat-panel-title>
+            <mat-panel-title>Filtrar por Setor</mat-panel-title>
           </mat-expansion-panel-header>
 
           <div class="sector-content w-100">
@@ -164,7 +161,7 @@
         <!-- Regiao -->
         <mat-expansion-panel class="mat-expansion" (opened)="panelOpenState.set(true)" (closed)="panelOpenState.set(false)">
           <mat-expansion-panel-header>
-            <mat-panel-title>Região</mat-panel-title>
+            <mat-panel-title>Filtrar por Região</mat-panel-title>
           </mat-expansion-panel-header>
 
           <div class="region-content drop-structure">
@@ -221,7 +218,7 @@
         <mat-expansion-panel class="mat-expansion" (opened)="panelOpenState.set(true)" (closed)="panelOpenState.set(false)">
           <mat-expansion-panel-header>
 
-            <mat-panel-title>Porte</mat-panel-title>
+            <mat-panel-title>Filtrar por Porte</mat-panel-title>
           </mat-expansion-panel-header>
 
           <div class="company-size-content w-100">
@@ -250,7 +247,7 @@
         <!-- Telefones -->
         <mat-expansion-panel class="mat-expansion" (opened)="panelOpenState.set(true)" (closed)="panelOpenState.set(false)">
           <mat-expansion-panel-header>
-            <mat-panel-title>Telefone</mat-panel-title>
+            <mat-panel-title>Filtrar por Telefone</mat-panel-title>
           </mat-expansion-panel-header>
 
           <div class="telephone-container w-100">
@@ -270,7 +267,7 @@
         <!-- Cadastrais -->
         <mat-expansion-panel class="mat-expansion" (opened)="panelOpenState.set(true)" (closed)="panelOpenState.set(false)">
           <mat-expansion-panel-header>
-            <mat-panel-title>Data de Abertura</mat-panel-title>
+            <mat-panel-title>Filtrar por Data de Abertura</mat-panel-title>
           </mat-expansion-panel-header>
 
           <div class="company-records-container w-100">
@@ -302,7 +299,7 @@
         <!-- Legais e tribuários -->
         <mat-expansion-panel class="mat-expansion" (opened)="panelOpenState.set(true)" (closed)="panelOpenState.set(false)">
           <mat-expansion-panel-header>
-            <mat-panel-title>Legais e Tributários</mat-panel-title>
+            <mat-panel-title>Busca por Legais e Tributários</mat-panel-title>
           </mat-expansion-panel-header>
 
           <div class="legal-container w-100">

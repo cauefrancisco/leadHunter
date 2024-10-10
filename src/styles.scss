@@ -70,3 +70,12 @@ mat-label{
   font-weight: 550;
 }
 
+.assigned-chip {
+  color: $ficus-black !important;
+  font-weight: 550;
+}
+
+.mat-mdc-standard-chip:not(.mdc-evolution-chip--disabled) .mdc-evolution-chip__text-label {
+  color: $ficus-black !important;
+  font-weight: 550;
+}
