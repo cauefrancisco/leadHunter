@@ -69,6 +69,7 @@ export class CompanySearchComponent implements OnInit, AfterViewInit, DoCheck {
   ) { }
 
   ngOnInit() {
+    this.showSelectedFilterLabel();
   }
 
   ngAfterViewInit() {
@@ -82,7 +83,7 @@ export class CompanySearchComponent implements OnInit, AfterViewInit, DoCheck {
     } else if(this.selection.selected.length <= 0){
       this.isExcelBtnActive = false;
     }
-
+    this.showSelectedFilterLabel();
   }
 
   public recieveTableData(event: any): void {
@@ -140,47 +141,43 @@ export class CompanySearchComponent implements OnInit, AfterViewInit, DoCheck {
     this.showTable.set(false);
   }
 
+  public showSelectedFilterLabel(): boolean {
+    if(
+      this.selectedSector?.length > 0 ||
+      this.selectedCnaePrima?.length > 0 ||
+      this.selectedCnaeSecund?.length > 0 ||
+      this.selectedNcm?.length > 0 ||
+      this.filterInputSocio?.length > 0 ||
+      this.filterInputNome?.length > 0 ||
+      this.filterInputCnpj?.length > 0
+    ){
+      this.selectedFilterLabelShow = true;
+      return true;
+    }
+    this.selectedFilterLabelShow = false;
+    return false;
+  }
+
   public filteredSelectedSectorEvent(event: any): void {
     this.selectedSector = event.map((i: any) => i?.descricao);
-    if(this.selectedSector.length > 0){
-      this.selectedFilterLabelShow = true;
-    }
   }
   public filteredSelectedCnaePrimaEvent(event: any): void {
     this.selectedCnaePrima = event.map((i: any) => i?.descricao);
-    if(this.selectedCnaePrima.length > 0){
-      this.selectedFilterLabelShow = true;
-    }
   }
   public filteredSelectedCnaeSecundEvent(event: any): void {
     this.selectedCnaeSecund = event.map((i: any) => i?.descricao);
-    if(this.selectedCnaeSecund.length > 0){
-      this.selectedFilterLabelShow = true;
-    }
   }
   public filteredSelectedNcmEvent(event: any): void {
     this.selectedNcm = event.map((i: any) => i?.descricao);
-    if(this.selectedNcm.length > 0){
-      this.selectedFilterLabelShow = true;
-    }
   }
   public filteredSocioEvent(event: any): void {
       this.filterInputSocio = event;
-      if(this.filterInputSocio.length > 0){
-        this.selectedFilterLabelShow = true;
-      }
   }
   public filteredNomeEvent(event: any): void {
       this.filterInputNome = event;
-      if(this.filterInputNome.length > 0){
-        this.selectedFilterLabelShow = true;
-      }
   }
   public filteredCnpjEvent(event: any): void {
       this.filterInputCnpj = event;
-      if(this.filterInputCnpj.length > 0){
-        this.selectedFilterLabelShow = true;
-      }
   }
 
   public exportToExcel(): void {
