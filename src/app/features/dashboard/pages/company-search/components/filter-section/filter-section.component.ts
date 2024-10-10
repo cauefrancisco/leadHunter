@@ -357,6 +357,10 @@ export class FilterSectionComponent implements OnInit, AfterViewInit, AfterViewC
     this.selectedCnaeSecundarioValue.emit([]);
     this.ncmMultiCtrl.reset();
     this.selectedNcmValue.emit([]);
+    this.form.reset();
+    this.socioFilteredValue.emit('');
+    this.nomeFilteredValue.emit('');
+    this.cnpjFilteredValue.emit('');
   }
 
   public getCitiesValue(): void {
