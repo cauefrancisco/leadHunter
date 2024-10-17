@@ -10,6 +10,7 @@ import { DetailsModalComponent } from './components/details-modal/details-modal.
 import * as XLSX from "xlsx";
 import { FilterSectionComponent } from './components/filter-section/filter-section.component';
 import { DashboardService } from '../../../services/dashboard.service';
+import { MatTableExporterModule } from 'mat-table-exporter';
 
 export interface ISearchCompanyTable {
   name: string;
@@ -32,7 +33,8 @@ export interface ISearchCompanyTable {
     CommonModule,
     MaterialModule,
     CnpjPipe,
-    FilterSectionComponent
+    FilterSectionComponent,
+    MatTableExporterModule
   ],
 
 })
@@ -87,6 +89,7 @@ export class CompanySearchComponent implements OnInit, AfterViewInit, DoCheck {
   }
 
   public recieveTableData(event: any): void {
+    this.selection.clear();
     this.dataSource.data = event;
     console.log('event: ', event);
     console.log('event.socios: ', event?.socios);
@@ -98,12 +101,6 @@ export class CompanySearchComponent implements OnInit, AfterViewInit, DoCheck {
   }
 
   public openDetailsModal(element: any): void {
-    console.log('element: ',element);
-    console.log('element socio: ',element?.socios);
-    console.log('element socio: ',element?.socios[0]);
-    console.log('typeof element socio: ',element?.socios[0]?.nome);
-    console.log('typeof element socio: ',element?.socios?.nome);
-    console.log('typeof element socio: ',element?.socios?.element?.nome);
     this._dialog.open(DetailsModalComponent, { data: element})
   }
 
@@ -188,6 +185,8 @@ export class CompanySearchComponent implements OnInit, AfterViewInit, DoCheck {
   }
 
   public exportToExcel(): void {
+    console.log('this.selection.selected', this.selection.selected);
+
     let name = '';
     let timeSpan = new Date().toISOString();
     let prefix = name || 'ExportResult';
