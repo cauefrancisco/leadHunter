@@ -4,7 +4,7 @@
     <mat-icon>{{ hidden ? 'menu_open' : 'menu' }}</mat-icon>
   </button>
   <div class="img-container">
-    <img (click)="goTo('')" src="assets/images/Ficus_Logo.png" alt="">
+    <img (click)="goTo('login')" src="assets/images/Ficus_Logo.png" alt="">
   </div>
   <span class="example-spacer"></span>
   @if(!isLogged){
@@ -13,7 +13,7 @@
         <li>
           Soluções
         </li>
-        <li>
+        <li (click)="goTo('pricing')">
           Planos
         </li>
         <li>
@@ -55,7 +55,7 @@
       <!-- <mat-icon>local_library</mat-icon> -->
       <a> Soluções</a>
     </li>
-    <li>
+    <li (click)="goTo('pricing')">
       <!-- <mat-icon>local_library</mat-icon> -->
       <a> Planos</a>
     </li>

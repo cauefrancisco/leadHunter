@@ -13,6 +13,14 @@
         (socioFilteredValue)="filteredSocioEvent($event)"
         (nomeFilteredValue)="filteredNomeEvent($event)"
         (cnpjFilteredValue)="filteredCnpjEvent($event)"
+        (stateFilteredValue)="filteredStateEvent($event)"
+        (cityFilteredValue)="filteredCityEvent($event)"
+        (neighbourhoodFilteredValue)="filteredNeighbourhoodEvent($event)"
+        (logradouroFilteredValue)="filteredLogradouroEvent($event)"
+        (stNumberFilteredValue)="filteredStNumberEvent($event)"
+        (cepFilteredValue)="filteredCEPEvent($event)"
+        (companySizeFilteredValue)="filteredCompanySizeEvent($event)"
+        (telephoneFilteredValue)="filteredTelephoneEvent($event)"
          ></app-filter-section>
       </section>
       <section
@@ -49,6 +57,7 @@
             @for (cnaeSecund of selectedCnaeSecund; track cnaeSecund) {
               <mat-chip class="assigned-chip" matTooltip="Cnae Secundário">{{cnaeSecund}}</mat-chip>
             }
+
             @for (ncm of selectedNcm; track ncm) {
               <mat-chip class="assigned-chip" matTooltip="Ncm">{{ncm}}</mat-chip>
             }
@@ -60,6 +69,30 @@
             }
             @if(filterInputCnpj.length > 0) {
               <mat-chip class="assigned-chip" matTooltip="Cnpj">{{filterInputCnpj}}</mat-chip>
+            }
+            @for (InputState of filterInputState; track InputState) {
+              <mat-chip class="assigned-chip" matTooltip="Estado">{{InputState}}</mat-chip>
+            }
+            @for (InputCity of filterInputCity; track InputCity) {
+              <mat-chip class="assigned-chip" matTooltip="Cidade">{{InputCity}}</mat-chip>
+            }
+            @for (InputNeighbourhood of filterInputNeighbourhood; track InputNeighbourhood) {
+              <mat-chip class="assigned-chip" matTooltip="Bairro">{{InputNeighbourhood}}</mat-chip>
+            }
+            @if(filterInputLogradouro.length > 0) {
+              <mat-chip class="assigned-chip" matTooltip="Logradouro">{{filterInputLogradouro}}</mat-chip>
+            }
+            @if(filterInputStNumber.length > 0) {
+              <mat-chip class="assigned-chip" matTooltip="N.Rua">{{filterInputStNumber}}</mat-chip>
+            }
+            @if(filterInputCEP.length > 0) {
+              <mat-chip class="assigned-chip" matTooltip="CEP">{{filterInputCEP}}</mat-chip>
+            }
+            @for (InputCompanySize of filterInputCompanySize; track InputCompanySize) {
+              <mat-chip class="assigned-chip" matTooltip="Porte Nominal">{{InputCompanySize}}</mat-chip>
+            }
+            @if(filterInputTelephone.length > 0) {
+              <mat-chip class="assigned-chip" matTooltip="Telefone">{{filterInputTelephone}}</mat-chip>
             }
             </mat-chip-set>
           </div>

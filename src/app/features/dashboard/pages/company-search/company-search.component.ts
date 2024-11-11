@@ -11,6 +11,8 @@ import * as XLSX from "xlsx";
 import { FilterSectionComponent } from './components/filter-section/filter-section.component';
 import { DashboardService } from '../../../services/dashboard.service';
 import { MatTableExporterModule } from 'mat-table-exporter';
+import { map } from 'rxjs/operators';
+import { IFilterCnae } from '../../../../shared/interfaces/filter-cnae.interface';
 
 export interface ISearchCompanyTable {
   name: string;
@@ -63,7 +65,15 @@ export class CompanySearchComponent implements OnInit, AfterViewInit, DoCheck {
   public selectedNcm: any;
   public filterInputSocio: string = '';
   public filterInputCnpj: string = '';
+  public filterInputState: any;
+  public filterInputCity: any;
+  public filterInputNeighbourhood: any;
+  public filterInputLogradouro: string = '';
+  public filterInputStNumber: string = '';
+  public filterInputCEP: string = '';
+  public filterInputCompanySize!: Array<IFilterCnae>;
   public filterInputNome: string = '';
+  public filterInputTelephone: string = '';
   public selectedFilterLabelShow: boolean = false;
   constructor(
     private _dialog: MatDialog,
@@ -183,6 +193,33 @@ export class CompanySearchComponent implements OnInit, AfterViewInit, DoCheck {
   public filteredCnpjEvent(event: any): void {
       this.filterInputCnpj = event;
   }
+  public filteredStateEvent(event: any): void {
+      this.filterInputState = event;
+  }
+  public filteredCityEvent(event: any): void {
+      this.filterInputCity = event;
+  }
+  public filteredNeighbourhoodEvent(event: any): void {
+      this.filterInputNeighbourhood = event;
+  }
+  public filteredLogradouroEvent(event: any): void {
+      this.filterInputLogradouro = event;
+  }
+  public filteredStNumberEvent(event: any): void {
+      this.filterInputStNumber = event;
+  }
+  public filteredCEPEvent(event: any): void {
+      this.filterInputCEP = event;
+  }
+  public filteredCompanySizeEvent(event: any): void {
+      if(event === null){
+        this.filterInputCompanySize = [];
+      }
+      this.filterInputCompanySize = event.map((i: any) => i.descricao) ? event.map((i: any) => i.descricao) : [];
+  }
+  public filteredTelephoneEvent(event: any): void {
+    this.filterInputTelephone = event;
+}
 
   public exportToExcel(): void {
     console.log('this.selection.selected', this.selection.selected);

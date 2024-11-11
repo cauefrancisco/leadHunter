@@ -8,6 +8,7 @@ import { CompanySearchComponent } from './features/dashboard/pages/company-searc
 import { MarketCalculatorComponent } from './features/dashboard/pages/market-calculator/market-calculator.component';
 import { HomeComponent } from './features/pages/Home/Home.component';
 import { AuthGuard } from './shared/gards/auth.guard';
+import { PlansComponent } from './features/pages/plans/plans.component';
 
 export const routes: Routes = [
 
@@ -20,6 +21,7 @@ export const routes: Routes = [
             { path: 'home', component: HomeComponent },
             { path: 'login', component: LoginComponent, title: 'Login', data: ['Login'] },
             { path: 'create-account', component: CreateAccountComponent, title: 'Criar Conta', data: ['Criar Conta'] },
+            { path: 'pricing', component: PlansComponent, title: 'Planos', data: ['Planos']},
             {
                 path: 'dashboard',
                 pathMatch: 'prefix',

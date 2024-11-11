@@ -66,6 +66,16 @@ export class FilterSectionComponent implements OnInit, AfterViewInit, AfterViewC
   @Output() cnpjFilteredValue = new EventEmitter<any>();
   @Output() nomeFilteredValue = new EventEmitter<any>();
   @Output() socioFilteredValue = new EventEmitter<string>();
+  @Output() stateFilteredValue = new EventEmitter<string>();
+  @Output() cityFilteredValue = new EventEmitter<string>();
+  @Output() neighbourhoodFilteredValue = new EventEmitter<string>();
+  @Output() logradouroFilteredValue = new EventEmitter<string>();
+  @Output() stNumberFilteredValue = new EventEmitter<string>();
+  @Output() cepFilteredValue = new EventEmitter<string>();
+  @Output() companySizeFilteredValue = new EventEmitter<any>();
+  @Output() telephoneFilteredValue = new EventEmitter<string>();
+  @Output() initialDateFilteredValue = new EventEmitter<string>();
+  @Output() finalDateFilteredValue = new EventEmitter<string>();
   @ViewChild('sectorSelect', { static: true }) sectorSelect!: MatSelect;
   @ViewChild('cnaePrimaSelect', { static: true }) cnaePrimaSelect!: MatSelect;
   @ViewChild('cnaeSecondSelect', { static: true }) cnaeSecondSelect!: MatSelect;
@@ -163,6 +173,8 @@ export class FilterSectionComponent implements OnInit, AfterViewInit, AfterViewC
     this.loadInitialSelectValues();
     this.form.get('city')?.disable();
     this.form.get('neighbourhood')?.disable();
+
+    this.getPreviousSearch();
 
     this.sectorMultiFilterCtrl.valueChanges
       .pipe(takeUntil(this._onDestroy))
@@ -322,20 +334,45 @@ export class FilterSectionComponent implements OnInit, AfterViewInit, AfterViewC
     this.selectedNcmValue.emit(this.ncmMultiCtrl.value);
   }
 
-  public onKeyUpSocioValue(event: any): void {
+  public onKeyUpSocioValue(): void {
     if(this.form.get('partner')?.errors?.pattern){
       return;
     }
     this.socioFilteredValue.emit(this.form.get('partner')?.value);
   }
-  public onKeyUpNomeValue(event: any): void {
+  public onKeyUpNomeValue(): void {
     this.nomeFilteredValue.emit(this.form.get('name')?.value);
   }
-  public onKeyUpCnpjValue(event: any): void {
+  public onKeyUpCnpjValue(): void {
     if(this.form.get('cnpj')?.errors?.pattern){
       return;
     }
     this.cnpjFilteredValue.emit(this.form.get('cnpj')?.value);
+  }
+
+  public onStateMultiSelectionChange(event: any): void {
+    this.stateFilteredValue.emit(this.form.get('estate')?.value);
+  }
+  public onCityMultiSelectionChange(event: any): void {
+    this.cityFilteredValue.emit(this.form.get('city')?.value);
+  }
+  public onNeighbourhoodMultiSelectionChange(event: any): void {
+    this.neighbourhoodFilteredValue.emit(this.form.get('neighbourhood')?.value);
+  }
+  public onKeyUpCEPValue(): void {
+    this.cepFilteredValue.emit(this.form.get('cep')?.value);
+  }
+  public onKeyUpLogradouroValue(): void {
+    this.logradouroFilteredValue.emit(this.form.get('logradouro')?.value);
+  }
+  public onKeyUpStNumberValue(): void {
+    this.stNumberFilteredValue.emit(this.form.get('stNumber')?.value);
+  }
+  public onCompanySizeMultiSelectionChange(): void {
+    this.companySizeFilteredValue.emit(this.form.get('companySize')?.value);
+  }
+  public onKeyUpTelephoneValue(): void {
+    this.telephoneFilteredValue.emit(this.form.get('telephone')?.value);
   }
 
   public dropSpecialCharacters(str: string): string {
@@ -361,6 +398,13 @@ export class FilterSectionComponent implements OnInit, AfterViewInit, AfterViewC
     this.socioFilteredValue.emit('');
     this.nomeFilteredValue.emit('');
     this.cnpjFilteredValue.emit('');
+    this.stateFilteredValue.emit('');
+    this.cityFilteredValue.emit('');
+    this.neighbourhoodFilteredValue.emit('');
+    this.form.get('companySize')?.reset();
+    this.form.reset();
+    this.companySizeFilteredValue.emit([]);
+    this.telephoneFilteredValue.emit('');
   }
 
   public getCitiesValue(): void {
@@ -415,11 +459,9 @@ export class FilterSectionComponent implements OnInit, AfterViewInit, AfterViewC
   }
 
   public getCEP(): void {
-
-      console.log('this.form.get(cep)?.value: ', this.form.get('cep')?.value )
       this._dashboardService.getCEP(this.form.get('cep')?.value).subscribe((res) => {
         if(res.result){
-          console.log('res.result cep ', res.result);
+          this.onKeyUpCEPValue();
           if(res.result?.uf.length > 0){
             this.form.get('estate')?.setValue([res.result.uf]);
             this._dashboardService.getCidade(res.result.uf).subscribe((val)=> {
@@ -432,15 +474,43 @@ export class FilterSectionComponent implements OnInit, AfterViewInit, AfterViewC
               this.neighbourhoods = val.result;
               this.form.get('neighbourhood')?.enable();
               this.form.get('neighbourhood')?.setValue([res.result.codigoBairro]);
+
             })
           }
           this.form.get('logradouro')?.reset()
           this.form.get('logradouro')?.setValue(res.result.logradouro);
+          this.onKeyUpLogradouroValue();
           return;
         }
         return;
       });
 
+  }
+
+  public getPreviousSearch(): void {
+    this.userPath = this._authService.userPath().length > 0 ? this._authService.userPath() : String(localStorage.getItem('PATH_USER'));
+    const SessionSearchPath = `${this.userPath}/Pesquisa/PegarPesquisas`;
+    const userLoginData = this._authService.userLoginData().length > 0 ? this._authService.userLoginData() : String(localStorage.getItem('LOGIN_KEY'));
+    this._authService.userSessionPath.set(SessionSearchPath);
+    this._authService.generateUserSignatureSession(userLoginData);
+
+    this._authService.userKey.subscribe((res) => {
+      this.userSignatureSession = res;
+    });
+
+    const dados = {
+      filtro : {
+        dataInicio : '',
+        dataFim : '',
+     },
+     maxCount : 20,
+    }
+
+    this._dashboardService.filterAllSearchs(this.userPath, dados, this.userSignatureSession).subscribe((res) => {
+      if(res){
+        console.log('res filter Pesquisas ', res);
+      }
+    })
   }
 
   public search(): void {
@@ -467,6 +537,7 @@ export class FilterSectionComponent implements OnInit, AfterViewInit, AfterViewC
     const cnaePrimaPayload = this.cnaePrimaMultiCtrl.value !== null ? this.cnaePrimaMultiCtrl.value.map((i: IFilterCnae) => i.codigo) : null;
     const cnaeSecundPayload = this.cnaeSecundMultiCtrl.value !== null ? this.cnaeSecundMultiCtrl.value.map((i: IFilterCnae) => i.codigo) : null;
     const ncmPayload = this.ncmMultiCtrl.value !== null ? this.ncmMultiCtrl.value.map((i: IFilterCnae) => i.codigo) : null;
+    const companySize = this.form.get('companySize')?.value.map((i: any) => i.descricao) ? this.form.get('companySize')?.value.map((i: any) => i.descricao) : null;
     let filter = {
       setores: sectorsPayload,
       cnae: cnaePrimaPayload,
@@ -481,7 +552,7 @@ export class FilterSectionComponent implements OnInit, AfterViewInit, AfterViewC
       nome: this.form.get('name')?.value ? this.form.get('name')?.value : null,
       telefone: this.form.get('telephone')?.value ? this.form.get('telephone')?.value : null,
       numero: this.form.get('stNumber')?.value ? this.form.get('stNumber')?.value : null,
-      porte: this.form.get('companySize')?.value ? this.form.get('companySize')?.value : null,
+      porte: companySize,
       naturezaJuridica: this.form.get('legalNature')?.value ? this.form.get('legalNature')?.value : null,
       regime: this.form.get('feeType')?.value ? this.form.get('feeType')?.value : null,
       cnpj: this.form.get('cnpj')?.value ? this.dropSpecialCharacters(this.form.get('cnpj')?.value) : null,
