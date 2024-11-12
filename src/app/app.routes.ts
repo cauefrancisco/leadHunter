@@ -9,6 +9,7 @@ import { MarketCalculatorComponent } from './features/dashboard/pages/market-cal
 import { HomeComponent } from './features/pages/Home/Home.component';
 import { AuthGuard } from './shared/gards/auth.guard';
 import { PlansComponent } from './features/pages/plans/plans.component';
+import { PaymentComponent } from './features/pages/plans/payment/payment.component';
 
 export const routes: Routes = [
 
@@ -30,7 +31,8 @@ export const routes: Routes = [
                 children: [
                     { path: 'home', component: DashboardComponent, title: 'Dashboard', data: ['Dashboard'] },
                     { path: 'company-search', component: CompanySearchComponent, title: 'Empresas', data: ['Empresas'] },
-                    { path: 'calculator', component: MarketCalculatorComponent, title: 'Calculadora', data: ['Calculadora'] }
+                    { path: 'calculator', component: MarketCalculatorComponent, title: 'Calculadora', data: ['Calculadora'] },
+                    { path: 'upgrade', component: PlansComponent}
                 ]
             }
         ],
