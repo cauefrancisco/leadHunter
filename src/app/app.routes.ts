@@ -10,6 +10,7 @@ import { HomeComponent } from './features/pages/Home/Home.component';
 import { AuthGuard } from './shared/gards/auth.guard';
 import { PlansComponent } from './features/pages/plans/plans.component';
 import { PaymentComponent } from './features/pages/plans/payment/payment.component';
+import { SolutionsComponent } from './features/pages/solutions/solutions.component';
 
 export const routes: Routes = [
 
@@ -23,6 +24,7 @@ export const routes: Routes = [
             { path: 'login', component: LoginComponent, title: 'Login', data: ['Login'] },
             { path: 'create-account', component: CreateAccountComponent, title: 'Criar Conta', data: ['Criar Conta'] },
             { path: 'pricing', component: PlansComponent, title: 'Planos', data: ['Planos']},
+            { path: 'solutions', component: SolutionsComponent, title: 'Soluções', data: ['Soluções']},
             {
                 path: 'dashboard',
                 pathMatch: 'prefix',
