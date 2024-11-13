@@ -537,7 +537,7 @@ export class FilterSectionComponent implements OnInit, AfterViewInit, AfterViewC
     const cnaePrimaPayload = this.cnaePrimaMultiCtrl.value !== null ? this.cnaePrimaMultiCtrl.value.map((i: IFilterCnae) => i.codigo) : null;
     const cnaeSecundPayload = this.cnaeSecundMultiCtrl.value !== null ? this.cnaeSecundMultiCtrl.value.map((i: IFilterCnae) => i.codigo) : null;
     const ncmPayload = this.ncmMultiCtrl.value !== null ? this.ncmMultiCtrl.value.map((i: IFilterCnae) => i.codigo) : null;
-    const companySize = this.form.get('companySize')?.value.map((i: any) => i.descricao) ? this.form.get('companySize')?.value.map((i: any) => i.descricao) : null;
+    const companySize = this.form.get('companySize')?.value ? this.form.get('companySize')?.value.map((i: any) => i.descricao) : null;
     let filter = {
       setores: sectorsPayload,
       cnae: cnaePrimaPayload,

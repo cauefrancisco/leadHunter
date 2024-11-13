@@ -24,7 +24,6 @@ export class PaymentComponent implements OnInit {
 
   ngOnInit(): void {
     this.amount = this.data?.price;
-    console.log('data', this.data);
     window.paypal.Buttons(
       {
         style: {

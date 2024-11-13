@@ -137,6 +137,14 @@ main{
   text-align: center;
   align-items: baseline;
   justify-content: flex-start;
+  &_socio{
+    display: flex;
+    align-items: flex-start;
+    mat-icon{
+      width: 40px;
+      font-size: 18px;
+    }
+  }
 }
 
 .no-data{
