@@ -18,7 +18,7 @@ export class PaymentComponent implements OnInit {
 
   public amount!: string;
   public isPaid = false;
-
+  public PaymentResponse: any;
 
   constructor(){}
 
@@ -47,8 +47,10 @@ export class PaymentComponent implements OnInit {
         },
         onApprove: (data: any, actions: any) => {
           return actions.order.capture().then((details: any) => {
-            console.log(details);
+            console.log('details', details);
             this.isPaid = true;
+            this.PaymentResponse = data;
+            console.log('data', this.PaymentResponse);
           })
         },
         onError: (error: any) => {
