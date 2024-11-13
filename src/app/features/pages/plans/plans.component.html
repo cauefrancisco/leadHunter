@@ -43,7 +43,15 @@
 
           </mat-card-content>
           <mat-card-actions>
-              <button class="btn-confirm w-100" mat-button (click)="openPaymentModal(card)">Quero Esse plano</button>
+              @if(card.title === 'Gratuito' && isLogged){
+              <button disabled class="btn-confirm-disable w-100" mat-button>Plano atual</button>
+              }
+              @if(card.title === 'Gratuito' && !isLogged){
+              <button class="btn-confirm w-100"(click)="openPaymentModal(card)"  mat-button>Quero Esse plano</button>
+              }
+              @if(card.title !== 'Gratuito'){
+                <button class="btn-confirm w-100" mat-button (click)="openPaymentModal(card)">Quero Esse plano</button>
+              }
           </mat-card-actions>
       </mat-card>
     }

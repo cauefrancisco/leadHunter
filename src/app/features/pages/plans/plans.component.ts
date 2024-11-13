@@ -3,6 +3,9 @@ import { MaterialModule } from '../../../shared/modules/material.module';
 import { CommonModule } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
 import { PaymentComponent } from './payment/payment.component';
+import { UserStateService } from '../../services/user-state.service';
+import { AuthService } from '../../services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-plans',
@@ -22,13 +25,16 @@ export class PlansComponent implements OnInit {
   public planCards: Array<any>;
   public planBenefits!: Array<any>;
   public textContent!: string;
+  public isLogged: boolean = false;
 
 
   constructor(
     public matDialog: MatDialog,
+    private _userService: UserStateService,
+    private _router: Router,
   ){
     this.planCards = [
-      {title: 'Gratuito', price: '00.00', bOne: '50 pesquisas', bTwo: '10 Resultados por pesquisa', bThree: 'Não pesquisa por sócio'},
+      {title: 'Gratuito', price: '-', bOne: '50 pesquisas', bTwo: '10 Resultados por pesquisa', bThree: 'Não pesquisa por sócio'},
       {title: 'Básico', price: '99.90', bOne: 'Pesquisas e resultados ilimitados', bTwo: 'Não exporta excel'},
       {title: 'Completo', price: '129.90', bOne: 'Ilimitado'},
     ]
@@ -37,11 +43,16 @@ export class PlansComponent implements OnInit {
 
   ngOnInit(){
     console.log(window.paypal);
+    this.isLogged = this._userService.returnUserStatus();
   }
 
   public openPaymentModal(element: any): void {
-    console.log('element', element);
-    this.matDialog.open(PaymentComponent, {data: element});
+    if(this._userService.returnUserStatus()){
+      console.log('element', element);
+      this.matDialog.open(PaymentComponent, {data: element});
+    } else {
+      this._router.navigateByUrl('login');
+    }
   }
 
 }
