@@ -35,9 +35,8 @@ export const routes: Routes = [
                     { path: 'home', component: DashboardComponent, title: 'Dashboard', data: ['Dashboard'] },
                     { path: 'company-search', component: CompanySearchComponent, title: 'Empresas', data: ['Empresas'] },
                     { path: 'calculator', component: MarketCalculatorComponent, title: 'Calculadora', data: ['Calculadora'] },
-                    { path: 'upgrade', component: PlansComponent, title: 'Planos', data: ['Planos'], children:[
-                      {path: 'feedback-transaction', component: PaymentFeedbackComponent, title: 'Feedback de pagamento'}
-                    ]},
+                    { path: 'upgrade', component: PlansComponent, title: 'Planos', data: ['Planos']},
+                    {path: 'feedback-transaction', component: PaymentFeedbackComponent, title: 'Feedback de pagamento'}
                 ]
             }
         ],

@@ -2,6 +2,8 @@ import { style } from '@angular/animations';
 import { Component, ElementRef, inject, OnInit, ViewChild } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MaterialModule } from '../../../../shared/modules/material.module';
+import { PaymentService } from '../../../services/payment.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-payment',
@@ -20,7 +22,10 @@ export class PaymentComponent implements OnInit {
   public isPaid = false;
   public PaymentResponse: any;
 
-  constructor(){}
+  constructor(
+    public paymentService: PaymentService,
+    public router: Router,
+  ){}
 
   ngOnInit(): void {
     this.amount = this.data?.price;
@@ -47,10 +52,12 @@ export class PaymentComponent implements OnInit {
         },
         onApprove: (data: any, actions: any) => {
           return actions.order.capture().then((details: any) => {
-            console.log('details', details);
             this.isPaid = true;
+            this.paymentService.isPaid.set(true);
             this.PaymentResponse = data;
-            console.log('data', this.PaymentResponse);
+            this.paymentService.getTransactionId(details.id);
+            this.router.navigateByUrl('dashboard/feedback-transaction');
+            this.onClose();
           })
         },
         onError: (error: any) => {
@@ -58,5 +65,9 @@ export class PaymentComponent implements OnInit {
         }
       }
     ).render(this.paypalRef.nativeElement)
+  }
+
+  public onClose(): void{
+    this.dialogRef.close();
   }
 }
