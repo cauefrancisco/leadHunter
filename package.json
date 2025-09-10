@@ -23,7 +23,7 @@
     "@angular/platform-browser-dynamic": "^17.3.0",
     "@angular/platform-server": "^17.3.0",
     "@angular/router": "^17.3.0",
-    "@angular/ssr": "^17.3.8",
+    "@angular/ssr": "^18.2.21",
     "@canvasjs/angular-charts": "^1.2.0",
     "@ng-bootstrap/ng-bootstrap": "^16.0.0",
     "@ngneat/until-destroy": "^10.0.0",
